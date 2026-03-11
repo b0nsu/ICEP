@@ -21,6 +21,11 @@ import java.util.regex.Pattern;
  * 임시 파일 재검증 후 원본을 교체하는 저장소 계층이다.
  */
 final class TextDataStore {
+    @FunctionalInterface
+    interface FileMover {
+        void move(Path source, Path target) throws IOException;
+    }
+
     private static final Pattern USER_ID_PATTERN = Pattern.compile("^[a-z][a-z0-9]{3,11}$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[A-Za-z0-9!@#$%^&*._-]{6,16}$");
     private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z가-힣 ]{2,20}$");
@@ -34,13 +39,19 @@ final class TextDataStore {
     private final Path roomsPath;
     private final Path reservationsPath;
     private final Path systemTimePath;
+    private final FileMover fileMover;
 
     TextDataStore(Path rootDirectory) {
+        this(rootDirectory, TextDataStore::moveReplacing);
+    }
+
+    TextDataStore(Path rootDirectory, FileMover fileMover) {
         this.rootDirectory = rootDirectory;
         this.usersPath = rootDirectory.resolve("users.txt");
         this.roomsPath = rootDirectory.resolve("rooms.txt");
         this.reservationsPath = rootDirectory.resolve("reservations.txt");
         this.systemTimePath = rootDirectory.resolve("system_time.txt");
+        this.fileMover = fileMover;
     }
 
     SystemDataset loadAll() throws AppDataException {
@@ -52,6 +63,10 @@ final class TextDataStore {
         Path roomsTemp = null;
         Path reservationsTemp = null;
         Path systemTimeTemp = null;
+        Path usersBackup = null;
+        Path roomsBackup = null;
+        Path reservationsBackup = null;
+        Path systemTimeBackup = null;
         try {
             usersTemp = Files.createTempFile(rootDirectory, "users", ".tmp");
             roomsTemp = Files.createTempFile(rootDirectory, "rooms", ".tmp");
@@ -65,14 +80,26 @@ final class TextDataStore {
 
             loadAllFrom(usersTemp, roomsTemp, reservationsTemp, systemTimeTemp);
 
-            moveReplacing(usersTemp, usersPath);
+            usersBackup = backupOriginal(usersPath, "users");
+            roomsBackup = backupOriginal(roomsPath, "rooms");
+            reservationsBackup = backupOriginal(reservationsPath, "reservations");
+            systemTimeBackup = backupOriginal(systemTimePath, "system_time");
+
+            PendingSaveFile usersFile = new PendingSaveFile(usersTemp, usersPath, usersBackup);
+            PendingSaveFile roomsFile = new PendingSaveFile(roomsTemp, roomsPath, roomsBackup);
+            PendingSaveFile reservationsFile = new PendingSaveFile(reservationsTemp, reservationsPath, reservationsBackup);
+            PendingSaveFile systemTimeFile = new PendingSaveFile(systemTimeTemp, systemTimePath, systemTimeBackup);
+
+            replaceAll(usersFile, roomsFile, reservationsFile, systemTimeFile);
+
             usersTemp = null;
-            moveReplacing(roomsTemp, roomsPath);
             roomsTemp = null;
-            moveReplacing(reservationsTemp, reservationsPath);
             reservationsTemp = null;
-            moveReplacing(systemTimeTemp, systemTimePath);
             systemTimeTemp = null;
+            usersBackup = null;
+            roomsBackup = null;
+            reservationsBackup = null;
+            systemTimeBackup = null;
         } catch (IOException e) {
             throw new AppDataException("저장", 0, "파일 저장 중 I/O 오류가 발생했습니다: " + e.getMessage());
         } finally {
@@ -80,6 +107,10 @@ final class TextDataStore {
             deleteIfExists(roomsTemp);
             deleteIfExists(reservationsTemp);
             deleteIfExists(systemTimeTemp);
+            deleteIfExists(usersBackup);
+            deleteIfExists(roomsBackup);
+            deleteIfExists(reservationsBackup);
+            deleteIfExists(systemTimeBackup);
         }
     }
 
@@ -320,6 +351,13 @@ final class TextDataStore {
                 throw new AppDataException("reservations.txt", reservation.sourceLine, "현재 상태에서는 checkedInAt이 '-'여야 합니다.");
             }
 
+            if (reservation.status == ReservationStatus.NO_SHOW && !dataset.currentTime.isAfter(reservation.startDateTime().plusMinutes(15))) {
+                throw new AppDataException("reservations.txt", reservation.sourceLine, "NO_SHOW 상태 예약은 체크인 마감 시각 이후여야 합니다.");
+            }
+            if (reservation.status == ReservationStatus.COMPLETED && dataset.currentTime.isBefore(reservation.endDateTime())) {
+                throw new AppDataException("reservations.txt", reservation.sourceLine, "COMPLETED 상태 예약은 종료 시각이 지난 뒤에만 허용됩니다.");
+            }
+
             if (reservation.isFutureReserved(dataset.currentTime)) {
                 int count = futureReservationCountByUser.getOrDefault(reservation.userId, 0) + 1;
                 futureReservationCountByUser.put(reservation.userId, count);
@@ -519,11 +557,50 @@ final class TextDataStore {
         return "NOW|" + TimeFormats.formatFileDateTime(dataset.currentTime);
     }
 
-    private void moveReplacing(Path source, Path target) throws IOException {
+    static void moveReplacing(Path source, Path target) throws IOException {
         try {
             Files.move(source, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
         } catch (AtomicMoveNotSupportedException e) {
             Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    private Path backupOriginal(Path source, String prefix) throws IOException {
+        Path backup = Files.createTempFile(rootDirectory, prefix, ".bak");
+        Files.copy(source, backup, StandardCopyOption.REPLACE_EXISTING);
+        return backup;
+    }
+
+    private void replaceAll(PendingSaveFile... files) throws IOException {
+        List<PendingSaveFile> replacedFiles = new ArrayList<>();
+        try {
+            for (PendingSaveFile file : files) {
+                fileMover.move(file.tempFile, file.targetFile);
+                replacedFiles.add(file);
+            }
+        } catch (IOException e) {
+            rollback(replacedFiles, e);
+            throw e;
+        }
+    }
+
+    private void rollback(List<PendingSaveFile> replacedFiles, IOException originalFailure) throws IOException {
+        IOException rollbackFailure = null;
+        for (int index = replacedFiles.size() - 1; index >= 0; index--) {
+            PendingSaveFile file = replacedFiles.get(index);
+            try {
+                moveReplacing(file.backupFile, file.targetFile);
+            } catch (IOException e) {
+                if (rollbackFailure == null) {
+                    rollbackFailure = e;
+                } else {
+                    rollbackFailure.addSuppressed(e);
+                }
+            }
+        }
+        if (rollbackFailure != null) {
+            originalFailure.addSuppressed(rollbackFailure);
+            throw new IOException(originalFailure.getMessage() + " (롤백 실패)", originalFailure);
         }
     }
 
@@ -544,5 +621,17 @@ final class TextDataStore {
                 .replace("|", "\\|")
                 .replace("\n", "\\n")
                 .replace("\r", "\\r");
+    }
+
+    private static final class PendingSaveFile {
+        private final Path tempFile;
+        private final Path targetFile;
+        private final Path backupFile;
+
+        private PendingSaveFile(Path tempFile, Path targetFile, Path backupFile) {
+            this.tempFile = tempFile;
+            this.targetFile = targetFile;
+            this.backupFile = backupFile;
+        }
     }
 }

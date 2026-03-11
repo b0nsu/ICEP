@@ -208,15 +208,17 @@ class CliApp {
             }
             String before = TimeFormats.formatUserDateTime(latest.currentTime);
             String after = TimeFormats.formatUserDateTime(newCurrentTime);
-            if (newCurrentTime.equals(latest.currentTime)) {
-                System.out.println("[성공] 현재 시각이 " + before + "로 유지되었습니다.");
-                return;
-            }
-
+            boolean timeChanged = !newCurrentTime.equals(latest.currentTime);
             latest.currentTime = newCurrentTime;
             UpdateResult result = AutoStateUpdater.apply(latest);
-            saveDataset(latest);
-            System.out.println("[성공] 현재 시각이 " + before + "에서 " + after + "로 변경되었습니다.");
+            if (timeChanged || result.changed()) {
+                saveDataset(latest);
+            }
+            if (timeChanged) {
+                System.out.println("[성공] 현재 시각이 " + before + "에서 " + after + "로 변경되었습니다.");
+            } else {
+                System.out.println("[성공] 현재 시각이 " + before + "로 유지되었습니다.");
+            }
             System.out.println("[안내] 자동 상태 갱신 결과: " + latest.summarizeAutoUpdate(result));
         } catch (CancelledActionException ignored) {
             printCancelled();
