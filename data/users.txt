@@ -1,0 +1,2 @@
+USER|admin|admin1234|관리자|admin|ACTIVE
+USER|user011|12345|본수|member|ACTIVE
