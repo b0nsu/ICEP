@@ -43,19 +43,21 @@ enum UserStatus {
 
 enum RoomStatus {
     OPEN,
-    CLOSED;
+    CLOSED,
+    MAINTENANCE;
 
     static RoomStatus fromFile(String raw, String fileName, int lineNumber) throws AppDataException {
         try {
             return RoomStatus.valueOf(raw);
         } catch (IllegalArgumentException e) {
-            throw new AppDataException(fileName, lineNumber, "roomStatus 값은 OPEN 또는 CLOSED 이어야 합니다.");
+            throw new AppDataException(fileName, lineNumber, "status 값은 OPEN, CLOSED, MAINTENANCE만 허용됩니다.");
         }
     }
 }
 
 enum ReservationStatus {
     RESERVED,
+    CANCELLED,
     CHECKED_IN,
     COMPLETED,
     NO_SHOW;
@@ -74,77 +76,97 @@ final class User {
     final String password;
     final String displayName;
     final Role role;
+    final int penalty;
     final UserStatus status;
     final int sourceLine;
 
-    User(String userId, String password, String displayName, Role role, UserStatus status, int sourceLine) {
+    User(String userId,
+         String password,
+         String displayName,
+         Role role,
+         int penalty,
+         UserStatus status,
+         int sourceLine) {
         this.userId = userId;
         this.password = password;
         this.displayName = displayName;
         this.role = role;
+        this.penalty = penalty;
         this.status = status;
         this.sourceLine = sourceLine;
     }
 
+    User withPenalty(int newPenalty) {
+        return new User(userId, password, displayName, role, newPenalty, status, sourceLine);
+    }
+
     String toRecord() {
-        return String.join("|", "USER", userId, password, displayName, role.fileValue(), status.name());
+        return String.join("|", "USER", userId, password, displayName, role.fileValue(), String.valueOf(penalty), status.name());
     }
 }
 
 final class Room {
     final String roomId;
-    final String roomName;
-    int maxCapacity;
+    final int capacity;
+    final String equipment;
     RoomStatus roomStatus;
+    final LocalTime openTime;
+    final LocalTime closeTime;
     final int sourceLine;
 
-    Room(String roomId, String roomName, int maxCapacity, RoomStatus roomStatus, int sourceLine) {
+    Room(String roomId,
+         int capacity,
+         String equipment,
+         RoomStatus roomStatus,
+         LocalTime openTime,
+         LocalTime closeTime,
+         int sourceLine) {
         this.roomId = roomId;
-        this.roomName = roomName;
-        this.maxCapacity = maxCapacity;
+        this.capacity = capacity;
+        this.equipment = equipment;
         this.roomStatus = roomStatus;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
         this.sourceLine = sourceLine;
     }
 
     String toRecord() {
-        return String.join("|", "ROOM", roomId, roomName, Integer.toString(maxCapacity), roomStatus.name());
+        return String.join("|", "ROOM", roomId, String.valueOf(capacity), equipment, roomStatus.name(),
+                TimeFormats.formatTime(openTime), TimeFormats.formatTime(closeTime));
     }
 }
 
 final class Reservation {
     final String reservationId;
-    final String userId;
     String roomId;
+    final String userId;
     final LocalDate date;
     final LocalTime startTime;
-    final LocalTime endTime;
-    final int partySize;
+    LocalTime endTime;
     ReservationStatus status;
-    final LocalDateTime createdAt;
     LocalDateTime checkedInAt;
+    int extensionCount;
     final int sourceLine;
 
     Reservation(String reservationId,
-                String userId,
                 String roomId,
+                String userId,
                 LocalDate date,
                 LocalTime startTime,
                 LocalTime endTime,
-                int partySize,
                 ReservationStatus status,
-                LocalDateTime createdAt,
                 LocalDateTime checkedInAt,
+                int extensionCount,
                 int sourceLine) {
         this.reservationId = reservationId;
-        this.userId = userId;
         this.roomId = roomId;
+        this.userId = userId;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.partySize = partySize;
         this.status = status;
-        this.createdAt = createdAt;
         this.checkedInAt = checkedInAt;
+        this.extensionCount = extensionCount;
         this.sourceLine = sourceLine;
     }
 
@@ -169,17 +191,7 @@ final class Reservation {
     }
 
     Reservation copy() {
-        return new Reservation(
-                reservationId,
-                userId,
-                roomId,
-                date,
-                startTime,
-                endTime,
-                partySize,
-                status,
-                createdAt,
-                checkedInAt,
+        return new Reservation(reservationId, roomId, userId, date, startTime, endTime, status, checkedInAt, extensionCount,
                 sourceLine);
     }
 
@@ -187,15 +199,14 @@ final class Reservation {
         return String.join("|",
                 "RESV",
                 reservationId,
-                userId,
                 roomId,
+                userId,
                 TimeFormats.formatDate(date),
                 TimeFormats.formatTime(startTime),
                 TimeFormats.formatTime(endTime),
-                Integer.toString(partySize),
                 status.name(),
-                TimeFormats.formatDateTime(createdAt),
-                checkedInAtText());
+                checkedInAtText(),
+                String.valueOf(extensionCount));
     }
 }
 
@@ -224,6 +235,7 @@ final class SystemData {
             try {
                 max = Math.max(max, Integer.parseInt(id.substring(2)));
             } catch (NumberFormatException ignored) {
+                // already validated by parser, keep defensively
             }
         }
         return String.format("rv%04d", max + 1);
