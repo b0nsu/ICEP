@@ -1,0 +1,155 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0" version="29.6.6">
+  <diagram name="시간관리_흐름도" id="time-logic-refined">
+    <mxGraphModel dx="1197" dy="769" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="start" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" value="시작" vertex="1">
+          <mxGeometry height="40" width="80" x="354" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="e_start_merge" edge="1" parent="1" source="start" style="edgeStyle=orthogonalEdgeStyle;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="auto_refresh">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="394" y="90" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="auto_refresh" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="예약 상태 자동 갱신&#xa;(전체 리스트 스캔)" vertex="1">
+          <mxGeometry height="50" width="140" x="324" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="is_noshow" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="RESERVED &amp;amp;&lt;br&gt;현재 가상 시각&amp;nbsp;&amp;gt; 시작+10분?" vertex="1">
+          <mxGeometry height="80" width="160" x="170" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="e_refresh_noshow" edge="1" parent="1" source="auto_refresh" style="edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;entryX=0.5;entryY=0;" target="is_noshow">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="250" y="155" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="is_completed" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="CHECKED_IN &amp;amp;&lt;br&gt;현재 가상 시각&amp;nbsp;&amp;gt;= 종료시각?" vertex="1">
+          <mxGeometry height="80" width="160" x="460" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="e_refresh_completed" edge="1" parent="1" source="auto_refresh" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=0.5;entryY=0;" target="is_completed">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="540" y="155" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="set_noshow" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="NO_SHOW 상태 변경&#xa;및 파일 저장" vertex="1">
+          <mxGeometry height="50" width="130" x="175" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="e_noshow_yes" edge="1" parent="1" source="is_noshow" style="edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="set_noshow">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_noshow_yes" parent="1" style="text;html=1;align=left;verticalAlign=middle;" value="YES" vertex="1">
+          <mxGeometry height="20" width="35" x="256" y="306" as="geometry" />
+        </mxCell>
+        <mxCell id="set_completed" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="COMPLETED 상태 변경&#xa;및 파일 저장" vertex="1">
+          <mxGeometry height="50" width="130" x="485" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="e_completed_yes" edge="1" parent="1" source="is_completed" style="edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="set_completed">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_completed_yes" parent="1" style="text;html=1;align=left;verticalAlign=middle;" value="YES" vertex="1">
+          <mxGeometry height="20" width="35" x="560" y="306" as="geometry" />
+        </mxCell>
+        <mxCell id="merge_mid" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" value="" vertex="1">
+          <mxGeometry height="10" width="10" x="389" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="e_noshow_merge" edge="1" parent="1" source="set_noshow" style="edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=1;entryX=0;entryY=0.5;" target="merge_mid">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="240" y="395" />
+              <mxPoint x="389" y="395" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_completed_merge" edge="1" parent="1" source="set_completed" style="edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=1;entryX=1;entryY=0.5;" target="merge_mid">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="550" y="395" />
+              <mxPoint x="399" y="395" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_noshow_no" edge="1" parent="1" source="is_noshow" style="edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" target="merge_mid">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="140" y="250" />
+              <mxPoint x="140" y="415" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l_noshow_no" parent="1" style="text;html=1;align=left;verticalAlign=middle;" value="NO" vertex="1">
+          <mxGeometry height="20" width="30" x="115" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="e_completed_no" edge="1" parent="1" source="is_completed" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" target="merge_mid">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="650" y="250" />
+              <mxPoint x="650" y="415" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l_completed_no" parent="1" style="text;html=1;align=right;verticalAlign=middle;" value="NO" vertex="1">
+          <mxGeometry height="20" width="30" x="660" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="admin_input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="[관리자] 새 가상 시각 입력&#xa;(yyyy-MM-dd HH:mm)" vertex="1">
+          <mxGeometry height="50" width="140" x="324" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="e_mid_input" edge="1" parent="1" source="merge_mid" style="edgeStyle=orthogonalEdgeStyle;" target="admin_input">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="is_future" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="입력 시각 &gt;=&#xa;현재 가상 시각?" vertex="1">
+          <mxGeometry height="80" width="140" x="324" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="e_input_judge" edge="1" parent="1" source="admin_input" style="edgeStyle=orthogonalEdgeStyle;" target="is_future">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="error_msg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="오류 메시지 출력&#xa;(과거 시각 변경 불가)" vertex="1">
+          <mxGeometry height="50" width="140" x="510" y="545" as="geometry" />
+        </mxCell>
+        <mxCell id="e_judge_error" edge="1" parent="1" source="is_future" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="error_msg">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_judge_no" parent="1" style="text;html=1;align=center;verticalAlign=middle;" value="NO(과거)" vertex="1">
+          <mxGeometry height="20" width="50" x="450" y="545" as="geometry" />
+        </mxCell>
+        <mxCell id="e_error_back" edge="1" parent="1" source="error_msg" style="edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=0;entryX=1;entryY=0.5;" target="admin_input">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="580" y="475" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="save_time" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="system_time.txt 업데이트&#xa;및 결과 요약 출력" vertex="1">
+          <mxGeometry height="50" width="140" x="324" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="e_judge_save" edge="1" parent="1" source="is_future" style="edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="save_time">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l_judge_yes" parent="1" style="text;html=1;align=left;verticalAlign=middle;" value="YES" vertex="1">
+          <mxGeometry height="20" width="35" x="395" y="617" as="geometry" />
+        </mxCell>
+        <mxCell id="e_loopback" edge="1" parent="1" source="save_time" style="edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;entryX=0;entryY=0.5;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="675" />
+              <mxPoint x="50" y="95" />
+            </Array>
+            <mxPoint x="389" y="95" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="end" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" value="종료" vertex="1">
+          <mxGeometry height="40" width="80" x="354" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="e_save_end" edge="1" parent="1" source="save_time" style="edgeStyle=orthogonalEdgeStyle;" target="end">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ank0_71Jg8yAvxqfQzzn-3" parent="1" style="text;whiteSpace=wrap;html=1;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;변경 시각 기준 재판정&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="150" x="55" y="530" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
