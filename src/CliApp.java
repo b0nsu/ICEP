@@ -15,10 +15,9 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 final class CliApp {
-    private static final Pattern USER_ID_PATTERN = Pattern.compile("^[a-z][a-z0-9]{3,11}$");
-    private static final Pattern USER_NAME_PATTERN = Pattern.compile("^[A-Za-z가-힣 ]{2,20}$");
+    private static final Pattern USER_ID_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
     private static final Pattern ROOM_ID_PATTERN = Pattern.compile("^R[0-9]{3}$");
-    private static final Pattern RESERVATION_ID_PATTERN = Pattern.compile("^rv[0-9]{4,}$");
+    private static final Pattern RESERVATION_ID_PATTERN = Pattern.compile("^rv[0-9]{4}$");
 
     private final Scanner scanner = new Scanner(System.in);
     private final TextDataStore store = new TextDataStore(resolveProjectRoot());
@@ -94,25 +93,23 @@ final class CliApp {
         System.out.println();
         System.out.println("[member 메뉴]");
         System.out.println("1. 현재 가상 시각 조회");
-        System.out.println("2. 예약 가능 스터디룸 조회");
-        System.out.println("3. 예약 신청");
-        System.out.println("4. 예약 취소");
-        System.out.println("5. 나의 예약 조회");
-        System.out.println("6. 체크인");
-        System.out.println("7. 사용 연장");
-        System.out.println("8. 내 패널티 조회");
+        System.out.println("2. 현재 가상 시각 변경");
+        System.out.println("3. 예약 가능 스터디룸 조회");
+        System.out.println("4. 예약 신청");
+        System.out.println("5. 예약 취소");
+        System.out.println("6. 나의 예약 조회");
+        System.out.println("7. 체크인");
         System.out.println("0. 로그아웃");
 
-        int menu = promptMenuChoice(Set.of(0, 1, 2, 3, 4, 5, 6, 7, 8));
+        int menu = promptMenuChoice(Set.of(0, 1, 2, 3, 4, 5, 6, 7));
         switch (menu) {
             case 1 -> handleViewCurrentTime();
-            case 2 -> handleSearchAvailableRooms();
-            case 3 -> handleCreateReservation();
-            case 4 -> handleCancelReservation();
-            case 5 -> handleMyReservations();
-            case 6 -> handleCheckIn();
-            case 7 -> handleExtendReservation();
-            case 8 -> handleViewMyPenalty();
+            case 2 -> handleChangeCurrentTime();
+            case 3 -> handleSearchAvailableRooms();
+            case 4 -> handleCreateReservation();
+            case 5 -> handleCancelReservation();
+            case 6 -> handleMyReservations();
+            case 7 -> handleCheckIn();
             case 0 -> handleLogout();
             default -> throw new IllegalStateException();
         }
@@ -123,20 +120,18 @@ final class CliApp {
         System.out.println("[admin 메뉴]");
         System.out.println("1. 현재 가상 시각 조회");
         System.out.println("2. 현재 가상 시각 변경");
-        System.out.println("3. 전체 예약 조회");
-        System.out.println("4. 사용자 패널티 조회");
-        System.out.println("5. 사용자 패널티 초기화");
-        System.out.println("6. 룸 운영 상태 변경");
+        System.out.println("3. 전체 예약 정보 조회");
+        System.out.println("4. 예약 조정(방 이동)");
+        System.out.println("5. 룸 컨디션 관리");
         System.out.println("0. 로그아웃");
 
-        int menu = promptMenuChoice(Set.of(0, 1, 2, 3, 4, 5, 6));
+        int menu = promptMenuChoice(Set.of(1, 2, 3, 4, 5, 0));
         switch (menu) {
             case 1 -> handleViewCurrentTime();
             case 2 -> handleChangeCurrentTime();
             case 3 -> handleAllReservations();
-            case 4 -> handlePenaltyList();
-            case 5 -> handlePenaltyReset();
-            case 6 -> handleRoomStatusMenu();
+            case 4 -> handleAdjustReservationRoom();
+            case 5 -> handleRoomConditionMenu();
             case 0 -> handleLogout();
             default -> throw new IllegalStateException();
         }
@@ -146,9 +141,9 @@ final class CliApp {
         SystemData data = store.loadAll();
         String userId = promptNewUserId(data);
         String password = promptPassword();
-        String displayName = promptDisplayName();
+        String userName = promptDisplayName();
 
-        data.users.put(userId, new User(userId, password, displayName, Role.MEMBER, 0, UserStatus.ACTIVE, 0));
+        data.users.put(userId, new User(userId, password, userName, Role.MEMBER, 0));
         store.saveAll(data);
         System.out.println("회원가입이 완료되었습니다.");
     }
@@ -157,7 +152,6 @@ final class CliApp {
         SystemData loaded = store.loadAll();
         String userId = promptLine("사용자 ID: ").trim();
         String password = promptLine("비밀번호: ").trim();
-
         User user = loaded.users.get(userId);
         if (user == null) {
             System.out.println("오류: 존재하지 않는 사용자 ID입니다.");
@@ -167,14 +161,17 @@ final class CliApp {
             System.out.println("오류: 비밀번호가 일치하지 않습니다.");
             return;
         }
-        if (user.status != UserStatus.ACTIVE) {
-            System.out.println("오류: 비활성 사용자입니다.");
+
+        SystemData synced = loadAndSync();
+        User syncedUser = synced.users.get(userId);
+        if (syncedUser == null) {
+            System.out.println("오류: 로그인할 수 없는 계정입니다.");
             return;
         }
 
-        loggedInUserId = user.userId;
-        loggedInRole = user.role;
-        System.out.println("로그인 성공: " + user.displayName + " (" + user.role.fileValue() + ")");
+        loggedInUserId = syncedUser.userId;
+        loggedInRole = syncedUser.role;
+        System.out.println("로그인 성공: " + syncedUser.userName + " (" + syncedUser.role.fileValue() + ")");
     }
 
     private void handleLogout() {
@@ -191,11 +188,10 @@ final class CliApp {
     private void handleSearchAvailableRooms() throws AppDataException {
         requireRole(Role.MEMBER);
         SystemData data = loadAndSync();
-
         LocalDate date = promptDate("날짜 입력(yyyy-MM-dd): ");
         LocalTime start = promptTime("시작 시각 입력(HH:mm): ");
         LocalTime end = promptTime("종료 시각 입력(HH:mm): ");
-        int people = promptPositiveInt("이용 인원 입력: ");
+        int partySize = promptPositiveInt("인원 수 입력: ");
 
         String error = validateReservationWindow(date, start, end);
         if (error != null) {
@@ -212,10 +208,7 @@ final class CliApp {
             if (room.roomStatus != RoomStatus.OPEN) {
                 continue;
             }
-            if (room.capacity < people) {
-                continue;
-            }
-            if (!isWithinRoomOperation(room, startAt, endAt)) {
+            if (room.maxCapacity < partySize) {
                 continue;
             }
             if (hasRoomOverlap(data, room.roomId, startAt, endAt, null)) {
@@ -224,7 +217,6 @@ final class CliApp {
             printRoomRow(room);
             count++;
         }
-
         if (count == 0) {
             System.out.println("조회 결과가 없습니다.");
         }
@@ -234,24 +226,10 @@ final class CliApp {
         requireRole(Role.MEMBER);
         SystemData data = loadAndSync();
 
-        User me = data.users.get(loggedInUserId);
-        if (me == null) {
-            System.out.println("오류: 회원 정보를 확인할 수 없습니다.");
-            return;
-        }
-        if (me.penalty >= 2) {
-            System.out.println("오류: 패널티 2점 이상은 예약이 제한됩니다.");
-            return;
-        }
-        if (futureReservedCount(data, loggedInUserId) >= 2) {
-            System.out.println("오류: 미래 예약은 최대 2건까지만 가능합니다.");
-            return;
-        }
-
         LocalDate date = promptDate("날짜 입력(yyyy-MM-dd): ");
         LocalTime start = promptTime("시작 시각 입력(HH:mm): ");
         LocalTime end = promptTime("종료 시각 입력(HH:mm): ");
-        int people = promptPositiveInt("이용 인원 입력: ");
+        int partySize = promptPositiveInt("인원 수 입력: ");
         String roomId = promptRoomId("룸 ID 입력: ");
 
         String windowError = validateReservationWindow(date, start, end);
@@ -269,7 +247,7 @@ final class CliApp {
             System.out.println("오류: 해당 룸은 현재 운영 중이 아닙니다.");
             return;
         }
-        if (room.capacity < people) {
+        if (partySize > room.maxCapacity) {
             System.out.println("오류: 수용 인원을 초과했습니다.");
             return;
         }
@@ -280,30 +258,27 @@ final class CliApp {
             System.out.println("오류: 예약 시작 시각은 현재 가상 시각보다 미래여야 합니다.");
             return;
         }
-        if (!isWithinRoomOperation(room, startAt, endAt)) {
-            System.out.println("오류: 예약 구간이 룸 운영 시간을 벗어납니다.");
-            return;
-        }
         if (hasRoomOverlap(data, roomId, startAt, endAt, null)) {
             System.out.println("오류: 해당 시간대에 이미 예약된 룸입니다.");
             return;
         }
         if (hasUserOverlap(data, loggedInUserId, startAt, endAt, null)) {
-            System.out.println("오류: 같은 시간대에 이미 본인 예약이 있습니다.");
+            System.out.println("오류: 같은 시간대에 이미 다른 예약이 있습니다.");
             return;
         }
 
         String reservationId = data.nextReservationId();
         Reservation reservation = new Reservation(
                 reservationId,
-                roomId,
                 loggedInUserId,
+                roomId,
                 date,
                 start,
                 end,
+                partySize,
                 ReservationStatus.RESERVED,
+                data.currentTime,
                 null,
-                0,
                 0);
         data.reservations.put(reservationId, reservation);
         store.saveAll(data);
@@ -313,8 +288,8 @@ final class CliApp {
     private void handleCancelReservation() throws AppDataException {
         requireRole(Role.MEMBER);
         SystemData data = loadAndSync();
-
         String reservationId = promptReservationId("취소할 예약번호 입력: ");
+
         Reservation reservation = data.reservations.get(reservationId);
         if (reservation == null) {
             System.out.println("오류: 존재하지 않는 예약번호입니다.");
@@ -329,56 +304,42 @@ final class CliApp {
             return;
         }
         if (!reservation.startDateTime().isAfter(data.currentTime)) {
-            System.out.println("오류: 예약 시작 전이 아닌 건은 취소할 수 없습니다.");
+            System.out.println("오류: 이미 진행 중이거나 종료된 예약은 취소할 수 없습니다.");
             return;
         }
 
-        boolean delayed = data.currentTime.isAfter(reservation.startDateTime().minusMinutes(30));
-        reservation.status = ReservationStatus.CANCELLED;
-        reservation.checkedInAt = null;
-
-        if (delayed) {
-            User current = data.users.get(loggedInUserId);
-            if (current != null) {
-                data.users.put(current.userId, current.withPenalty(current.penalty + 1));
-            }
-        }
-
+        data.reservations.remove(reservationId);
         store.saveAll(data);
         System.out.println("예약이 취소되었습니다.");
-        if (delayed) {
-            System.out.println("지연 취소로 패널티가 1점 부과되었습니다.");
-        }
     }
 
     private void handleMyReservations() throws AppDataException {
         requireRole(Role.MEMBER);
         SystemData data = loadAndSync();
-
         List<Reservation> mine = new ArrayList<>();
         for (Reservation reservation : data.sortedReservations()) {
             if (reservation.userId.equals(loggedInUserId)) {
                 mine.add(reservation);
             }
         }
-
         if (mine.isEmpty()) {
             System.out.println("나의 예약이 없습니다.");
             return;
         }
 
-        System.out.printf("%-8s %-6s %-10s %-5s %-5s %-12s %-16s %s%n",
-                "resvId", "room", "date", "start", "end", "status", "checkedInAt", "ext");
+        printMyReservationHeader();
         for (Reservation reservation : mine) {
-            System.out.printf("%-8s %-6s %-10s %-5s %-5s %-12s %-16s %d%n",
+            Room room = data.rooms.get(reservation.roomId);
+            String roomName = room == null ? "-" : room.roomName;
+            System.out.printf("%-8s %-6s %-10s %-10s %-5s %-5s %-4d %-12s%n",
                     reservation.reservationId,
                     reservation.roomId,
+                    cut(roomName, 10),
                     TimeFormats.formatDate(reservation.date),
                     TimeFormats.formatTime(reservation.startTime),
                     TimeFormats.formatTime(reservation.endTime),
-                    reservation.status.name(),
-                    reservation.checkedInAtText(),
-                    reservation.extensionCount);
+                    reservation.partySize,
+                    reservation.status.name());
         }
     }
 
@@ -409,8 +370,7 @@ final class CliApp {
 
         LocalDateTime now = data.currentTime;
         LocalDateTime open = reservation.startDateTime().minusMinutes(10);
-        LocalDateTime close = reservation.startDateTime().plusMinutes(15);
-
+        LocalDateTime close = reservation.startDateTime().plusMinutes(10);
         if (now.isBefore(open)) {
             System.out.println("오류: 아직 체크인 가능한 시간이 아닙니다.");
             return;
@@ -426,67 +386,14 @@ final class CliApp {
         System.out.println("체크인이 완료되었습니다.");
     }
 
-    private void handleExtendReservation() throws AppDataException {
-        requireRole(Role.MEMBER);
-        SystemData data = loadAndSync();
-        String reservationId = promptReservationId("연장할 예약번호 입력: ");
-
-        Reservation reservation = data.reservations.get(reservationId);
-        if (reservation == null) {
-            System.out.println("오류: 존재하지 않는 예약번호입니다.");
-            return;
-        }
-        if (!reservation.userId.equals(loggedInUserId)) {
-            System.out.println("오류: 본인 예약만 연장할 수 있습니다.");
-            return;
-        }
-        if (reservation.status != ReservationStatus.CHECKED_IN) {
-            System.out.println("오류: CHECKED_IN 상태에서만 연장할 수 있습니다.");
-            return;
-        }
-        if (reservation.extensionCount >= 1) {
-            System.out.println("오류: 연장은 1회만 가능합니다.");
-            return;
-        }
-
-        Room room = data.rooms.get(reservation.roomId);
-        if (room == null || room.roomStatus != RoomStatus.OPEN) {
-            System.out.println("오류: 운영 중이 아닌 룸은 연장할 수 없습니다.");
-            return;
-        }
-
-        LocalDateTime candidateEnd = reservation.endDateTime().plusMinutes(30);
-        long finalMinutes = Duration.between(reservation.startDateTime(), candidateEnd).toMinutes();
-        long baseMinutes = finalMinutes - 30;
-        if (!(baseMinutes >= 60 && baseMinutes <= 240)) {
-            System.out.println("오류: 연장 불가(기존 길이가 규칙을 벗어납니다).");
-            return;
-        }
-        if (!(finalMinutes >= 90 && finalMinutes <= 270)) {
-            System.out.println("오류: 연장 후 사용 길이는 90분~270분이어야 합니다.");
-            return;
-        }
-        if (!isWithinRoomOperation(room, reservation.startDateTime(), candidateEnd)) {
-            System.out.println("오류: 연장 후 예약이 룸 운영 시간을 벗어납니다.");
-            return;
-        }
-        if (hasRoomOverlap(data, room.roomId, reservation.startDateTime(), candidateEnd, reservation.reservationId)) {
-            System.out.println("오류: 연장 후 시간대에 다른 예약이 존재합니다.");
-            return;
-        }
-
-        reservation.endTime = candidateEnd.toLocalTime();
-        reservation.extensionCount = 1;
-        store.saveAll(data);
-        System.out.println("예약이 연장되었습니다. 연장 횟수 제한이 완료되었습니다.");
-    }
-
     private void handleChangeCurrentTime() throws AppDataException {
-        requireRole(Role.ADMIN);
+        requireLoggedIn();
         SystemData data = loadAndSync();
-
-        LocalDateTime next = promptDateTime("새 현재 시각 입력(yyyy-MM-ddTHH:mm): ");
-        if (next.isBefore(data.currentTime)) {
+        LocalDateTime before = data.currentTime;
+        LocalDateTime next = promptDateTime("새 현재 시각 입력(yyyy-MM-dd HH:mm): ");
+        System.out.println("기존 시각: " + TimeFormats.formatDateTime(before));
+        System.out.println("새 시각: " + TimeFormats.formatDateTime(next));
+        if (next.isBefore(before)) {
             System.out.println("오류: 현재 시각은 과거로 되돌릴 수 없습니다.");
             return;
         }
@@ -501,121 +408,298 @@ final class CliApp {
     private void handleAllReservations() throws AppDataException {
         requireRole(Role.ADMIN);
         SystemData data = loadAndSync();
-
         if (data.reservations.isEmpty()) {
             System.out.println("예약 데이터가 없습니다.");
             return;
         }
 
-        System.out.printf("%-8s %-10s %-6s %-10s %-5s %-5s %-12s %-16s %s%n",
-                "resvId", "userId", "room", "date", "start", "end", "status", "checkedInAt", "ext");
+        System.out.printf("%-8s %-10s %-6s %-10s %-5s %-5s %-4s %-12s %-16s%n",
+                "reservation", "userId", "room", "date", "start", "end", "인원", "status", "checkedInAt");
         for (Reservation reservation : data.sortedReservations()) {
-            System.out.printf("%-8s %-10s %-6s %-10s %-5s %-5s %-12s %-16s %d%n",
+            System.out.printf("%-8s %-10s %-6s %-10s %-5s %-5s %-4d %-12s %-16s%n",
                     reservation.reservationId,
                     reservation.userId,
                     reservation.roomId,
                     TimeFormats.formatDate(reservation.date),
                     TimeFormats.formatTime(reservation.startTime),
                     TimeFormats.formatTime(reservation.endTime),
+                    reservation.partySize,
                     reservation.status.name(),
-                    reservation.checkedInAtText(),
-                    reservation.extensionCount);
+                    reservation.checkedInAtText());
         }
     }
 
-    private void handlePenaltyList() throws AppDataException {
+    private void handleAdjustReservationRoom() throws AppDataException {
         requireRole(Role.ADMIN);
         SystemData data = loadAndSync();
 
-        System.out.printf("%-10s %-16s %s%n", "userId", "이름", "penalty");
-        for (User user : data.users.values()) {
-            if (user.role == Role.MEMBER) {
-                System.out.printf("%-10s %-16s %d%n", user.userId, user.displayName, user.penalty);
+        String reservationId = promptReservationId("조정할 예약번호 입력: ");
+        String targetRoomId = promptRoomId("대상 룸 ID 입력: ");
+
+        Reservation reservation = data.reservations.get(reservationId);
+        if (reservation == null) {
+            System.out.println("오류: 존재하지 않는 예약번호입니다.");
+            return;
+        }
+        if (reservation.status != ReservationStatus.RESERVED || !reservation.startDateTime().isAfter(data.currentTime)) {
+            System.out.println("오류: 조정 가능한 미래 RESERVED 예약만 이동할 수 있습니다.");
+            return;
+        }
+
+        String moveError = validateRoomMove(data, reservation, targetRoomId);
+        if (moveError != null) {
+            System.out.println("오류: " + moveError);
+            return;
+        }
+
+        reservation.roomId = targetRoomId;
+        store.saveAll(data);
+        System.out.println("예약 조정이 완료되었습니다.");
+    }
+
+    private void handleRoomConditionMenu() throws AppDataException {
+        requireRole(Role.ADMIN);
+        while (true) {
+            System.out.println();
+            System.out.println("[룸 컨디션 관리]");
+            System.out.println("1. 전체 룸 조회");
+            System.out.println("2. 룸 최대 수용 인원 변경");
+            System.out.println("3. 룸 임시 휴업");
+            System.out.println("4. 룸 운영 재개");
+            System.out.println("0. 상위 메뉴로");
+            int menu = promptMenuChoice(Set.of(1, 2, 3, 4, 0));
+            if (menu == 0) {
+                return;
+            }
+            if (menu == 1) {
+                handleRoomList();
+            } else if (menu == 2) {
+                handleChangeRoomCapacity();
+            } else if (menu == 3) {
+                handleCloseRoom();
+            } else {
+                handleOpenRoom();
             }
         }
     }
 
-    private void handlePenaltyReset() throws AppDataException {
-        requireRole(Role.ADMIN);
-        SystemData data = loadAndSync();
-        String userId = promptLine("패널티를 초기화할 회원 ID: ").trim();
-
-        User user = data.users.get(userId);
-        if (user == null || user.role != Role.MEMBER) {
-            System.out.println("오류: 존재하지 않는 member ID입니다.");
-            return;
-        }
-        if (user.penalty == 0) {
-            System.out.println("해당 회원의 패널티는 이미 0점입니다.");
-            return;
-        }
-
-        data.users.put(userId, user.withPenalty(0));
-        store.saveAll(data);
-        System.out.println("패널티가 초기화되었습니다.");
-    }
-
-    private void handleRoomStatusMenu() throws AppDataException {
-        requireRole(Role.ADMIN);
-        SystemData data = loadAndSync();
-
+    private void handleRoomList() throws AppDataException {
+        SystemData data = store.loadAll();
         printRoomHeader();
         for (Room room : data.sortedRooms()) {
             printRoomRow(room);
         }
+    }
 
-        String roomId = promptRoomId("상태를 변경할 룸 ID: ");
+    private void handleChangeRoomCapacity() throws AppDataException {
+        SystemData data = loadAndSync();
+        String roomId = promptRoomId("룸 ID 입력: ");
+        int newCapacity = promptPositiveInt("새 최대 수용 인원 입력: ");
+
         Room room = data.rooms.get(roomId);
         if (room == null) {
             System.out.println("오류: 존재하지 않는 룸 ID입니다.");
             return;
         }
 
-        System.out.println("새 상태를 입력하세요: 1) OPEN  2) CLOSED  3) MAINTENANCE");
-        int selected = promptMenuChoice(Set.of(1, 2, 3));
-        RoomStatus target = selected == 1 ? RoomStatus.OPEN : (selected == 2 ? RoomStatus.CLOSED : RoomStatus.MAINTENANCE);
-
-        if (target != RoomStatus.OPEN) {
-            for (Reservation reservation : data.reservations.values()) {
-                if (reservation.roomId.equals(roomId)
-                        && reservation.activeForOverlap()
-                        && reservation.endDateTime().isAfter(data.currentTime)) {
-                    System.out.println("오류: 해당 룸에 진행 예정인 예약이 있어 상태를 변경할 수 없습니다.");
-                    return;
-                }
+        List<Reservation> impacted = findFutureReservedWithTooManyPeople(data, roomId, newCapacity);
+        int original = room.maxCapacity;
+        if (!impacted.isEmpty()) {
+            System.out.println("영향 예약이 있어 처리 흐름을 시작합니다.");
+            boolean success = processImpactedReservations(data, impacted);
+            if (!success) {
+                room.maxCapacity = original;
+                System.out.println("룸 컨디션 변경을 취소하여 원상복구했습니다.");
+                return;
             }
         }
+        if (hasActiveReservationOverCapacity(data, roomId, newCapacity)) {
+            System.out.println("오류: 활성 예약 인원이 새 수용 인원을 초과하여 변경할 수 없습니다.");
+            return;
+        }
 
-        room.roomStatus = target;
+        room.maxCapacity = newCapacity;
         store.saveAll(data);
-        System.out.println("룸 상태가 변경되었습니다.");
+        System.out.println("룸 최대 수용 인원이 변경되었습니다.");
     }
 
-    private int futureReservedCount(SystemData data, String userId) {
-        int count = 0;
+    private void handleCloseRoom() throws AppDataException {
+        SystemData data = loadAndSync();
+        String roomId = promptRoomId("휴업할 룸 ID 입력: ");
+        Room room = data.rooms.get(roomId);
+        if (room == null) {
+            System.out.println("오류: 존재하지 않는 룸 ID입니다.");
+            return;
+        }
+
         for (Reservation reservation : data.reservations.values()) {
-            if (!reservation.userId.equals(userId)) {
-                continue;
-            }
-            if (reservation.status != ReservationStatus.RESERVED) {
-                continue;
-            }
-            if (reservation.startDateTime().isAfter(data.currentTime)) {
-                count++;
+            if (reservation.roomId.equals(roomId) && reservation.status == ReservationStatus.CHECKED_IN) {
+                System.out.println("오류: 현재 체크인 중인 예약이 있어 즉시 휴업할 수 없습니다.");
+                return;
             }
         }
-        return count;
+
+        List<Reservation> impacted = findFutureReservedInRoom(data, roomId);
+        RoomStatus originalStatus = room.roomStatus;
+        if (!impacted.isEmpty()) {
+            System.out.println("영향 예약이 있어 처리 흐름을 시작합니다.");
+            boolean success = processImpactedReservations(data, impacted);
+            if (!success) {
+                room.roomStatus = originalStatus;
+                System.out.println("룸 컨디션 변경을 취소하여 원상복구했습니다.");
+                return;
+            }
+        }
+        if (hasFutureReservedInRoom(data, roomId)) {
+            System.out.println("오류: 영향 예약이 모두 처리되지 않아 휴업할 수 없습니다.");
+            return;
+        }
+
+        room.roomStatus = RoomStatus.CLOSED;
+        store.saveAll(data);
+        System.out.println("룸이 임시 휴업 상태(CLOSED)로 변경되었습니다.");
     }
 
-    private boolean isWithinRoomOperation(Room room, LocalDateTime start, LocalDateTime end) {
-        return !start.toLocalTime().isBefore(room.openTime) && !end.toLocalTime().isAfter(room.closeTime);
+    private void handleOpenRoom() throws AppDataException {
+        SystemData data = loadAndSync();
+        String roomId = promptRoomId("운영 재개할 룸 ID 입력: ");
+        Room room = data.rooms.get(roomId);
+        if (room == null) {
+            System.out.println("오류: 존재하지 않는 룸 ID입니다.");
+            return;
+        }
+        room.roomStatus = RoomStatus.OPEN;
+        store.saveAll(data);
+        System.out.println("룸 운영이 재개되었습니다.");
+    }
+
+    private boolean processImpactedReservations(SystemData data, List<Reservation> impacted) {
+        Map<String, Reservation> originals = new LinkedHashMap<>();
+        for (Reservation reservation : impacted) {
+            originals.put(reservation.reservationId, reservation.copy());
+        }
+
+        for (Reservation reservation : impacted) {
+            while (true) {
+                Reservation current = data.reservations.getOrDefault(reservation.reservationId, reservation);
+                System.out.printf("영향 예약: %s | user=%s | room=%s | %s %s-%s | 인원=%d%n",
+                        current.reservationId,
+                        current.userId,
+                        current.roomId,
+                        TimeFormats.formatDate(current.date),
+                        TimeFormats.formatTime(current.startTime),
+                        TimeFormats.formatTime(current.endTime),
+                        current.partySize);
+                System.out.println("1) 다른 룸으로 이동");
+                System.out.println("2) 해당 예약 취소");
+                System.out.println("0) 이번 룸 컨디션 변경 전체 취소");
+
+                int choice = promptMenuChoice(Set.of(1, 2, 0));
+                if (choice == 0) {
+                    rollbackImpacted(data, originals);
+                    return false;
+                }
+                if (choice == 2) {
+                    data.reservations.remove(current.reservationId);
+                    break;
+                }
+
+                String targetRoomId = promptRoomId("이동할 대상 룸 ID 입력: ");
+                String moveError = validateRoomMove(data, current, targetRoomId);
+                if (moveError != null) {
+                    System.out.println("오류: " + moveError);
+                    continue;
+                }
+                current.roomId = targetRoomId;
+                data.reservations.put(current.reservationId, current);
+                break;
+            }
+        }
+        return true;
+    }
+
+    private void rollbackImpacted(SystemData data, Map<String, Reservation> originals) {
+        for (Map.Entry<String, Reservation> entry : originals.entrySet()) {
+            data.reservations.put(entry.getKey(), entry.getValue().copy());
+        }
+    }
+
+    private List<Reservation> findFutureReservedWithTooManyPeople(SystemData data, String roomId, int newCapacity) {
+        List<Reservation> impacted = new ArrayList<>();
+        for (Reservation reservation : data.sortedReservations()) {
+            if (reservation.roomId.equals(roomId)
+                    && reservation.status == ReservationStatus.RESERVED
+                    && reservation.startDateTime().isAfter(data.currentTime)
+                    && reservation.partySize > newCapacity) {
+                impacted.add(reservation);
+            }
+        }
+        return impacted;
+    }
+
+    private List<Reservation> findFutureReservedInRoom(SystemData data, String roomId) {
+        List<Reservation> impacted = new ArrayList<>();
+        for (Reservation reservation : data.sortedReservations()) {
+            if (reservation.roomId.equals(roomId)
+                    && reservation.status == ReservationStatus.RESERVED
+                    && reservation.startDateTime().isAfter(data.currentTime)) {
+                impacted.add(reservation);
+            }
+        }
+        return impacted;
+    }
+
+    private boolean hasFutureReservedInRoom(SystemData data, String roomId) {
+        for (Reservation reservation : data.reservations.values()) {
+            if (reservation.roomId.equals(roomId)
+                    && reservation.status == ReservationStatus.RESERVED
+                    && reservation.startDateTime().isAfter(data.currentTime)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean hasActiveReservationOverCapacity(SystemData data, String roomId, int newCapacity) {
+        for (Reservation reservation : data.reservations.values()) {
+            if (!reservation.roomId.equals(roomId)) {
+                continue;
+            }
+            if (!reservation.activeForOverlap()) {
+                continue;
+            }
+            if (reservation.partySize > newCapacity) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String validateRoomMove(SystemData data, Reservation reservation, String targetRoomId) {
+        Room target = data.rooms.get(targetRoomId);
+        if (target == null) {
+            return "존재하지 않는 룸 ID입니다.";
+        }
+        if (reservation.roomId.equals(targetRoomId)) {
+            return "현재 룸과 다른 룸으로만 이동할 수 있습니다.";
+        }
+        if (target.roomStatus != RoomStatus.OPEN) {
+            return "대상 룸이 휴업 상태입니다.";
+        }
+        if (target.maxCapacity < reservation.partySize) {
+            return "대상 룸의 수용 인원이 부족합니다.";
+        }
+        if (hasRoomOverlap(data, targetRoomId, reservation.startDateTime(), reservation.endDateTime(), reservation.reservationId)) {
+            return "대상 룸의 같은 시간대에 이미 예약이 있습니다.";
+        }
+        return null;
     }
 
     private boolean hasRoomOverlap(SystemData data,
-                                  String roomId,
-                                  LocalDateTime start,
-                                  LocalDateTime end,
-                                  String exceptReservationId) {
+                                   String roomId,
+                                   LocalDateTime start,
+                                   LocalDateTime end,
+                                   String exceptReservationId) {
         for (Reservation reservation : data.reservations.values()) {
             if (!reservation.roomId.equals(roomId)) {
                 continue;
@@ -634,10 +718,10 @@ final class CliApp {
     }
 
     private boolean hasUserOverlap(SystemData data,
-                                  String userId,
-                                  LocalDateTime start,
-                                  LocalDateTime end,
-                                  String exceptReservationId) {
+                                   String userId,
+                                   LocalDateTime start,
+                                   LocalDateTime end,
+                                   String exceptReservationId) {
         for (Reservation reservation : data.reservations.values()) {
             if (!reservation.userId.equals(userId)) {
                 continue;
@@ -656,19 +740,15 @@ final class CliApp {
     }
 
     private String validateReservationWindow(LocalDate date, LocalTime start, LocalTime end) {
-        if (start.getMinute() != 0 && start.getMinute() != 30) {
-            return "예약 시각은 30분 단위여야 합니다.";
-        }
-        if (end.getMinute() != 0 && end.getMinute() != 30) {
-            return "예약 시각은 30분 단위여야 합니다.";
+        if (start.getMinute() != 0 || end.getMinute() != 0) {
+            return "예약 시각은 1시간 단위여야 합니다.";
         }
         if (!start.isBefore(end)) {
             return "시작 시각은 종료 시각보다 빨라야 합니다.";
         }
-
         long minutes = Duration.between(LocalDateTime.of(date, start), LocalDateTime.of(date, end)).toMinutes();
-        if (minutes < 60 || minutes > 240 || minutes % 30 != 0) {
-            return "예약 길이는 60분~240분(30분 단위)이어야 합니다.";
+        if (minutes != 60 && minutes != 120 && minutes != 180 && minutes != 240) {
+            return "예약 길이는 1시간, 2시간, 3시간, 4시간 중 하나여야 합니다.";
         }
         return null;
     }
@@ -682,33 +762,36 @@ final class CliApp {
         for (TransitionCount count : summary.transitionCounts()) {
             System.out.printf("- %s -> %s : %d건%n", count.from().name(), count.to().name(), count.count());
         }
-        if (summary.totalPenaltyIncreased() > 0) {
-            System.out.printf("- 사용자 패널티 +%d건%n", summary.totalPenaltyIncreased());
-        }
     }
 
     private void printRoomHeader() {
-        System.out.printf("%-6s %-4s %-10s %-8s %-8s %-20s%n", "room", "cap", "open", "close", "status", "equipment");
+        System.out.printf("%-6s %-12s %-4s %-8s%n", "roomId", "roomName", "정원", "status");
     }
 
     private void printRoomRow(Room room) {
-        System.out.printf("%-6s %-4d %-10s %-8s %-8s %-20s%n",
+        System.out.printf("%-6s %-12s %-4d %-8s%n",
                 room.roomId,
-                room.capacity,
-                TimeFormats.formatTime(room.openTime),
-                TimeFormats.formatTime(room.closeTime),
-                room.roomStatus.name(),
-                room.equipment);
+                cut(room.roomName, 12),
+                room.maxCapacity,
+                room.roomStatus.name());
     }
 
-    private void handleViewMyPenalty() throws AppDataException {
-        SystemData data = loadAndSync();
-        User me = data.users.get(loggedInUserId);
-        if (me == null) {
-            System.out.println("오류: 회원 정보를 찾을 수 없습니다.");
-            return;
+    private void printMyReservationHeader() {
+        System.out.printf("%-8s %-6s %-10s %-10s %-5s %-5s %-4s %-12s%n",
+                "resvId", "room", "roomName", "date", "start", "end", "인원", "status");
+    }
+
+    private String cut(String value, int width) {
+        if (value == null) {
+            return "";
         }
-        System.out.println("현재 패널티: " + me.penalty);
+        if (value.length() <= width) {
+            return value;
+        }
+        if (width < 2) {
+            return value.substring(0, width);
+        }
+        return value.substring(0, width - 1) + "~";
     }
 
     private SystemData loadAndSync() throws AppDataException {
@@ -723,6 +806,12 @@ final class CliApp {
 
     private void requireRole(Role role) {
         if (loggedInRole != role) {
+            throw new FatalAppException();
+        }
+    }
+
+    private void requireLoggedIn() {
+        if (loggedInRole == null || loggedInUserId == null) {
             throw new FatalAppException();
         }
     }
@@ -753,7 +842,7 @@ final class CliApp {
         while (true) {
             String userId = promptLine("사용자 ID 입력: ").trim();
             if (!USER_ID_PATTERN.matcher(userId).matches()) {
-                System.out.println("오류: 사용자 ID는 영문 소문자로 시작하고 영문 소문자/숫자로 4~12자로 입력해야 합니다.");
+                System.out.println("오류: 사용자 ID는 영문자로 시작하고 영문자/숫자/_ 만 사용하여 4~20자로 입력해야 합니다.");
                 continue;
             }
             if (data.users.containsKey(userId)) {
@@ -767,8 +856,12 @@ final class CliApp {
     private String promptPassword() {
         while (true) {
             String password = promptLine("비밀번호 입력: ").trim();
-            if (!Pattern.compile("^[A-Za-z0-9!@#$%^&*._-]{6,16}$").matcher(password).matches()) {
-                System.out.println("오류: 비밀번호는 6~16자 영문/숫자/특수문자(!@#$%^&*._-)로 입력해야 합니다.");
+            if (password.length() < 4 || password.length() > 20) {
+                System.out.println("오류: 비밀번호는 4~20자로 입력해야 합니다.");
+                continue;
+            }
+            if (hasForbiddenChars(password)) {
+                System.out.println("오류: 비밀번호에 사용할 수 없는 문자가 포함되어 있습니다.");
                 continue;
             }
             return password;
@@ -777,16 +870,16 @@ final class CliApp {
 
     private String promptDisplayName() {
         while (true) {
-            String name = promptLine("이름 입력: ").trim();
-            if (!USER_NAME_PATTERN.matcher(name).matches()) {
-                System.out.println("오류: 이름은 영문/한글과 공백으로 2~20자만 입력 가능합니다.");
+            String displayName = promptLine("이름 입력: ").trim();
+            if (displayName.length() < 1 || displayName.length() > 20) {
+                System.out.println("오류: 이름은 1~20자로 입력해야 합니다.");
                 continue;
             }
-            if (name.contains("  ")) {
-                System.out.println("오류: 이름에 연속된 공백을 사용할 수 없습니다.");
+            if (hasForbiddenChars(displayName)) {
+                System.out.println("오류: 이름에 사용할 수 없는 문자가 포함되어 있습니다.");
                 continue;
             }
-            return name;
+            return displayName;
         }
     }
 
@@ -827,7 +920,12 @@ final class CliApp {
         while (true) {
             String timeText = promptLine(prompt).trim();
             try {
-                return LocalTime.parse(timeText, TimeFormats.TIME);
+                LocalTime time = LocalTime.parse(timeText, TimeFormats.TIME);
+                if (time.getMinute() != 0) {
+                    System.out.println("오류: 예약 시각은 1시간 단위여야 합니다.");
+                    continue;
+                }
+                return time;
             } catch (DateTimeParseException e) {
                 System.out.println("오류: 시각 형식이 올바르지 않습니다. 예: 13:00");
             }
@@ -840,7 +938,7 @@ final class CliApp {
             try {
                 return LocalDateTime.parse(text, TimeFormats.DATE_TIME);
             } catch (DateTimeParseException e) {
-                System.out.println("오류: 날짜/시각 형식이 올바르지 않습니다. 예: 2026-03-20T09:00");
+                System.out.println("오류: 날짜/시각 형식이 올바르지 않습니다. 예: 2026-03-20 09:00");
             }
         }
     }
@@ -867,6 +965,10 @@ final class CliApp {
             throw new ExitProgramException();
         }
         return scanner.nextLine();
+    }
+
+    private boolean hasForbiddenChars(String text) {
+        return text.indexOf('|') >= 0 || text.indexOf('\n') >= 0 || text.indexOf('\r') >= 0;
     }
 
     private void printFileErrorAndExit(AppDataException e) {

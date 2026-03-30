@@ -30,34 +30,21 @@ enum Role {
     }
 }
 
-enum UserStatus {
-    ACTIVE;
-
-    static UserStatus fromFile(String raw, String fileName, int lineNumber) throws AppDataException {
-        if ("ACTIVE".equals(raw)) {
-            return ACTIVE;
-        }
-        throw new AppDataException(fileName, lineNumber, "status 값은 ACTIVE만 허용됩니다.");
-    }
-}
-
 enum RoomStatus {
     OPEN,
-    CLOSED,
-    MAINTENANCE;
+    CLOSED;
 
     static RoomStatus fromFile(String raw, String fileName, int lineNumber) throws AppDataException {
         try {
             return RoomStatus.valueOf(raw);
         } catch (IllegalArgumentException e) {
-            throw new AppDataException(fileName, lineNumber, "status 값은 OPEN, CLOSED, MAINTENANCE만 허용됩니다.");
+            throw new AppDataException(fileName, lineNumber, "roomStatus 값은 OPEN 또는 CLOSED 이어야 합니다.");
         }
     }
 }
 
 enum ReservationStatus {
     RESERVED,
-    CANCELLED,
     CHECKED_IN,
     COMPLETED,
     NO_SHOW;
@@ -74,99 +61,77 @@ enum ReservationStatus {
 final class User {
     final String userId;
     final String password;
-    final String displayName;
+    final String userName;
     final Role role;
-    final int penalty;
-    final UserStatus status;
     final int sourceLine;
 
-    User(String userId,
-         String password,
-         String displayName,
-         Role role,
-         int penalty,
-         UserStatus status,
-         int sourceLine) {
+    User(String userId, String password, String userName, Role role, int sourceLine) {
         this.userId = userId;
         this.password = password;
-        this.displayName = displayName;
+        this.userName = userName;
         this.role = role;
-        this.penalty = penalty;
-        this.status = status;
         this.sourceLine = sourceLine;
     }
 
-    User withPenalty(int newPenalty) {
-        return new User(userId, password, displayName, role, newPenalty, status, sourceLine);
-    }
-
     String toRecord() {
-        return String.join("|", "USER", userId, password, displayName, role.fileValue(), String.valueOf(penalty), status.name());
+        return String.join("|", "USER", userId, password, userName, role.fileValue());
     }
 }
 
 final class Room {
     final String roomId;
-    final int capacity;
-    final String equipment;
+    final String roomName;
+    int maxCapacity;
     RoomStatus roomStatus;
-    final LocalTime openTime;
-    final LocalTime closeTime;
     final int sourceLine;
 
-    Room(String roomId,
-         int capacity,
-         String equipment,
-         RoomStatus roomStatus,
-         LocalTime openTime,
-         LocalTime closeTime,
-         int sourceLine) {
+    Room(String roomId, String roomName, int maxCapacity, RoomStatus roomStatus, int sourceLine) {
         this.roomId = roomId;
-        this.capacity = capacity;
-        this.equipment = equipment;
+        this.roomName = roomName;
+        this.maxCapacity = maxCapacity;
         this.roomStatus = roomStatus;
-        this.openTime = openTime;
-        this.closeTime = closeTime;
         this.sourceLine = sourceLine;
     }
 
     String toRecord() {
-        return String.join("|", "ROOM", roomId, String.valueOf(capacity), equipment, roomStatus.name(),
-                TimeFormats.formatTime(openTime), TimeFormats.formatTime(closeTime));
+        return String.join("|", "ROOM", roomId, roomName, String.valueOf(maxCapacity), roomStatus.name());
     }
 }
 
 final class Reservation {
     final String reservationId;
-    String roomId;
     final String userId;
+    String roomId;
     final LocalDate date;
     final LocalTime startTime;
-    LocalTime endTime;
+    final LocalTime endTime;
+    final int partySize;
     ReservationStatus status;
+    final LocalDateTime createdAt;
     LocalDateTime checkedInAt;
-    int extensionCount;
     final int sourceLine;
 
     Reservation(String reservationId,
-                String roomId,
                 String userId,
+                String roomId,
                 LocalDate date,
                 LocalTime startTime,
                 LocalTime endTime,
+                int partySize,
                 ReservationStatus status,
+                LocalDateTime createdAt,
                 LocalDateTime checkedInAt,
-                int extensionCount,
                 int sourceLine) {
         this.reservationId = reservationId;
-        this.roomId = roomId;
         this.userId = userId;
+        this.roomId = roomId;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.partySize = partySize;
         this.status = status;
+        this.createdAt = createdAt;
         this.checkedInAt = checkedInAt;
-        this.extensionCount = extensionCount;
         this.sourceLine = sourceLine;
     }
 
@@ -191,7 +156,17 @@ final class Reservation {
     }
 
     Reservation copy() {
-        return new Reservation(reservationId, roomId, userId, date, startTime, endTime, status, checkedInAt, extensionCount,
+        return new Reservation(
+                reservationId,
+                userId,
+                roomId,
+                date,
+                startTime,
+                endTime,
+                partySize,
+                status,
+                createdAt,
+                checkedInAt,
                 sourceLine);
     }
 
@@ -199,14 +174,15 @@ final class Reservation {
         return String.join("|",
                 "RESV",
                 reservationId,
-                roomId,
                 userId,
+                roomId,
                 TimeFormats.formatDate(date),
                 TimeFormats.formatTime(startTime),
                 TimeFormats.formatTime(endTime),
+                String.valueOf(partySize),
                 status.name(),
-                checkedInAtText(),
-                String.valueOf(extensionCount));
+                TimeFormats.formatDateTime(createdAt),
+                checkedInAtText());
     }
 }
 
@@ -235,7 +211,6 @@ final class SystemData {
             try {
                 max = Math.max(max, Integer.parseInt(id.substring(2)));
             } catch (NumberFormatException ignored) {
-                // already validated by parser, keep defensively
             }
         }
         return String.format("rv%04d", max + 1);

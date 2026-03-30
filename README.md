@@ -32,7 +32,7 @@ java -jar out/study-room-cli.jar
 기본 데이터 폴더는 프로젝트 루트의 `data/` 입니다.
 
 - `data/users.txt`
-  - `USER|userId|password|displayName|role|status`
+  - `USER|userId|password|userName|role`
 - `data/rooms.txt`
   - `ROOM|roomId|roomName|maxCapacity|roomStatus`
 - `data/reservations.txt`
@@ -52,6 +52,7 @@ java -jar out/study-room-cli.jar
 - 비로그인: 회원가입, 로그인, 종료
 - member:
   - 현재 가상 시각 조회
+  - 현재 가상 시각 변경
   - 예약 가능 스터디룸 조회
   - 예약 신청
   - 예약 취소

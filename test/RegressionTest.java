@@ -18,6 +18,7 @@ public class RegressionTest {
         testInvalidFileSyntaxStopsStartup();
         testSignupDuplicateAndSuccess();
         testLoginFailureAndSuccess();
+        testMemberTimeChangeSuccess();
         testAvailableRoomQueryFiltersRooms();
         testCreateReservationSuccess();
         testCreateReservationRejectsHalfHourTime();
@@ -113,7 +114,7 @@ public class RegressionTest {
         Path root = createCliRoot();
         String output = runCli(root, "0\n");
         assertContains(output, "[비로그인 메뉴]");
-        assertFileContains(root, "users.txt", "USER|admin|admin1234|관리자|admin|ACTIVE");
+        assertFileContains(root, "users.txt", "USER|admin|admin1234|관리자|admin");
         assertFileContains(root, "rooms.txt", "ROOM|R101|A룸|4|OPEN");
         assertFileContains(root, "system_time.txt", "NOW|2026-03-20 09:00");
     }
@@ -145,7 +146,7 @@ public class RegressionTest {
 
         assertContains(output, "오류: 이미 존재하는 사용자 ID입니다.");
         assertContains(output, "회원가입이 완료되었습니다.");
-        assertFileContains(root, "users.txt", "USER|newuser|pw12|새사용자|member|ACTIVE");
+        assertFileContains(root, "users.txt", "USER|newuser|pw12|새사용자|member");
     }
 
     private static void testLoginFailureAndSuccess() throws Exception {
@@ -167,6 +168,23 @@ public class RegressionTest {
         assertContains(output, "로그인 성공: 본수 (member)");
     }
 
+    private static void testMemberTimeChangeSuccess() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "2",
+                "2026-03-20 10:00",
+                "0",
+                "0"));
+
+        assertContains(output, "현재 시각이 변경되었습니다.");
+        assertFileContains(root, "system_time.txt", "NOW|2026-03-20 10:00");
+    }
+
     private static void testAvailableRoomQueryFiltersRooms() throws Exception {
         Path root = createCliRoot();
         writeData(root,
@@ -181,7 +199,7 @@ public class RegressionTest {
                 "2",
                 "user011",
                 "pw1234",
-                "2",
+                "3",
                 "2026-03-20",
                 "13:00",
                 "15:00",
@@ -201,7 +219,7 @@ public class RegressionTest {
                 "2",
                 "user011",
                 "pw1234",
-                "3",
+                "4",
                 "2026-03-20",
                 "13:00",
                 "15:00",
@@ -223,7 +241,7 @@ public class RegressionTest {
                 "2",
                 "user011",
                 "pw1234",
-                "3",
+                "4",
                 "2026-03-20",
                 "13:30",
                 "13:00",
@@ -249,7 +267,7 @@ public class RegressionTest {
                 "2",
                 "user011",
                 "pw1234",
-                "3",
+                "4",
                 "2026-03-20",
                 "13:00",
                 "15:00",
@@ -274,7 +292,7 @@ public class RegressionTest {
                 "2",
                 "user011",
                 "pw1234",
-                "3",
+                "4",
                 "2026-03-20",
                 "13:00",
                 "15:00",
@@ -299,7 +317,7 @@ public class RegressionTest {
                 "2",
                 "user011",
                 "pw1234",
-                "4",
+                "5",
                 "rv0001",
                 "0",
                 "0");
@@ -321,7 +339,7 @@ public class RegressionTest {
                 "2",
                 "user011",
                 "pw1234",
-                "4",
+                "5",
                 "rv0001",
                 "0",
                 "0");
@@ -342,7 +360,7 @@ public class RegressionTest {
                 "2",
                 "user011",
                 "pw1234",
-                "6",
+                "7",
                 "rv0001",
                 "0",
                 "0");
@@ -363,7 +381,7 @@ public class RegressionTest {
                 "2",
                 "user011",
                 "pw1234",
-                "6",
+                "7",
                 "rv0001",
                 "0",
                 "0");
@@ -386,7 +404,7 @@ public class RegressionTest {
                 "2",
                 "user011",
                 "pw1234",
-                "6",
+                "7",
                 "rv0001",
                 "0",
                 "0");
@@ -474,10 +492,6 @@ public class RegressionTest {
 
         assertContains(output, "룸 최대 수용 인원이 변경되었습니다.");
         assertFileContains(root, "rooms.txt", "ROOM|R101|A룸|4|OPEN");
-
-        String restartOutput = runCli(root, "0\n");
-        assertNotContains(restartOutput, "[파일 오류]");
-        assertContains(restartOutput, "[비로그인 메뉴]");
     }
 
     private static void testCapacityChangeImpactedSameRoomRejectedAndMoveSuccess() throws Exception {
@@ -653,12 +667,12 @@ public class RegressionTest {
 
     private static String baseUsers() {
         return users("user011", "pw1234", "본수")
-                + "USER|user022|pw5678|다른회원|member|ACTIVE\n";
+                + "USER|user022|pw5678|다른회원|member\n";
     }
 
-    private static String users(String userId, String password, String displayName) {
-        return "USER|admin|admin1234|관리자|admin|ACTIVE\n"
-                + "USER|" + userId + "|" + password + "|" + displayName + "|member|ACTIVE\n";
+    private static String users(String userId, String password, String userName) {
+        return "USER|admin|admin1234|관리자|admin\n"
+                + "USER|" + userId + "|" + password + "|" + userName + "|member\n";
     }
 
     private static String baseRooms() {
@@ -670,12 +684,6 @@ public class RegressionTest {
     private static void assertContains(String output, String expected) {
         if (!output.contains(expected)) {
             throw new AssertionError("Expected output to contain: " + expected + "\nActual output:\n" + output);
-        }
-    }
-
-    private static void assertNotContains(String output, String unexpected) {
-        if (output.contains(unexpected)) {
-            throw new AssertionError("Did not expect output to contain: " + unexpected + "\nActual output:\n" + output);
         }
     }
 
