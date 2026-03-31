@@ -1,637 +1,357 @@
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 
-/**
- * 텍스트 파일 4종(users, rooms, reservations, system_time)을 읽고 검증하며,
- * 임시 파일 재검증 후 원본을 교체하는 저장소 계층이다.
- */
 final class TextDataStore {
-    @FunctionalInterface
-    interface FileMover {
-        void move(Path source, Path target) throws IOException;
-    }
+    static final String USERS_FILE = "users.txt";
+    static final String ROOMS_FILE = "rooms.txt";
+    static final String RESERVATIONS_FILE = "reservations.txt";
+    static final String SYSTEM_TIME_FILE = "system_time.txt";
 
-    private static final Pattern USER_ID_PATTERN = Pattern.compile("^[a-z][a-z0-9]{3,11}$");
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[A-Za-z0-9!@#$%^&*._-]{6,16}$");
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z가-힣 ]{2,20}$");
-    private static final Pattern ROOM_ID_PATTERN = Pattern.compile("^R\\d{3}$");
-    private static final Pattern RESERVATION_ID_PATTERN = Pattern.compile("^rv\\d{4,}$");
-    private static final Pattern EQUIPMENT_CODE_PATTERN = Pattern.compile("^[A-Z][A-Z0-9_]*$");
-    private static final Pattern NON_NEGATIVE_INTEGER_PATTERN = Pattern.compile("^\\d+$");
+    private static final Pattern USER_ID_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
+    private static final Pattern ROOM_ID_PATTERN = Pattern.compile("^R[0-9]{3}$");
+    private static final Pattern RESERVATION_ID_PATTERN = Pattern.compile("^rv[0-9]{4}$");
 
-    private final Path rootDirectory;
+    private final Path dataDir;
     private final Path usersPath;
     private final Path roomsPath;
     private final Path reservationsPath;
     private final Path systemTimePath;
-    private final FileMover fileMover;
 
-    TextDataStore(Path rootDirectory) {
-        this(rootDirectory, TextDataStore::moveReplacing);
+    TextDataStore(Path projectRoot) {
+        this.dataDir = projectRoot.resolve("data");
+        this.usersPath = dataDir.resolve(USERS_FILE);
+        this.roomsPath = dataDir.resolve(ROOMS_FILE);
+        this.reservationsPath = dataDir.resolve(RESERVATIONS_FILE);
+        this.systemTimePath = dataDir.resolve(SYSTEM_TIME_FILE);
     }
 
-    TextDataStore(Path rootDirectory, FileMover fileMover) {
-        this.rootDirectory = rootDirectory;
-        this.usersPath = rootDirectory.resolve("users.txt");
-        this.roomsPath = rootDirectory.resolve("rooms.txt");
-        this.reservationsPath = rootDirectory.resolve("reservations.txt");
-        this.systemTimePath = rootDirectory.resolve("system_time.txt");
-        this.fileMover = fileMover;
-    }
-
-    SystemDataset loadAll() throws AppDataException {
-        return loadAllFrom(usersPath, roomsPath, reservationsPath, systemTimePath);
-    }
-
-    void saveAll(SystemDataset dataset) throws AppDataException {
-        Path usersTemp = null;
-        Path roomsTemp = null;
-        Path reservationsTemp = null;
-        Path systemTimeTemp = null;
-        Path usersBackup = null;
-        Path roomsBackup = null;
-        Path reservationsBackup = null;
-        Path systemTimeBackup = null;
+    void ensureDataFiles() throws AppDataException {
         try {
-            usersTemp = Files.createTempFile(rootDirectory, "users", ".tmp");
-            roomsTemp = Files.createTempFile(rootDirectory, "rooms", ".tmp");
-            reservationsTemp = Files.createTempFile(rootDirectory, "reservations", ".tmp");
-            systemTimeTemp = Files.createTempFile(rootDirectory, "system_time", ".tmp");
-
-            Files.writeString(usersTemp, serializeUsers(dataset), StandardCharsets.UTF_8);
-            Files.writeString(roomsTemp, serializeRooms(dataset), StandardCharsets.UTF_8);
-            Files.writeString(reservationsTemp, serializeReservations(dataset), StandardCharsets.UTF_8);
-            Files.writeString(systemTimeTemp, serializeSystemTime(dataset), StandardCharsets.UTF_8);
-
-            loadAllFrom(usersTemp, roomsTemp, reservationsTemp, systemTimeTemp);
-
-            usersBackup = backupOriginal(usersPath, "users");
-            roomsBackup = backupOriginal(roomsPath, "rooms");
-            reservationsBackup = backupOriginal(reservationsPath, "reservations");
-            systemTimeBackup = backupOriginal(systemTimePath, "system_time");
-
-            PendingSaveFile usersFile = new PendingSaveFile(usersTemp, usersPath, usersBackup);
-            PendingSaveFile roomsFile = new PendingSaveFile(roomsTemp, roomsPath, roomsBackup);
-            PendingSaveFile reservationsFile = new PendingSaveFile(reservationsTemp, reservationsPath, reservationsBackup);
-            PendingSaveFile systemTimeFile = new PendingSaveFile(systemTimeTemp, systemTimePath, systemTimeBackup);
-
-            replaceAll(usersFile, roomsFile, reservationsFile, systemTimeFile);
-
-            usersTemp = null;
-            roomsTemp = null;
-            reservationsTemp = null;
-            systemTimeTemp = null;
-            usersBackup = null;
-            roomsBackup = null;
-            reservationsBackup = null;
-            systemTimeBackup = null;
+            if (!Files.exists(dataDir)) {
+                Files.createDirectories(dataDir);
+            }
         } catch (IOException e) {
-            throw new AppDataException("저장", 0, "파일 저장 중 I/O 오류가 발생했습니다: " + e.getMessage());
-        } finally {
-            deleteIfExists(usersTemp);
-            deleteIfExists(roomsTemp);
-            deleteIfExists(reservationsTemp);
-            deleteIfExists(systemTimeTemp);
-            deleteIfExists(usersBackup);
-            deleteIfExists(roomsBackup);
-            deleteIfExists(reservationsBackup);
-            deleteIfExists(systemTimeBackup);
+            throw new AppDataException("data", 0, "data 폴더 생성에 실패했습니다: " + e.getMessage());
         }
+
+        createIfMissing(usersPath, USERS_FILE, defaultUsers());
+        createIfMissing(roomsPath, ROOMS_FILE, defaultRooms());
+        createIfMissing(reservationsPath, RESERVATIONS_FILE, "");
+        createIfMissing(systemTimePath, SYSTEM_TIME_FILE, "NOW|2026-03-20 09:00\n");
     }
 
-    private SystemDataset loadAllFrom(Path usersFile, Path roomsFile, Path reservationsFile, Path systemTimeFile) throws AppDataException {
-        LinkedHashMap<String, User> users = parseUsers(usersFile, "users.txt");
-        LinkedHashMap<String, Room> rooms = parseRooms(roomsFile, "rooms.txt");
-        LinkedHashMap<String, Reservation> reservations = parseReservations(reservationsFile, "reservations.txt");
-        LocalDateTime currentTime = parseSystemTime(systemTimeFile, "system_time.txt");
+    SystemData loadAll() throws AppDataException {
+        ensureDataFiles();
+        verifyAccessible(usersPath, USERS_FILE);
+        verifyAccessible(roomsPath, ROOMS_FILE);
+        verifyAccessible(reservationsPath, RESERVATIONS_FILE);
+        verifyAccessible(systemTimePath, SYSTEM_TIME_FILE);
 
-        SystemDataset dataset = new SystemDataset(users, rooms, reservations, currentTime);
-        validateUsers(dataset.users);
-        validateRooms(dataset.rooms);
-        validateReservations(dataset);
-        validateClosedRooms(dataset);
-        return dataset;
+        LinkedHashMap<String, User> users = parseUsers();
+        LinkedHashMap<String, Room> rooms = parseRooms();
+        LinkedHashMap<String, Reservation> reservations = parseReservations();
+        LocalDateTime currentTime = parseSystemTime();
+
+        SystemData data = new SystemData(users, rooms, reservations, currentTime);
+        validateSemantics(data);
+        return data;
     }
 
-    private LinkedHashMap<String, User> parseUsers(Path path, String logicalName) throws AppDataException {
+    void saveAll(SystemData data) throws AppDataException {
+        writeFile(usersPath, USERS_FILE, serializeUsers(data));
+        writeFile(roomsPath, ROOMS_FILE, serializeRooms(data));
+        writeFile(reservationsPath, RESERVATIONS_FILE, serializeReservations(data));
+        writeFile(systemTimePath, SYSTEM_TIME_FILE, "NOW|" + TimeFormats.formatDateTime(data.currentTime) + "\n");
+    }
+
+    private LinkedHashMap<String, User> parseUsers() throws AppDataException {
+        List<LineRecord> lines = readLogicalLines(usersPath, USERS_FILE);
         LinkedHashMap<String, User> users = new LinkedHashMap<>();
-        List<String> lines = readLines(path, logicalName);
-        for (int index = 0; index < lines.size(); index++) {
-            int lineNumber = index + 1;
-            List<String> fields = splitFields(logicalName, lineNumber, lines.get(index), 7);
-            if (!"USER".equals(fields.get(0))) {
-                throw new AppDataException(logicalName, lineNumber, "레코드 접두어는 USER여야 합니다.");
-            }
-            String userId = decodeTextField(fields.get(1), logicalName, lineNumber, "userId");
-            String password = decodeTextField(fields.get(2), logicalName, lineNumber, "password");
-            String name = decodeTextField(fields.get(3), logicalName, lineNumber, "name");
-            Role role = Role.fromFile(fields.get(4), logicalName, lineNumber);
-            int penalty = parseNonNegativeInteger(fields.get(5), logicalName, lineNumber, "penalty");
-            UserStatus status = UserStatus.fromFile(fields.get(6), logicalName, lineNumber);
+        for (LineRecord line : lines) {
+            String[] fields = splitFields(line, USERS_FILE, 5);
+            require("USER".equals(fields[0]), USERS_FILE, line.lineNumber, "레코드 접두어는 USER여야 합니다.");
+            String userId = fields[1].trim();
+            String password = fields[2].trim();
+            String userName = fields[3].trim();
+            Role role = Role.fromFile(fields[4], USERS_FILE, line.lineNumber);
 
-            if (!USER_ID_PATTERN.matcher(userId).matches()) {
-                throw new AppDataException(logicalName, lineNumber, "userId 문법이 올바르지 않습니다.");
-            }
-            if (!PASSWORD_PATTERN.matcher(password).matches()) {
-                throw new AppDataException(logicalName, lineNumber, "password 문법이 올바르지 않습니다.");
-            }
-            if (!NAME_PATTERN.matcher(name).matches()) {
-                throw new AppDataException(logicalName, lineNumber, "name 문법이 올바르지 않습니다.");
-            }
-            if (penalty > 999) {
-                throw new AppDataException(logicalName, lineNumber, "penalty 범위가 올바르지 않습니다.");
-            }
-            User previous = users.put(userId, new User(userId, password, name, role, penalty, status, lineNumber));
-            if (previous != null) {
-                throw new AppDataException(logicalName, lineNumber, "중복된 userId가 존재합니다.");
-            }
+            require(USER_ID_PATTERN.matcher(userId).matches(), USERS_FILE, line.lineNumber,
+                    "userId 형식이 올바르지 않습니다.");
+            require(password.length() >= 4 && password.length() <= 20, USERS_FILE, line.lineNumber,
+                    "password 길이는 4~20이어야 합니다.");
+            validateNoPipeOrNewline(password, USERS_FILE, line.lineNumber, "password");
+            require(userName.length() >= 1 && userName.length() <= 20, USERS_FILE, line.lineNumber,
+                    "userName 길이는 1~20이어야 합니다.");
+            validateNoPipeOrNewline(userName, USERS_FILE, line.lineNumber, "userName");
+
+            User prev = users.put(userId, new User(userId, password, userName, role, line.lineNumber));
+            require(prev == null, USERS_FILE, line.lineNumber, "중복된 userId가 존재합니다.");
         }
         return users;
     }
 
-    private LinkedHashMap<String, Room> parseRooms(Path path, String logicalName) throws AppDataException {
+    private LinkedHashMap<String, Room> parseRooms() throws AppDataException {
+        List<LineRecord> lines = readLogicalLines(roomsPath, ROOMS_FILE);
         LinkedHashMap<String, Room> rooms = new LinkedHashMap<>();
-        List<String> lines = readLines(path, logicalName);
-        for (int index = 0; index < lines.size(); index++) {
-            int lineNumber = index + 1;
-            List<String> fields = splitFields(logicalName, lineNumber, lines.get(index), 7);
-            if (!"ROOM".equals(fields.get(0))) {
-                throw new AppDataException(logicalName, lineNumber, "레코드 접두어는 ROOM이어야 합니다.");
-            }
-            String roomId = rawStructuredField(fields.get(1), logicalName, lineNumber, "roomId");
-            int capacity = parseNonNegativeInteger(fields.get(2), logicalName, lineNumber, "capacity");
-            String equipmentField = rawStructuredField(fields.get(3), logicalName, lineNumber, "equipmentList");
-            RoomStatus status = RoomStatus.fromFile(fields.get(4), logicalName, lineNumber);
-            LocalTime openTime = TimeFormats.parseFileTime(rawStructuredField(fields.get(5), logicalName, lineNumber, "openTime"), logicalName, lineNumber, "openTime");
-            LocalTime closeTime = TimeFormats.parseFileTime(rawStructuredField(fields.get(6), logicalName, lineNumber, "closeTime"), logicalName, lineNumber, "closeTime");
+        for (LineRecord line : lines) {
+            String[] fields = splitFields(line, ROOMS_FILE, 5);
+            require("ROOM".equals(fields[0]), ROOMS_FILE, line.lineNumber, "레코드 접두어는 ROOM이어야 합니다.");
+            String roomId = fields[1].trim();
+            String roomName = fields[2].trim();
+            int maxCapacity = parseInt(fields[3], ROOMS_FILE, line.lineNumber, "maxCapacity");
+            RoomStatus roomStatus = RoomStatus.fromFile(fields[4], ROOMS_FILE, line.lineNumber);
 
-            if (!ROOM_ID_PATTERN.matcher(roomId).matches()) {
-                throw new AppDataException(logicalName, lineNumber, "roomId 문법이 올바르지 않습니다.");
-            }
-            if (capacity < 1 || capacity > 20) {
-                throw new AppDataException(logicalName, lineNumber, "capacity 범위가 올바르지 않습니다.");
-            }
-            ensureHalfHourTime(openTime, logicalName, lineNumber, "openTime");
-            ensureHalfHourTime(closeTime, logicalName, lineNumber, "closeTime");
+            require(ROOM_ID_PATTERN.matcher(roomId).matches(), ROOMS_FILE, line.lineNumber,
+                    "roomId 형식이 올바르지 않습니다.");
+            require(!roomName.isEmpty(), ROOMS_FILE, line.lineNumber, "roomName은 비어 있을 수 없습니다.");
+            validateNoPipeOrNewline(roomName, ROOMS_FILE, line.lineNumber, "roomName");
+            require(maxCapacity >= 1, ROOMS_FILE, line.lineNumber, "maxCapacity는 1 이상이어야 합니다.");
 
-            List<String> equipmentList = parseEquipmentList(equipmentField, logicalName, lineNumber);
-            Room previous = rooms.put(roomId, new Room(roomId, capacity, equipmentList, status, openTime, closeTime, lineNumber));
-            if (previous != null) {
-                throw new AppDataException(logicalName, lineNumber, "중복된 roomId가 존재합니다.");
-            }
+            Room prev = rooms.put(roomId, new Room(roomId, roomName, maxCapacity, roomStatus, line.lineNumber));
+            require(prev == null, ROOMS_FILE, line.lineNumber, "중복된 roomId가 존재합니다.");
         }
         return rooms;
     }
 
-    private LinkedHashMap<String, Reservation> parseReservations(Path path, String logicalName) throws AppDataException {
+    private LinkedHashMap<String, Reservation> parseReservations() throws AppDataException {
+        List<LineRecord> lines = readLogicalLines(reservationsPath, RESERVATIONS_FILE);
         LinkedHashMap<String, Reservation> reservations = new LinkedHashMap<>();
-        List<String> lines = readLines(path, logicalName);
-        for (int index = 0; index < lines.size(); index++) {
-            int lineNumber = index + 1;
-            List<String> fields = splitFields(logicalName, lineNumber, lines.get(index), 10);
-            if (!"RESV".equals(fields.get(0))) {
-                throw new AppDataException(logicalName, lineNumber, "레코드 접두어는 RESV여야 합니다.");
-            }
-            String reservationId = rawStructuredField(fields.get(1), logicalName, lineNumber, "reservationId");
-            String roomId = rawStructuredField(fields.get(2), logicalName, lineNumber, "roomId");
-            String userId = rawStructuredField(fields.get(3), logicalName, lineNumber, "userId");
-            LocalDate date = TimeFormats.parseFileDate(rawStructuredField(fields.get(4), logicalName, lineNumber, "date"), logicalName, lineNumber, "date");
-            LocalTime startTime = TimeFormats.parseFileTime(rawStructuredField(fields.get(5), logicalName, lineNumber, "startTime"), logicalName, lineNumber, "startTime");
-            LocalTime endTime = TimeFormats.parseFileTime(rawStructuredField(fields.get(6), logicalName, lineNumber, "endTime"), logicalName, lineNumber, "endTime");
-            ReservationStatus status = ReservationStatus.fromFile(fields.get(7), logicalName, lineNumber);
-            String checkedInAtRaw = rawStructuredField(fields.get(8), logicalName, lineNumber, "checkedInAt");
-            int extensionCount = parseNonNegativeInteger(fields.get(9), logicalName, lineNumber, "extensionCount");
+        for (LineRecord line : lines) {
+            String[] fields = splitFields(line, RESERVATIONS_FILE, 11);
+            require("RESV".equals(fields[0]), RESERVATIONS_FILE, line.lineNumber, "레코드 접두어는 RESV여야 합니다.");
+            String reservationId = fields[1].trim();
+            String userId = fields[2].trim();
+            String roomId = fields[3].trim();
+            LocalDate date = TimeFormats.parseDate(fields[4], RESERVATIONS_FILE, line.lineNumber, "date");
+            LocalTime startTime = TimeFormats.parseTime(fields[5], RESERVATIONS_FILE, line.lineNumber, "startTime");
+            LocalTime endTime = TimeFormats.parseTime(fields[6], RESERVATIONS_FILE, line.lineNumber, "endTime");
+            int partySize = parseInt(fields[7], RESERVATIONS_FILE, line.lineNumber, "partySize");
+            ReservationStatus status = ReservationStatus.fromFile(fields[8], RESERVATIONS_FILE, line.lineNumber);
+            LocalDateTime createdAt = TimeFormats.parseDateTime(fields[9], RESERVATIONS_FILE, line.lineNumber, "createdAt");
+            String checkedInRaw = fields[10].trim();
 
-            if (!RESERVATION_ID_PATTERN.matcher(reservationId).matches()) {
-                throw new AppDataException(logicalName, lineNumber, "reservationId 문법이 올바르지 않습니다.");
-            }
-            if (!ROOM_ID_PATTERN.matcher(roomId).matches()) {
-                throw new AppDataException(logicalName, lineNumber, "roomId 문법이 올바르지 않습니다.");
-            }
-            if (!USER_ID_PATTERN.matcher(userId).matches()) {
-                throw new AppDataException(logicalName, lineNumber, "userId 문법이 올바르지 않습니다.");
-            }
-            ensureHalfHourTime(startTime, logicalName, lineNumber, "startTime");
-            ensureHalfHourTime(endTime, logicalName, lineNumber, "endTime");
-            if (extensionCount < 0 || extensionCount > 1) {
-                throw new AppDataException(logicalName, lineNumber, "extensionCount 값은 0 또는 1이어야 합니다.");
-            }
+            require(RESERVATION_ID_PATTERN.matcher(reservationId).matches(), RESERVATIONS_FILE, line.lineNumber,
+                    "reservationId 형식이 올바르지 않습니다.");
+            require(USER_ID_PATTERN.matcher(userId).matches(), RESERVATIONS_FILE, line.lineNumber,
+                    "userId 형식이 올바르지 않습니다.");
+            require(ROOM_ID_PATTERN.matcher(roomId).matches(), RESERVATIONS_FILE, line.lineNumber,
+                    "roomId 형식이 올바르지 않습니다.");
+            require(partySize >= 1, RESERVATIONS_FILE, line.lineNumber, "partySize는 1 이상이어야 합니다.");
+            require(startTime.getMinute() == 0 && endTime.getMinute() == 0,
+                    RESERVATIONS_FILE, line.lineNumber, "startTime/endTime은 1시간 단위여야 합니다.");
+            require(startTime.isBefore(endTime), RESERVATIONS_FILE, line.lineNumber,
+                    "startTime은 endTime보다 빨라야 합니다.");
+
+            long minutes = Duration.between(LocalDateTime.of(date, startTime), LocalDateTime.of(date, endTime)).toMinutes();
+            require(minutes == 60 || minutes == 120 || minutes == 180 || minutes == 240,
+                    RESERVATIONS_FILE, line.lineNumber, "예약 길이는 1시간, 2시간, 3시간, 4시간 중 하나여야 합니다.");
 
             LocalDateTime checkedInAt = null;
-            if (!"-".equals(checkedInAtRaw)) {
-                checkedInAt = TimeFormats.parseFileDateTime(checkedInAtRaw, logicalName, lineNumber, "checkedInAt");
+            if (status == ReservationStatus.CHECKED_IN || status == ReservationStatus.COMPLETED) {
+                require(!"-".equals(checkedInRaw), RESERVATIONS_FILE, line.lineNumber,
+                        "CHECKED_IN/COMPLETED 상태는 checkedInAt 값이 필요합니다.");
+                checkedInAt = TimeFormats.parseDateTime(checkedInRaw, RESERVATIONS_FILE, line.lineNumber, "checkedInAt");
+            } else {
+                require("-".equals(checkedInRaw), RESERVATIONS_FILE, line.lineNumber,
+                        "RESERVED/NO_SHOW 상태는 checkedInAt이 '-' 이어야 합니다.");
             }
 
-            Reservation previous = reservations.put(reservationId, new Reservation(
+            Reservation prev = reservations.put(reservationId, new Reservation(
                     reservationId,
-                    roomId,
                     userId,
+                    roomId,
                     date,
                     startTime,
                     endTime,
+                    partySize,
                     status,
+                    createdAt,
                     checkedInAt,
-                    extensionCount,
-                    lineNumber));
-            if (previous != null) {
-                throw new AppDataException(logicalName, lineNumber, "중복된 reservationId가 존재합니다.");
-            }
+                    line.lineNumber));
+            require(prev == null, RESERVATIONS_FILE, line.lineNumber, "중복된 reservationId가 존재합니다.");
         }
         return reservations;
     }
 
-    private LocalDateTime parseSystemTime(Path path, String logicalName) throws AppDataException {
-        List<String> lines = readLines(path, logicalName);
-        if (lines.size() != 1) {
-            throw new AppDataException(logicalName, 0, "NOW 레코드는 정확히 한 줄이어야 합니다.");
-        }
-        List<String> fields = splitFields(logicalName, 1, lines.get(0), 2);
-        if (!"NOW".equals(fields.get(0))) {
-            throw new AppDataException(logicalName, 1, "레코드 접두어는 NOW여야 합니다.");
-        }
-        return TimeFormats.parseFileDateTime(rawStructuredField(fields.get(1), logicalName, 1, "currentDateTime"), logicalName, 1, "currentDateTime");
+    private LocalDateTime parseSystemTime() throws AppDataException {
+        List<LineRecord> lines = readLogicalLines(systemTimePath, SYSTEM_TIME_FILE);
+        require(lines.size() == 1, SYSTEM_TIME_FILE, 0, "NOW 레코드는 정확히 1개여야 합니다.");
+        LineRecord line = lines.get(0);
+        String[] fields = splitFields(line, SYSTEM_TIME_FILE, 2);
+        require("NOW".equals(fields[0]), SYSTEM_TIME_FILE, line.lineNumber, "레코드 접두어는 NOW여야 합니다.");
+        return TimeFormats.parseDateTime(fields[1], SYSTEM_TIME_FILE, line.lineNumber, "NOW");
     }
 
-    private void validateUsers(Map<String, User> users) throws AppDataException {
+    private void validateSemantics(SystemData data) throws AppDataException {
         boolean hasAdmin = false;
-        for (User user : users.values()) {
-            if (!user.name.equals(user.name.strip())) {
-                throw new AppDataException("users.txt", user.sourceLine, "name 앞뒤 공백은 허용되지 않습니다.");
-            }
-            if (user.name.contains("  ")) {
-                throw new AppDataException("users.txt", user.sourceLine, "name에는 연속 공백 두 칸 이상을 사용할 수 없습니다.");
-            }
+        for (User user : data.users.values()) {
             if (user.role == Role.ADMIN) {
                 hasAdmin = true;
-                if (user.penalty != 0) {
-                    throw new AppDataException("users.txt", user.sourceLine, "admin 계정의 penalty는 0이어야 합니다.");
-                }
             }
         }
-        if (!hasAdmin) {
-            throw new AppDataException("users.txt", 0, "최소 1개의 admin 계정이 필요합니다.");
-        }
-    }
+        require(hasAdmin, USERS_FILE, 0, "최소 1명의 admin 계정이 필요합니다.");
 
-    private void validateRooms(Map<String, Room> rooms) throws AppDataException {
-        for (Room room : rooms.values()) {
-            if (!room.openTime.isBefore(room.closeTime)) {
-                throw new AppDataException("rooms.txt", room.sourceLine, "운영 시작 시각은 종료 시각보다 빨라야 합니다.");
-            }
-        }
-    }
-
-    private void validateReservations(SystemDataset dataset) throws AppDataException {
-        Map<String, Integer> futureReservationCountByUser = new HashMap<>();
-        List<Reservation> reservations = dataset.sortedReservations();
+        List<Reservation> reservations = data.sortedReservations();
         for (Reservation reservation : reservations) {
-            Room room = dataset.rooms.get(reservation.roomId);
-            if (room == null) {
-                throw new AppDataException("reservations.txt", reservation.sourceLine, "존재하지 않는 roomId를 참조합니다.");
-            }
-            User user = dataset.users.get(reservation.userId);
-            if (user == null) {
-                throw new AppDataException("reservations.txt", reservation.sourceLine, "존재하지 않는 userId를 참조합니다.");
-            }
-            if (!user.isMember()) {
-                throw new AppDataException("reservations.txt", reservation.sourceLine, "admin 계정은 예약을 가질 수 없습니다.");
-            }
-            if (!reservation.startTime.isBefore(reservation.endTime)) {
-                throw new AppDataException("reservations.txt", reservation.sourceLine, "예약 시작 시각은 종료 시각보다 빨라야 합니다.");
-            }
-            long duration = reservation.durationMinutes();
-            if (duration % 30 != 0) {
-                throw new AppDataException("reservations.txt", reservation.sourceLine, "예약 길이는 30분 단위여야 합니다.");
-            }
-            if (reservation.extensionCount == 0) {
-                if (duration < 60 || duration > 240) {
-                    throw new AppDataException("reservations.txt", reservation.sourceLine, "초기 예약 길이는 1시간 이상 4시간 이하이어야 합니다.");
-                }
-            } else {
-                if (duration < 90 || duration > 270) {
-                    throw new AppDataException("reservations.txt", reservation.sourceLine, "연장된 예약 길이는 1시간 30분 이상 4시간 30분 이하이어야 합니다.");
-                }
-                long initialDuration = duration - 30;
-                if (initialDuration < 60 || initialDuration > 240) {
-                    throw new AppDataException("reservations.txt", reservation.sourceLine, "연장 전 초기 예약 길이가 올바르지 않습니다.");
-                }
-                if (reservation.status != ReservationStatus.CHECKED_IN && reservation.status != ReservationStatus.COMPLETED) {
-                    throw new AppDataException("reservations.txt", reservation.sourceLine, "연장된 예약은 CHECKED_IN 또는 COMPLETED 상태여야 합니다.");
-                }
-            }
-            if (reservation.startTime.isBefore(room.openTime) || reservation.endTime.isAfter(room.closeTime)) {
-                throw new AppDataException("reservations.txt", reservation.sourceLine, "예약 시각이 룸 운영 시간을 벗어납니다.");
-            }
-
-            if (reservation.status == ReservationStatus.CHECKED_IN || reservation.status == ReservationStatus.COMPLETED) {
-                if (reservation.checkedInAt == null) {
-                    throw new AppDataException("reservations.txt", reservation.sourceLine, "CHECKED_IN 또는 COMPLETED는 checkedInAt이 필요합니다.");
-                }
-                LocalDateTime windowStart = reservation.startDateTime().minusMinutes(10);
-                LocalDateTime windowEnd = reservation.startDateTime().plusMinutes(15);
-                if (reservation.checkedInAt.isBefore(windowStart) || reservation.checkedInAt.isAfter(windowEnd)) {
-                    throw new AppDataException("reservations.txt", reservation.sourceLine, "checkedInAt이 허용된 체크인 구간을 벗어납니다.");
-                }
-            } else if (reservation.checkedInAt != null) {
-                throw new AppDataException("reservations.txt", reservation.sourceLine, "현재 상태에서는 checkedInAt이 '-'여야 합니다.");
-            }
-
-            if (reservation.status == ReservationStatus.NO_SHOW && !dataset.currentTime.isAfter(reservation.startDateTime().plusMinutes(15))) {
-                throw new AppDataException("reservations.txt", reservation.sourceLine, "NO_SHOW 상태 예약은 체크인 마감 시각 이후여야 합니다.");
-            }
-            if (reservation.status == ReservationStatus.COMPLETED && dataset.currentTime.isBefore(reservation.endDateTime())) {
-                throw new AppDataException("reservations.txt", reservation.sourceLine, "COMPLETED 상태 예약은 종료 시각이 지난 뒤에만 허용됩니다.");
-            }
-
-            if (reservation.isFutureReserved(dataset.currentTime)) {
-                int count = futureReservationCountByUser.getOrDefault(reservation.userId, 0) + 1;
-                futureReservationCountByUser.put(reservation.userId, count);
-                if (count > 2) {
-                    throw new AppDataException("reservations.txt", reservation.sourceLine, "한 사용자의 미래 예약은 최대 2개까지 허용됩니다.");
-                }
+            User user = data.users.get(reservation.userId);
+            Room room = data.rooms.get(reservation.roomId);
+            require(user != null, RESERVATIONS_FILE, reservation.sourceLine,
+                    "존재하지 않는 userId를 참조합니다: " + reservation.userId);
+            require(user.role == Role.MEMBER, RESERVATIONS_FILE, reservation.sourceLine,
+                    "reservation은 member 사용자만 참조할 수 있습니다.");
+            require(room != null, RESERVATIONS_FILE, reservation.sourceLine,
+                    "존재하지 않는 roomId를 참조합니다: " + reservation.roomId);
+            if (reservation.activeForOverlap()) {
+                require(reservation.partySize <= room.maxCapacity, RESERVATIONS_FILE, reservation.sourceLine,
+                        "partySize가 해당 room의 maxCapacity를 초과합니다.");
             }
         }
 
         for (int i = 0; i < reservations.size(); i++) {
             Reservation left = reservations.get(i);
-            if (!left.isActiveForConflict()) {
+            if (!left.activeForOverlap()) {
                 continue;
             }
             for (int j = i + 1; j < reservations.size(); j++) {
                 Reservation right = reservations.get(j);
-                if (!right.isActiveForConflict()) {
+                if (!right.activeForOverlap()) {
                     continue;
                 }
-                if (left.roomId.equals(right.roomId) && overlaps(left, right)) {
-                    throw new AppDataException("reservations.txt", right.sourceLine, "같은 룸의 활성 예약 시간이 겹칩니다.");
+                if (left.roomId.equals(right.roomId) && left.overlaps(right.startDateTime(), right.endDateTime())) {
+                    throw new AppDataException(RESERVATIONS_FILE, right.sourceLine,
+                            "같은 룸의 겹치는 시간대 예약이 존재합니다.");
                 }
-                if (left.userId.equals(right.userId) && overlaps(left, right)) {
-                    throw new AppDataException("reservations.txt", right.sourceLine, "같은 사용자의 활성 예약 시간이 겹칩니다.");
+                if (left.userId.equals(right.userId) && left.overlaps(right.startDateTime(), right.endDateTime())) {
+                    throw new AppDataException(RESERVATIONS_FILE, right.sourceLine,
+                            "같은 사용자의 겹치는 시간대 예약이 존재합니다.");
                 }
             }
         }
     }
 
-    private void validateClosedRooms(SystemDataset dataset) throws AppDataException {
-        for (Room room : dataset.rooms.values()) {
-            if (room.status == RoomStatus.OPEN) {
-                continue;
-            }
-            for (Reservation reservation : dataset.reservations.values()) {
-                if (!reservation.roomId.equals(room.roomId)) {
-                    continue;
-                }
-                if (!reservation.isActiveForConflict()) {
-                    continue;
-                }
-                if (reservation.endDateTime().isAfter(dataset.currentTime)) {
-                    throw new AppDataException("rooms.txt", room.sourceLine, "닫힌 룸 또는 점검 중 룸에 종료되지 않은 활성 예약이 존재합니다.");
-                }
-            }
+    private void createIfMissing(Path path, String logicalName, String defaultContent) throws AppDataException {
+        if (Files.exists(path)) {
+            return;
+        }
+        try {
+            Files.writeString(path, defaultContent, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new AppDataException(logicalName, 0, "기본 파일 생성에 실패했습니다: " + e.getMessage());
         }
     }
 
-    private List<String> readLines(Path path, String logicalName) throws AppDataException {
+    private void verifyAccessible(Path path, String logicalName) throws AppDataException {
         if (!Files.exists(path)) {
             throw new AppDataException(logicalName, 0, "파일이 존재하지 않습니다.");
         }
-        try {
-            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-            for (int index = 0; index < lines.size(); index++) {
-                if (lines.get(index).isEmpty()) {
-                    throw new AppDataException(logicalName, index + 1, "빈 줄은 허용되지 않습니다.");
-                }
-            }
-            return lines;
-        } catch (IOException e) {
-            throw new AppDataException(logicalName, 0, "파일을 읽는 중 I/O 오류가 발생했습니다: " + e.getMessage());
+        if (!Files.isReadable(path)) {
+            throw new AppDataException(logicalName, 0, "파일 읽기 권한이 없습니다.");
+        }
+        if (!Files.isWritable(path)) {
+            throw new AppDataException(logicalName, 0, "파일 쓰기 권한이 없습니다.");
         }
     }
 
-    private List<String> splitFields(String fileName, int lineNumber, String line, int expectedFieldCount) throws AppDataException {
-        List<String> fields = new ArrayList<>();
-        StringBuilder current = new StringBuilder();
-        for (int index = 0; index < line.length(); index++) {
-            char ch = line.charAt(index);
-            if (ch == '|') {
-                int backslashCount = 0;
-                for (int cursor = index - 1; cursor >= 0 && line.charAt(cursor) == '\\'; cursor--) {
-                    backslashCount++;
-                }
-                if (backslashCount % 2 == 0) {
-                    fields.add(current.toString());
-                    current.setLength(0);
+    private List<LineRecord> readLogicalLines(Path path, String logicalName) throws AppDataException {
+        try {
+            List<String> rawLines = Files.readAllLines(path, StandardCharsets.UTF_8);
+            List<LineRecord> lines = new ArrayList<>();
+            for (int i = 0; i < rawLines.size(); i++) {
+                String line = rawLines.get(i);
+                String trimmed = line.trim();
+                if (trimmed.isEmpty() || trimmed.startsWith("#")) {
                     continue;
                 }
+                lines.add(new LineRecord(i + 1, trimmed));
             }
-            current.append(ch);
+            return lines;
+        } catch (IOException e) {
+            throw new AppDataException(logicalName, 0, "파일 읽기 중 오류가 발생했습니다: " + e.getMessage());
         }
-        fields.add(current.toString());
-        if (fields.size() != expectedFieldCount) {
-            throw new AppDataException(fileName, lineNumber, "필드 수가 올바르지 않습니다.");
+    }
+
+    private String[] splitFields(LineRecord line, String fileName, int expected) throws AppDataException {
+        String[] fields = line.content.split("\\|", -1);
+        if (fields.length != expected) {
+            throw new AppDataException(fileName, line.lineNumber, "필드 개수가 올바르지 않습니다.");
         }
         return fields;
     }
 
-    private String decodeTextField(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
+    private int parseInt(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
+        try {
+            return Integer.parseInt(raw.trim());
+        } catch (NumberFormatException e) {
+            throw new AppDataException(fileName, lineNumber, fieldName + " 값은 정수여야 합니다.");
+        }
+    }
+
+    private void validateNoPipeOrNewline(String value, String fileName, int lineNumber, String fieldName) throws AppDataException {
+        if (value.indexOf('|') >= 0 || value.indexOf('\n') >= 0 || value.indexOf('\r') >= 0) {
+            throw new AppDataException(fileName, lineNumber, fieldName + "에 사용할 수 없는 문자가 포함되어 있습니다.");
+        }
+    }
+
+    private String serializeUsers(SystemData data) {
         StringBuilder builder = new StringBuilder();
-        for (int index = 0; index < raw.length(); index++) {
-            char ch = raw.charAt(index);
-            if (ch != '\\') {
-                builder.append(ch);
-                continue;
-            }
-            if (index + 1 >= raw.length()) {
-                throw new AppDataException(fileName, lineNumber, fieldName + "의 이스케이프가 올바르지 않습니다.");
-            }
-            char next = raw.charAt(++index);
-            switch (next) {
-                case '|':
-                    builder.append('|');
-                    break;
-                case '\\':
-                    builder.append('\\');
-                    break;
-                case 'n':
-                    builder.append('\n');
-                    break;
-                case 'r':
-                    builder.append('\r');
-                    break;
-                default:
-                    throw new AppDataException(fileName, lineNumber, fieldName + "의 이스케이프가 올바르지 않습니다.");
-            }
+        List<User> users = new ArrayList<>(data.users.values());
+        users.sort((a, b) -> a.userId.compareTo(b.userId));
+        for (User user : users) {
+            builder.append(user.toRecord()).append('\n');
         }
         return builder.toString();
     }
 
-    private String rawStructuredField(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
-        if (raw.indexOf('\\') >= 0) {
-            throw new AppDataException(fileName, lineNumber, fieldName + "에는 이스케이프를 사용할 수 없습니다.");
+    private String serializeRooms(SystemData data) {
+        StringBuilder builder = new StringBuilder();
+        for (Room room : data.sortedRooms()) {
+            builder.append(room.toRecord()).append('\n');
         }
-        return raw;
+        return builder.toString();
     }
 
-    private int parseNonNegativeInteger(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
-        String value = rawStructuredField(raw, fileName, lineNumber, fieldName);
-        if (!NON_NEGATIVE_INTEGER_PATTERN.matcher(value).matches()) {
-            throw new AppDataException(fileName, lineNumber, fieldName + "는 0 이상의 정수여야 합니다.");
+    private String serializeReservations(SystemData data) {
+        StringBuilder builder = new StringBuilder();
+        for (Reservation reservation : data.sortedReservations()) {
+            builder.append(reservation.toRecord()).append('\n');
         }
+        return builder.toString();
+    }
+
+    private void writeFile(Path path, String logicalName, String content) throws AppDataException {
         try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            throw new AppDataException(fileName, lineNumber, fieldName + " 범위가 너무 큽니다.");
-        }
-    }
-
-    private void ensureHalfHourTime(LocalTime value, String fileName, int lineNumber, String fieldName) throws AppDataException {
-        int minute = value.getMinute();
-        if (minute != 0 && minute != 30) {
-            throw new AppDataException(fileName, lineNumber, fieldName + "은 30분 단위여야 합니다.");
-        }
-    }
-
-    private List<String> parseEquipmentList(String raw, String fileName, int lineNumber) throws AppDataException {
-        if ("-".equals(raw)) {
-            return new ArrayList<>();
-        }
-        String[] parts = raw.split("\\+");
-        List<String> result = new ArrayList<>();
-        Set<String> dedupe = new HashSet<>();
-        for (String part : parts) {
-            if (!EQUIPMENT_CODE_PATTERN.matcher(part).matches()) {
-                throw new AppDataException(fileName, lineNumber, "equipmentList 문법이 올바르지 않습니다.");
-            }
-            if (!dedupe.add(part)) {
-                throw new AppDataException(fileName, lineNumber, "equipmentList에 중복된 비품 코드가 있습니다.");
-            }
-            result.add(part);
-        }
-        return result;
-    }
-
-    private boolean overlaps(Reservation left, Reservation right) {
-        return left.startDateTime().isBefore(right.endDateTime()) && right.startDateTime().isBefore(left.endDateTime());
-    }
-
-    private String serializeUsers(SystemDataset dataset) {
-        List<String> lines = new ArrayList<>();
-        for (User user : dataset.sortedUsers()) {
-            lines.add(user.toRecord());
-        }
-        return String.join("\n", lines);
-    }
-
-    private String serializeRooms(SystemDataset dataset) {
-        List<String> lines = new ArrayList<>();
-        for (Room room : dataset.sortedRooms()) {
-            lines.add(room.toRecord());
-        }
-        return String.join("\n", lines);
-    }
-
-    private String serializeReservations(SystemDataset dataset) {
-        List<String> lines = new ArrayList<>();
-        for (Reservation reservation : dataset.sortedReservations()) {
-            lines.add(reservation.toRecord());
-        }
-        return String.join("\n", lines);
-    }
-
-    private String serializeSystemTime(SystemDataset dataset) {
-        return "NOW|" + TimeFormats.formatFileDateTime(dataset.currentTime);
-    }
-
-    static void moveReplacing(Path source, Path target) throws IOException {
-        try {
-            Files.move(source, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
-        } catch (AtomicMoveNotSupportedException e) {
-            Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
-        }
-    }
-
-    private Path backupOriginal(Path source, String prefix) throws IOException {
-        Path backup = Files.createTempFile(rootDirectory, prefix, ".bak");
-        Files.copy(source, backup, StandardCopyOption.REPLACE_EXISTING);
-        return backup;
-    }
-
-    private void replaceAll(PendingSaveFile... files) throws IOException {
-        List<PendingSaveFile> replacedFiles = new ArrayList<>();
-        try {
-            for (PendingSaveFile file : files) {
-                fileMover.move(file.tempFile, file.targetFile);
-                replacedFiles.add(file);
-            }
+            Files.writeString(path, content, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            rollback(replacedFiles, e);
-            throw e;
+            throw new AppDataException(logicalName, 0, "파일 저장 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
 
-    private void rollback(List<PendingSaveFile> replacedFiles, IOException originalFailure) throws IOException {
-        IOException rollbackFailure = null;
-        for (int index = replacedFiles.size() - 1; index >= 0; index--) {
-            PendingSaveFile file = replacedFiles.get(index);
-            try {
-                moveReplacing(file.backupFile, file.targetFile);
-            } catch (IOException e) {
-                if (rollbackFailure == null) {
-                    rollbackFailure = e;
-                } else {
-                    rollbackFailure.addSuppressed(e);
-                }
-            }
-        }
-        if (rollbackFailure != null) {
-            originalFailure.addSuppressed(rollbackFailure);
-            throw new IOException(originalFailure.getMessage() + " (롤백 실패)", originalFailure);
+    private void require(boolean condition, String fileName, int lineNumber, String message) throws AppDataException {
+        if (!condition) {
+            throw new AppDataException(fileName, lineNumber, message);
         }
     }
 
-    private void deleteIfExists(Path path) {
-        if (path == null) {
-            return;
-        }
-        try {
-            Files.deleteIfExists(path);
-        } catch (IOException ignored) {
-            // 임시 파일 정리 실패는 무시한다.
-        }
+    private String defaultUsers() {
+        return "USER|admin|admin1234|관리자|admin\n";
     }
 
-    static String escapeText(String value) {
-        return value
-                .replace("\\", "\\\\")
-                .replace("|", "\\|")
-                .replace("\n", "\\n")
-                .replace("\r", "\\r");
+    private String defaultRooms() {
+        return "ROOM|R101|A룸|4|OPEN\n"
+                + "ROOM|R102|B룸|6|OPEN\n"
+                + "ROOM|R103|C룸|8|OPEN\n";
     }
 
-    private static final class PendingSaveFile {
-        private final Path tempFile;
-        private final Path targetFile;
-        private final Path backupFile;
-
-        private PendingSaveFile(Path tempFile, Path targetFile, Path backupFile) {
-            this.tempFile = tempFile;
-            this.targetFile = targetFile;
-            this.backupFile = backupFile;
-        }
+    private record LineRecord(int lineNumber, String content) {
     }
 }
