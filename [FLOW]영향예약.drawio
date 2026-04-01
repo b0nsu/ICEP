@@ -1,0 +1,271 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="영향예약" id="O3AQ6gR9yTAMj9A1ntHz">
+    <mxGraphModel dx="1945" dy="1250" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="시작" vertex="1">
+          <mxGeometry height="40" width="90" x="845" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="관리자: 룸 컨디션 관리 진입" vertex="1">
+          <mxGeometry height="50" width="260" x="760" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-3" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="작업 종류?" vertex="1">
+          <mxGeometry height="90" width="160" x="810" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="최대 수용 인원 변경&#xa;roomId, 새 정원 입력" vertex="1">
+          <mxGeometry height="70" width="260" x="380" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-5" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="입력 형식 정상?" vertex="1">
+          <mxGeometry height="90" width="180" x="420" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="오류 메시지 출력" vertex="1">
+          <mxGeometry height="55" width="180" x="170" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-7" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="현재 CHECKED_IN&#xa;인원 초과?" vertex="1">
+          <mxGeometry height="100" width="180" x="420" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="오류: 현재 사용 중 인원이&#xa;새 정원을 초과하여 변경 불가" vertex="1">
+          <mxGeometry height="65" width="250" x="130" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="영향 예약 계산&#xa;미래 RESERVED 중&#xa;partySize &gt; 새 정원" vertex="1">
+          <mxGeometry height="90" width="300" x="360" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="임시 휴업&#xa;roomId 입력" vertex="1">
+          <mxGeometry height="70" width="220" x="1110" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-11" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="입력 형식 정상?" vertex="1">
+          <mxGeometry height="90" width="180" x="1130" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="오류 메시지 출력" vertex="1">
+          <mxGeometry height="55" width="180" x="1360" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="CHECKED_IN 존재 검사" vertex="1">
+          <mxGeometry height="60" width="220" x="1110" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="오류: 즉시 휴업 불가" vertex="1">
+          <mxGeometry height="60" width="190" x="1370" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="영향 예약 계산&#xa;미래 RESERVED in 대상 룸" vertex="1">
+          <mxGeometry height="80" width="300" x="1070" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-16" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="영향 예약 존재?" vertex="1">
+          <mxGeometry height="90" width="160" x="810" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="영향 예약 처리 루프 시작" vertex="1">
+          <mxGeometry height="60" width="260" x="760" y="930" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="영향 예약 1건 표시" vertex="1">
+          <mxGeometry height="55" width="260" x="760" y="1020" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-19" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="관리자 선택?" vertex="1">
+          <mxGeometry height="90" width="160" x="810" y="1105" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="1) 다른 룸 이동&#xa;대상 룸 ID 입력" vertex="1">
+          <mxGeometry height="70" width="230" x="470" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-21" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="대상 룸 유효 + OPEN +&#xa;정원/충돌 통과?" vertex="1">
+          <mxGeometry height="100" width="200" x="490" y="1340" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="예약 roomId 변경" vertex="1">
+          <mxGeometry height="55" width="190" x="495" y="1470" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="2) 해당 예약 취소&#xa;예약 레코드 삭제" vertex="1">
+          <mxGeometry height="70" width="190" x="810" y="1245" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="0) 전체 취소&#xa;원상복구 후 종료" vertex="1">
+          <mxGeometry height="70" width="220" x="1230" y="1245" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-25" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="남은 영향 예약?" vertex="1">
+          <mxGeometry height="90" width="190" x="810" y="1470" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-26" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="원작업이&#xa;임시 휴업?" vertex="1">
+          <mxGeometry height="90" width="160" x="810" y="1600" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-27" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="정원 변경 저장" vertex="1">
+          <mxGeometry height="55" width="210" x="500" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-28" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="roomStatus = CLOSED 저장" vertex="1">
+          <mxGeometry height="55" width="230" x="1080" y="1730" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-29" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="변경 성공 메시지" vertex="1">
+          <mxGeometry height="50" width="200" x="790" y="1820" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-30" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="취소/종료 메시지" vertex="1">
+          <mxGeometry height="50" width="220" x="1230" y="1335" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-31" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="종료" vertex="1">
+          <mxGeometry height="40" width="90" x="845" y="1910" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-32" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-33" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="Qsi7mdbIaseHNrrrWfUV-3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-34" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-4" value="정원 변경">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-35" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-10" value="임시 휴업">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-36" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-37" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-6" value="아니오">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-38" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-7" value="예">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-39" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" target="Qsi7mdbIaseHNrrrWfUV-2" value="오류 후 복귀">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="110" y="420" />
+              <mxPoint x="110" y="95" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-40" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-8" value="예">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-41" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" target="Qsi7mdbIaseHNrrrWfUV-2" value="오류 후 복귀">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="90" y="562" />
+              <mxPoint x="90" y="120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-42" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-9" value="아니오">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-43" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-11" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-44" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-12" value="아니오">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-45" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-13" value="예">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-46" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" target="Qsi7mdbIaseHNrrrWfUV-2" value="오류 후 복귀">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1600" y="422" />
+              <mxPoint x="1600" y="95" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-47" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-14" value="있음">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-48" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" target="Qsi7mdbIaseHNrrrWfUV-2" value="오류 후 복귀">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1640" y="540" />
+              <mxPoint x="1640" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-49" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-15" value="없음">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-50" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-51" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-16" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="890" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-52" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-17" value="있음">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-54" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-18" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-55" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-19" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-56" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-20" value="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-57" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-23" value="2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="890" y="1230" />
+              <mxPoint x="890" y="1230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-58" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-24" value="0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-59" edge="1" parent="1" style="rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-21" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="590" y="1310" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-60" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-22" value="성공">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-61" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-18" value="실패">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="790" y="1390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-62" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-25" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-63" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-25" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="905" y="1370" />
+              <mxPoint x="905" y="1370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-64" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0.947;exitY=0.412;exitDx=0;exitDy=0;exitPerimeter=0;" value="있음">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="990" y="1500" as="sourcePoint" />
+            <mxPoint x="990" y="1080" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-65" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-26" value="없음">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-66" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-27" value="아니오">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-67" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-28" value="예">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-68" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-29" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-69" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-29" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-70" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-31" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-71" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-30" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Qsi7mdbIaseHNrrrWfUV-72" edge="1" parent="1" source="Qsi7mdbIaseHNrrrWfUV-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="Qsi7mdbIaseHNrrrWfUV-31" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="1360" />
+              <mxPoint x="1010" y="1930" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
