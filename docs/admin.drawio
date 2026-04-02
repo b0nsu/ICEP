@@ -1,39 +1,27 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" version="29.6.6">
   <diagram name="페이지-1" id="SkuldOinoRGHE4QoLXP9">
-    <mxGraphModel dx="1273" dy="2059" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1566" dy="2264" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-25" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-2" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="Vuiy7BZOiOXLk6wk-AvM-6" value="1">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-26" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-2" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-7" value="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-30" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-2" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="Vuiy7BZOiOXLk6wk-AvM-11" value="2">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="670" y="-620" />
+              <mxPoint x="1000" y="310" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-26" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-2" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-7" value="2">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="680" y="-510" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-30" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-2" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-11" value="3">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-31" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-2" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-12">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-31" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-2" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-12">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-32" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-31" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="4" vertex="1">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-32" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-31" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="3" vertex="1">
           <mxGeometry relative="1" x="-0.0305" y="2" as="geometry">
             <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-40" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-2" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-18" value="5">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="910" y="-720" />
-            </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-76" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-2" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-71">
@@ -44,120 +32,222 @@
             <mxPoint x="1" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="어드민 메뉴&lt;div&gt;1. 현재 가상 시각 조회&lt;/div&gt;&lt;div&gt;2. 현재 가상 시각 변경&lt;/div&gt;&lt;div&gt;3. 전체 예약 정보 조회&lt;/div&gt;&lt;div&gt;4. 예약 조정(방 이동)&lt;/div&gt;&lt;div&gt;5. 룸 컨디션 관리&lt;/div&gt;&lt;div&gt;0. 로그아웃&lt;/div&gt;" vertex="1">
-          <mxGeometry height="110" width="240" x="750" y="-645" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-63" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-6" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-2">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="670" y="-560" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="현재 가상 시각은 {yyyy-MM-dd HH:mm} 입니다." vertex="1">
-          <mxGeometry height="60" width="320" x="280" y="-620" as="geometry" />
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[admin 메뉴]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 11:30&lt;/div&gt;&lt;div&gt;1. 현재 가상 시각 변경&lt;/div&gt;&lt;div&gt;2. 전체 예약 정보 조회&lt;/div&gt;&lt;div&gt;3. 예약 조정(방 이동)&lt;/div&gt;&lt;div&gt;4. 룸 컨디션 관리&lt;/div&gt;&lt;div&gt;0. 로그아웃&lt;/div&gt;&lt;div&gt;메뉴 선택: _&lt;/div&gt;" vertex="1">
+          <mxGeometry height="135" width="240" x="710" y="275" as="geometry" />
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-27" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-7" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-8" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-39" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-7" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-15" value="틀린 형식">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="620" y="510" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="변경할 가상 시각을 입력해 주세요.(yyyy-MM-dd HH:mm 형태,&amp;nbsp;&lt;div&gt;현재 가상 시각 이전으로 이동 불가)&amp;gt; _&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="350" x="265" y="-490" as="geometry" />
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[현재 가상 시각 변경]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 11:30&lt;/div&gt;&lt;div&gt;새 현재 시각 입력(yyyy-MM-dd HH:mm): _&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="350" x="230" y="350" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-28" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-9" value="예약 상태 변화 없음">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-28" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-9" value="예약 상태 변화 없음">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-29" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-10" value="예약 상태 변화 발생">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="기존 가상 시각 : yyyy-MM-dd HH:mm,&lt;div&gt;변경 후 가상 시각 :&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd HH:mm&lt;/span&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="300" x="290" y="-390" as="geometry" />
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;기존 시각: 2026-03-20 11:30&lt;/div&gt;&lt;div&gt;새 시각: 2026-03-20 17:00&lt;/div&gt;&lt;div&gt;현재 시각이 변경되었습니다.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="300" x="255" y="470" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="예약 상태 변화 없음" vertex="1">
-          <mxGeometry height="60" width="120" x="240" y="-270" as="geometry" />
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-114" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-9" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="370" y="210" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="상태 변화 없음" vertex="1">
+          <mxGeometry height="60" width="120" x="30" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-90" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-10" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-2">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="예약 상태 변화 건수 {num}&lt;div&gt;RESERVED -&amp;gt; NO_SHOW :&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;reservationId = [&quot;1&quot;, &quot;2&quot;], roomId = [&quot;1&quot;, &quot;2&quot;], roomName = [&quot;roomA&quot;, &quot;roomB&quot;]&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;CHECKED_ID -&amp;gt; COMPLETED : r&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;eservationId = [&quot;3&quot;, &quot;4&quot;], roomId = [&quot;3&quot;, &quot;4&quot;], roomName = [&quot;roomC&quot;, &quot;roomD&quot;]&lt;/span&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="140" width="450" x="430" y="-270" as="geometry" />
+          <mxGeometry height="140" width="450" x="255" y="730" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="전체 예약 정보 조회(?)&lt;div&gt;&lt;div&gt;[&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 1, &quot;reservationId&quot;: 1, &quot;date&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;startTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;endTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;partySize&quot;: 4&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;status&quot;: &quot;RESERVED&quot;, &quot;checkedInAt&quot;: null&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 2, &quot;reservationId&quot;: 2, &quot;date&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;startTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;endTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;partySize&quot;: 4&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;status&quot;: &quot;COMPLETED&quot;, &quot;checkedInAt&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd HH:mm&quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;br&gt;...&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;]&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="240" width="560" x="1050" y="-710" as="geometry" />
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-81" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-11" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1000" y="370" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-33" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-12" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-15" value="틀린 형식">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[전체 예약 정보 조회]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 17:00&lt;/div&gt;&lt;div&gt;&lt;div&gt;[&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 1, &quot;reservationId&quot;: 1, &quot;date&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;startTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;endTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;partySize&quot;: 4&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;status&quot;: &quot;RESERVED&quot;, &quot;checkedInAt&quot;: null&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 2, &quot;reservationId&quot;: 2, &quot;date&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;startTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;endTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;partySize&quot;: 4&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;status&quot;: &quot;COMPLETED&quot;, &quot;checkedInAt&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd HH:mm&quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;br&gt;...&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;]&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="206" width="506" x="1050" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-33" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-12" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="Vuiy7BZOiOXLk6wk-AvM-15" value="틀린 형식">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="970" y="560" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-38" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-12" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-13" value="맞는 형식">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="예약 조정(방 이동)&lt;div&gt;대상 reservation id&amp;gt; _&lt;/div&gt;" vertex="1">
-          <mxGeometry height="100" width="190" x="1050" y="-430" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-36" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-13" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-15" value="틀린 형식">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-37" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-13" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-16" value="변경 불가">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="변경할 room id&amp;gt; _" vertex="1">
-          <mxGeometry height="80" width="180" x="1055" y="-280" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="입력 형식이 틀렸습니다." vertex="1">
-          <mxGeometry height="80" width="180" x="780" y="-420" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="존재하지 않거나, 변경이 불가능한 상태입니다." vertex="1">
-          <mxGeometry height="80" width="250" x="1310" y="-280" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-41" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="Vuiy7BZOiOXLk6wk-AvM-19" value="1">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-82" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-12" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-16">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="600" y="-930" />
+              <mxPoint x="1290" y="500" />
             </Array>
-            <mxPoint x="710" y="-860" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-42" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-20" value="2">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-83" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-82" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="존재하지 않는 id" vertex="1">
+          <mxGeometry relative="1" x="-0.0072" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="[예약 조정(방 이동)]&lt;div&gt;현재 가상 시각: 2026-03-20 17:00&lt;br&gt;&lt;div&gt;대상 reservation id&amp;gt; _&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="190" x="1020" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-36" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-13" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-15" value="틀린 형식">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="890" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-37" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-13" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" target="Vuiy7BZOiOXLk6wk-AvM-16" value="존재하지 않는 id">
+          <mxGeometry relative="1" x="-0.0023" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1290" y="710" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-87" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-13" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-86" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-45" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1.001;exitY=0.189;exitDx=0;exitDy=0;fontSize=12;startSize=8;endSize=8;exitPerimeter=0;" target="Vuiy7BZOiOXLk6wk-AvM-22" value="3">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-88" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-87" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="room-reservation 시간대 중복" vertex="1">
+          <mxGeometry relative="1" x="-0.2491" y="3" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-96" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-13" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-95">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-97" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-96" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="맞는 형식" vertex="1">
+          <mxGeometry relative="1" x="-0.061" y="-2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="변경할 room id&amp;gt; _" vertex="1">
+          <mxGeometry height="80" width="180" x="1020" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-91" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-15" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-92" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-15" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-13">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="990" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-93" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-15" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-12">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="970" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="입력 형식이 틀렸습니다." vertex="1">
+          <mxGeometry height="80" width="180" x="740" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-84" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-16" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-12">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1270" y="590" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-85" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-16" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-13">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1250" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="존재하지 않는 id입니다." vertex="1">
+          <mxGeometry height="80" width="250" x="1330" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-41" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" target="Vuiy7BZOiOXLk6wk-AvM-19" value="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="630" y="-740" />
+            </Array>
+            <mxPoint x="710" y="-724" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-42" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-20" value="2">
+          <mxGeometry relative="1" x="-0.0068" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-45" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" target="Vuiy7BZOiOXLk6wk-AvM-22" value="3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="922" y="-824" as="sourcePoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-46" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;exitX=1;exitY=0.75;exitDx=0;exitDy=0;" target="Vuiy7BZOiOXLk6wk-AvM-23" value="4">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-61" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-2" value="0">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="830" y="-720" />
-            </Array>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-134" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-127">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-135" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-134" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="0" vertex="1">
+          <mxGeometry relative="1" x="-0.0202" y="3" as="geometry">
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="룸 컨디션 관리&lt;div&gt;&lt;div&gt;1. 전체 룸 조회&lt;/div&gt;&lt;div&gt;2. 룸 최대 수용 인원 변경&lt;/div&gt;&lt;div&gt;3. 룸 임시 휴업&lt;/div&gt;&lt;div&gt;4. 룸 운영 재개&lt;/div&gt;&lt;div&gt;0. 상위 메뉴로&lt;/div&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="145" width="309" x="714.5" y="-960" as="geometry" />
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;div&gt;[룸 컨디션 관리]&lt;/div&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;현재 가상 시각: 2026-03-20 17:00&lt;/span&gt;&lt;/div&gt;&lt;div&gt;1. 전체 룸 조회&lt;/div&gt;&lt;div&gt;2. 최대 수용 인원 변경&lt;/div&gt;&lt;div&gt;3. 임시 휴업&lt;/div&gt;&lt;div&gt;4. 운영 재개&lt;/div&gt;&lt;div&gt;0. 상위 메뉴로&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="145" width="309" x="714.5" y="-824" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-65" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-19" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18" value="">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-65" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-19" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18" value="">
           <mxGeometry relative="1" x="-0.0015" as="geometry">
             <mxPoint as="offset" />
             <Array as="points">
-              <mxPoint x="590" y="-840" />
+              <mxPoint x="640" y="-680" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="전체 룸 조회&lt;div&gt;&lt;div&gt;[&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 1, &quot;roomName&quot;: &quot;roomA&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;font-size: 10.9px; text-align: start; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;maxCapacity&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;: 4&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomStatus&quot;: &quot;OPEN&quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 2, &quot;roomName&quot;: &quot;roomB&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;font-size: 10.9px; text-align: start; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;maxCapacity&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;: 8&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomStatus&quot;: &quot;CLOSE&quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;...&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;]&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="190" width="460" x="20" y="-982.5" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-43" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-20" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-47" value="틀린 형식">
-          <mxGeometry relative="1" x="-0.0029" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="[전체 룸 조회]&lt;div&gt;&lt;div&gt;[&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 1, &quot;roomName&quot;: &quot;roomA&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;font-size: 10.9px; text-align: start; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;maxCapacity&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;: 4&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomStatus&quot;: &quot;OPEN&quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 2, &quot;roomName&quot;: &quot;roomB&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;font-size: 10.9px; text-align: start; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;maxCapacity&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;: 8&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomStatus&quot;: &quot;CLOSE&quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;...&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;]&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;조회가 끝났습니다.&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="190" width="460" x="90" y="-805" as="geometry" />
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-44" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-20" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-21" value="맞는 형식">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="룸 최대 수용 인원 변경&lt;div&gt;변경할 room id&amp;gt; _&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="180" x="780" y="-1070" as="geometry" />
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-149" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-20" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-100" value="존재하지 않는 id">
+          <mxGeometry relative="1" x="-0.0038" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="780" y="-980" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-58" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-21" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-52">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-175" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-20" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-174" value="틀린 형식">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="590" y="-950" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[최대 수용 인원 변경]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 17:00&lt;/div&gt;&lt;div&gt;룸 ID 입력:&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="180" x="670" y="-934" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-58" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-21" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-52">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-59" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-58" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="영향예약" vertex="1">
@@ -165,65 +255,272 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-66" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-21" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-18">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="680" y="-1050" />
-            </Array>
-          </mxGeometry>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-104" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-21" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-103">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-67" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-66" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="맞는 형식" vertex="1">
-          <mxGeometry relative="1" x="0.2438" y="27" as="geometry">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-105" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-104" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="맞는 형식" vertex="1">
+          <mxGeometry relative="1" x="0.0336" y="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-21" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;최대 수용 인원&amp;gt; _&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="180" x="779" y="-1160" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-60" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-22" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-51" value="영향예약">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-180" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-21" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-174">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1290" y="-970" />
+              <mxPoint x="500" y="-1000" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="룸 임시 휴업&lt;div&gt;변경할 room id&amp;gt; _&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="180" x="1094" y="-960" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="룸 운영 재개&lt;div&gt;변경할 room id&amp;gt; _&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="180" x="1330" y="-880" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-47" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="입력 형식이 틀렸습니다." vertex="1">
-          <mxGeometry height="80" width="180" x="1320" y="-1090" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-48" edge="1" parent="1" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-47" value="틀린 형식">
-          <mxGeometry relative="1" x="-0.0029" as="geometry">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-181" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-180" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="틀린 형식" vertex="1">
+          <mxGeometry relative="1" x="-0.0019" y="4" as="geometry">
             <mxPoint as="offset" />
-            <mxPoint x="960" y="-1130" as="sourcePoint" />
-            <mxPoint x="1080" y="-1160" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-51" parent="1" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
-          <mxGeometry height="60" width="60" x="1190" y="-1160" as="geometry" />
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-21" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;새 최대 수용 인원 입력:&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="180" x="430" y="-1126.5" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-52" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="영향예약" vertex="1">
-          <mxGeometry height="33" width="60" x="1190" y="-1153" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-69" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-68" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18">
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-60" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-22" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-51" value="영향예약">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="640" y="-1080" />
+              <mxPoint x="1020" y="-1040" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-68" parent="1" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;" value="admin 메뉴 입장" vertex="1">
-          <mxGeometry height="60" width="100" x="400" y="-1150" as="geometry" />
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-150" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-22" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-100" value="존재하지 않는 id">
+          <mxGeometry relative="1" x="0.0028" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="950" y="-990" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-71" parent="1" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
-          <mxGeometry height="60" width="60" x="580" y="-760" as="geometry" />
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-158" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-22" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-157" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-72" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="시작페이지" vertex="1">
-          <mxGeometry height="33" width="100" x="560" y="-747.5" as="geometry" />
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-159" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-158" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="맞는 형식" vertex="1">
+          <mxGeometry relative="1" x="0.0118" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-172" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-22" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-171" value="틀린 형식">
+          <mxGeometry relative="1" x="-0.0094" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1150" y="-960" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[룸 임시 휴업]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 17:00&lt;/div&gt;&lt;div&gt;휴업할 룸 ID 입력:&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="180" x="890" y="-934" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-110" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-23" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-109" value="맞는 형식">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-167" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-23" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-166">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1430" y="-740" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-168" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-167" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="존재하지 않는 id" vertex="1">
+          <mxGeometry relative="1" x="0.0196" y="-3" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-177" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-23" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-171" value="틀린 형식">
+          <mxGeometry relative="1" x="0.0037" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1360" y="-870" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[룸 운영 재개]&lt;/div&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;현재 가상 시각: 2026-03-20 17:00&lt;/span&gt;운영 재개할 룸 ID 입력:" vertex="1">
+          <mxGeometry height="60" width="180" x="1180" y="-740" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-86" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="오류: 대상 룸의 같은 시간대에 이미 예약이 있습니다." vertex="1">
+          <mxGeometry height="60" width="300" x="960" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-94" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-86" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.826;entryY=1.005;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-95" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="예약 조정이 완료되었습니다." vertex="1">
+          <mxGeometry height="60" width="160" x="750" y="705" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-98" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-95" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0.917;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1040" y="580" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-153" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-100" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-20">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="840" y="-970" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-154" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-100" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-22">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="900" y="-980" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-100" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="존재하지 않는 id입니다." vertex="1">
+          <mxGeometry height="40" width="150" x="794" y="-1064" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-106" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-103" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-103" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="룸 최대 수용 인원이 변경되었습니다." vertex="1">
+          <mxGeometry height="60" width="120" x="196" y="-1126.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-111" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-109" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-109" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;roomStatus = OPEN 저장&lt;/div&gt;&lt;div&gt;룸 운영이 재개되었습니다.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="170" x="1185" y="-585" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-117" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="70" width="100" x="910" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-115" parent="Vuiy7BZOiOXLk6wk-AvM-117" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
+          <mxGeometry height="70" width="74" x="13" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-116" parent="Vuiy7BZOiOXLk6wk-AvM-117" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="룸 관리&lt;div&gt;출발노드&lt;/div&gt;" vertex="1">
+          <mxGeometry height="33" width="100" y="7.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-118" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="70" width="100" x="521" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-71" parent="Vuiy7BZOiOXLk6wk-AvM-118" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
+          <mxGeometry height="70" width="74" x="12" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-72" parent="Vuiy7BZOiOXLk6wk-AvM-118" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="시작페이지" vertex="1">
+          <mxGeometry height="33" width="100" y="10.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-120" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-2" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.215;entryY=0.728;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-115" value="4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-121" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="70" width="100" x="670" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-122" parent="Vuiy7BZOiOXLk6wk-AvM-121" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
+          <mxGeometry height="70" width="74" x="13" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-123" parent="Vuiy7BZOiOXLk6wk-AvM-121" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="룸 관리&amp;nbsp;&lt;div&gt;도착노드&lt;/div&gt;" vertex="1">
+          <mxGeometry height="33" width="100" y="7.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-125" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-122" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.736;exitY=0.743;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;exitPerimeter=0;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-126" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="70" width="100" x="900" y="-550" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-127" parent="Vuiy7BZOiOXLk6wk-AvM-126" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
+          <mxGeometry height="70" width="74" x="13" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-128" parent="Vuiy7BZOiOXLk6wk-AvM-126" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="어드민 메뉴&lt;div&gt;출발 노드&lt;/div&gt;" vertex="1">
+          <mxGeometry height="33" width="100" y="14.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-129" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="70" width="100" x="740" y="-560" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-130" parent="Vuiy7BZOiOXLk6wk-AvM-129" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
+          <mxGeometry height="70" width="74" x="13" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-131" parent="Vuiy7BZOiOXLk6wk-AvM-129" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="어드민 메뉴&lt;div&gt;도착노드&lt;/div&gt;" vertex="1">
+          <mxGeometry height="33" width="100" y="18.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-133" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-130" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-139" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="60" width="100" x="980" y="-1140" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-51" parent="Vuiy7BZOiOXLk6wk-AvM-139" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
+          <mxGeometry height="60" width="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-52" parent="Vuiy7BZOiOXLk6wk-AvM-139" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;container=1;" value="영향예약" vertex="1">
+          <mxGeometry height="33" width="60" y="7" as="geometry">
+            <mxRectangle height="30" width="100" y="7" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-144" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="60" width="116" x="165" y="-930" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-145" parent="Vuiy7BZOiOXLk6wk-AvM-144" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
+          <mxGeometry height="60" width="116" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-146" parent="Vuiy7BZOiOXLk6wk-AvM-144" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;container=1;" value="영향예약&lt;div&gt;수용인원 변경&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="33" width="116" y="7" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-147" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-146" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-103">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-164" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-157" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-157" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="임시 휴업 상태로&lt;div&gt;변경되었습니다.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="1180" y="-934" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-160" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="60" width="116" x="1420" y="-1064" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-161" parent="Vuiy7BZOiOXLk6wk-AvM-160" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
+          <mxGeometry height="60" width="116" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-162" parent="Vuiy7BZOiOXLk6wk-AvM-160" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;container=1;" value="영향예약&lt;div&gt;임시휴업&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="33" width="116" y="7" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-163" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-162" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-157">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-169" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-166" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-23">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1420" y="-710" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-166" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="존재하지 않는 id입니다." vertex="1">
+          <mxGeometry height="40" width="150" x="1490" y="-740" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-173" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-171" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-22">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1100" y="-990" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-178" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-171" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-23">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1310" y="-870" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-171" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="틀린 형식입니다." vertex="1">
+          <mxGeometry height="60" width="120" x="1220" y="-1066.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-176" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-174" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-20">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="590" y="-860" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-182" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-174" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-21">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="430" y="-1000" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-174" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="틀린 형식입니다." vertex="1">
+          <mxGeometry height="60" width="120" x="380" y="-934" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
