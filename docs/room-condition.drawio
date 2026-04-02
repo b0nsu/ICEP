@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" version="29.6.6" pages="2">
   <diagram name="페이지-1" id="SkuldOinoRGHE4QoLXP9">
-    <mxGraphModel dx="2909" dy="3203" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1131" dy="1960" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -96,6 +96,14 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="QFSLjn48WtyFdIYbTeSb-2" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-21" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QFSLjn48WtyFdIYbTeSb-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QFSLjn48WtyFdIYbTeSb-3" connectable="0" parent="QFSLjn48WtyFdIYbTeSb-2" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="체크인 상태의 룸 수용인원 초과" vertex="1">
+          <mxGeometry relative="1" x="-0.0081" y="-3" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-21" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;새 최대 수용 인원 입력:&lt;/div&gt;" vertex="1">
           <mxGeometry height="60" width="180" x="430" y="-1126.5" as="geometry" />
         </mxCell>
@@ -180,7 +188,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-103" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="룸 최대 수용 인원이 변경되었습니다.&lt;div&gt;변경된 room id: _&lt;br&gt;&lt;div&gt;기존 수용 인원: _&lt;/div&gt;&lt;div&gt;변경 후 수용 인원: _&lt;/div&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="86.5" width="196" x="120" y="-1126.5" as="geometry" />
+          <mxGeometry height="86.5" width="196" x="40" y="-1140" as="geometry" />
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-111" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-109" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18">
           <mxGeometry relative="1" as="geometry" />
@@ -221,7 +229,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-144" connectable="0" parent="1" style="group" value="" vertex="1">
-          <mxGeometry height="60" width="116" x="160" y="-930" as="geometry" />
+          <mxGeometry height="60" width="116" x="80" y="-884" as="geometry" />
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-145" parent="Vuiy7BZOiOXLk6wk-AvM-144" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
           <mxGeometry height="60" width="116" as="geometry" />
@@ -292,7 +300,18 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="Vuiy7BZOiOXLk6wk-AvM-174" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="입력 형식이 틀렸습니다." vertex="1">
-          <mxGeometry height="60" width="140" x="360" y="-934" as="geometry" />
+          <mxGeometry height="60" width="140" x="380" y="-910" as="geometry" />
+        </mxCell>
+        <mxCell id="QFSLjn48WtyFdIYbTeSb-4" edge="1" parent="1" source="QFSLjn48WtyFdIYbTeSb-1" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="-850" />
+              <mxPoint x="430" y="-830" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QFSLjn48WtyFdIYbTeSb-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="오류: 현재 CHECKED_IN 예약 인원이 새 최대 수용 인원을 초과하여 변경할 수 없습니다" vertex="1">
+          <mxGeometry height="60" width="230" x="150" y="-980" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
