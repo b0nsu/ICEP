@@ -1,0 +1,238 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36">
+  <diagram name="페이지-1의 복사본" id="JrqIfzBD6-OfLNKkH1Yi">
+    <mxGraphModel dx="1437" dy="943" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-0" />
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-1" parent="QaLJ_ruc6u2c_-SRrsET-0" />
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-2" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-11" value="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-3" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="QaLJ_ruc6u2c_-SRrsET-20" value="2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1000" y="310" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-4" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-5" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-4" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="3" vertex="1">
+          <mxGeometry relative="1" x="-0.0305" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-6" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-86">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-7" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-6" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="0" vertex="1">
+          <mxGeometry relative="1" x="0.0223" y="3" as="geometry">
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-8" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[admin 메뉴]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 11:30&lt;/div&gt;&lt;div&gt;1. 현재 가상 시각 변경&lt;/div&gt;&lt;div&gt;2. 전체 예약 정보 조회&lt;/div&gt;&lt;div&gt;3. 예약 조정(방 이동)&lt;/div&gt;&lt;div&gt;4. 룸 컨디션 관리&lt;/div&gt;&lt;div&gt;0. 로그아웃&lt;/div&gt;&lt;div&gt;메뉴 선택: _&lt;/div&gt;" vertex="1">
+          <mxGeometry height="135" width="240" x="710" y="275" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-9" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-11" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-14" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-10" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-11" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-36" value="틀린 형식">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="620" y="510" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-11" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[현재 가상 시각 변경]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 11:30&lt;/div&gt;&lt;div&gt;새 현재 시각 입력(yyyy-MM-dd HH:mm): _&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="350" x="230" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-12" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-14" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-16" value="예약 상태 변화 없음">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-13" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-14" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-18" value="예약 상태 변화 발생">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-14" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;기존 시각: 2026-03-20 11:30&lt;/div&gt;&lt;div&gt;새 시각: 2026-03-20 17:00&lt;/div&gt;&lt;div&gt;현재 시각이 변경되었습니다.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="300" x="255" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-15" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-16" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="370" y="210" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-16" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="상태 변화 없음" vertex="1">
+          <mxGeometry height="60" width="120" x="30" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-17" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-18" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="예약 상태 변화 건수 {num}&lt;div&gt;RESERVED -&amp;gt; NO_SHOW :&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;reservationId = [&quot;1&quot;, &quot;2&quot;], roomId = [&quot;1&quot;, &quot;2&quot;], roomName = [&quot;roomA&quot;, &quot;roomB&quot;]&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;CHECKED_ID -&amp;gt; COMPLETED : r&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;eservationId = [&quot;3&quot;, &quot;4&quot;], roomId = [&quot;3&quot;, &quot;4&quot;], roomName = [&quot;roomC&quot;, &quot;roomD&quot;]&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="140" width="450" x="255" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-19" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-20" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1000" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-20" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[전체 예약 정보 조회]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 17:00&lt;/div&gt;&lt;div&gt;&lt;div&gt;[&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 1, &quot;reservationId&quot;: 1, &quot;date&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;startTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;endTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;partySize&quot;: 4&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;status&quot;: &quot;RESERVED&quot;, &quot;checkedInAt&quot;: null&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 2, &quot;reservationId&quot;: 2, &quot;date&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;startTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;endTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;partySize&quot;: 4&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;status&quot;: &quot;COMPLETED&quot;, &quot;checkedInAt&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd HH:mm&quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;br&gt;...&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;]&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="206" width="506" x="1050" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-21" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-25" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="QaLJ_ruc6u2c_-SRrsET-36" value="틀린 형식">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="970" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-22" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-25" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-32" value="맞는 형식">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-23" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-25" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-39">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1290" y="500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-24" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-23" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="존재하지 않는 id" vertex="1">
+          <mxGeometry relative="1" x="-0.0072" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-25" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="[예약 조정(방 이동)]&lt;div&gt;현재 가상 시각: 2026-03-20 17:00&lt;br&gt;&lt;div&gt;대상 reservation id&amp;gt; _&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="190" x="1020" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-26" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-32" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-36" value="틀린 형식">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="890" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-27" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-32" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" target="QaLJ_ruc6u2c_-SRrsET-39" value="존재하지 않는 id">
+          <mxGeometry relative="1" x="-0.0023" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1290" y="710" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-28" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-32" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-71" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-29" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-28" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="room-reservation 시간대 중복" vertex="1">
+          <mxGeometry relative="1" x="-0.2491" y="3" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-30" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-32" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-73">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-31" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-30" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="맞는 형식" vertex="1">
+          <mxGeometry relative="1" x="-0.061" y="-2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-32" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="변경할 room id&amp;gt; _" vertex="1">
+          <mxGeometry height="80" width="180" x="1020" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-33" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-36" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-11">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-34" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-36" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-32">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="990" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-35" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-36" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-25">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="970" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-36" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="입력 형식이 틀렸습니다." vertex="1">
+          <mxGeometry height="80" width="180" x="740" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-37" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-39" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-25">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1270" y="590" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-38" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-39" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-32">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1250" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-39" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="존재하지 않는 id입니다." vertex="1">
+          <mxGeometry height="80" width="250" x="1330" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-71" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="오류: 대상 룸의 같은 시간대에 이미 예약이 있습니다." vertex="1">
+          <mxGeometry height="60" width="300" x="960" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-72" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-71" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.826;entryY=1.005;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-73" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="예약 조정이 완료되었습니다.&lt;div&gt;변경된 room id: _&lt;/div&gt;&lt;div&gt;변경된 시간: _&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="160" x="750" y="705" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-74" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-73" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0.917;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1040" y="580" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-82" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-1" style="group" value="" vertex="1">
+          <mxGeometry height="70" width="100" x="910" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-83" parent="QaLJ_ruc6u2c_-SRrsET-82" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
+          <mxGeometry height="70" width="74" x="13" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-84" parent="QaLJ_ruc6u2c_-SRrsET-82" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="룸 관리&lt;div&gt;출발노드&lt;/div&gt;" vertex="1">
+          <mxGeometry height="33" width="100" y="7.5" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-85" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-1" style="group" value="" vertex="1">
+          <mxGeometry height="70" width="100" x="521" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-86" parent="QaLJ_ruc6u2c_-SRrsET-85" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
+          <mxGeometry height="70" width="74" x="12" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-87" parent="QaLJ_ruc6u2c_-SRrsET-85" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="시작페이지" vertex="1">
+          <mxGeometry height="33" width="100" y="10.5" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-88" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.215;entryY=0.728;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-83" value="4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-89" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-1" style="group" value="" vertex="1">
+          <mxGeometry height="70" width="100" x="660" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-90" parent="QaLJ_ruc6u2c_-SRrsET-89" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
+          <mxGeometry height="70" width="74" x="13" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-91" parent="QaLJ_ruc6u2c_-SRrsET-89" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="룸 관리&amp;nbsp;&lt;div&gt;도착노드&lt;/div&gt;" vertex="1">
+          <mxGeometry height="33" width="100" y="7.5" as="geometry" />
+        </mxCell>
+        <mxCell id="QaLJ_ruc6u2c_-SRrsET-92" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-90" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.736;exitY=0.743;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;exitPerimeter=0;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
