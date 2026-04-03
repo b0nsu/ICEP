@@ -1,552 +1,277 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" version="29.6.6" pages="2">
-  <diagram name="페이지-1" id="SkuldOinoRGHE4QoLXP9">
-    <mxGraphModel dx="1131" dy="1960" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36">
+  <diagram name="Room_Condition" id="room-condition-flow">
+    <mxGraphModel dx="1059" dy="695" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="1700" math="0" shadow="0" adaptiveColors="auto">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-41" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" target="Vuiy7BZOiOXLk6wk-AvM-19" value="1">
+        <mxCell id="entry" parent="1" style="shape=offPageConnector;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" value="R" vertex="1">
+          <mxGeometry height="60" width="80" x="510" y="47" as="geometry" />
+        </mxCell>
+        <mxCell id="entry_label" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;" value="Admin 흐름에서 진입" vertex="1">
+          <mxGeometry height="30" width="260" x="420" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="room_menu" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=15;" value="[룸 컨디션 관리]&lt;div&gt;1. 전체 룸 조회&lt;/div&gt;&lt;div&gt;2. 최대 수용 인원 변경&lt;/div&gt;&lt;div&gt;3. 임시 휴업&lt;/div&gt;&lt;div&gt;4. 운영 재개&lt;/div&gt;&lt;div&gt;0. 상위 메뉴로&lt;/div&gt;" vertex="1">
+          <mxGeometry height="160" width="380" x="360" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="select" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=15;" value="선택값?" vertex="1">
+          <mxGeometry height="95" width="160" x="470" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="IkRzbDj6imA9uRffHvx1-4" edge="1" parent="1" source="menu_error" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;dashed=1;">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="630" y="-740" />
+              <mxPoint x="1090" y="200" />
+              <mxPoint x="740" y="200" />
             </Array>
-            <mxPoint x="710" y="-724" as="sourcePoint" />
+            <mxPoint x="740" y="200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-42" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-20" value="2">
-          <mxGeometry relative="1" x="-0.0068" as="geometry">
+        <mxCell id="menu_error" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="오류 메시지 출력&lt;div&gt;후 룸 컨디션 메뉴 재표시&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="180" x="1000" y="367" as="geometry" />
+        </mxCell>
+        <mxCell id="return_admin" parent="1" style="shape=offPageConnector;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" value="R" vertex="1">
+          <mxGeometry height="60" width="80" x="1130" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="return_admin_label" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;" value="Admin 메뉴로 복귀" vertex="1">
+          <mxGeometry height="30" width="260" x="1040" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="room_list" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="전체 룸 목록 출력&lt;div&gt;roomId / roomName / 정원 / status&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="250" x="60" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="정원 변경 입력&lt;div&gt;roomId / 새 정원&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="230" x="360" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_format" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="입력 형식 정상?" vertex="1">
+          <mxGeometry height="100" width="170" x="390" y="635" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_format_err" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="오류 메시지 출력&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;후 룸 컨디션&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;관리 메뉴 재표시&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="65" width="170" x="590" y="735" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_checked" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="현재 CHECKED_IN&lt;div&gt;인원 초과?&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="200" x="375" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_checked_err" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="오류: 현재 CHECKED_IN 예약 인원이&lt;div&gt;새 최대 수용 인원을 초과&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="250" x="620" y="1220" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_impact" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="미래 RESERVED&lt;div&gt;영향 예약 존재?&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="200" x="375" y="955" as="geometry" />
+        </mxCell>
+        <mxCell id="impact_out_cap" parent="1" style="shape=offPageConnector;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" value="I" vertex="1">
+          <mxGeometry height="60" width="80" x="380" y="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="impact_out_cap_label" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;" value="영향예약 흐름으로 이동&lt;div&gt;(정원 변경)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="35" width="280" x="280" y="1185" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_save" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="정원 변경 저장&lt;div&gt;변경 전/후 ROOM 출력&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="210" x="120" y="1212" as="geometry" />
+        </mxCell>
+        <mxCell id="close_input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="임시 휴업 입력&lt;div&gt;roomId&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="160" x="800" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="close_format" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="입력 형식 정상?" vertex="1">
+          <mxGeometry height="85" width="150" x="790" y="635" as="geometry" />
+        </mxCell>
+        <mxCell id="close_format_err" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="오류 메시지 출력&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;후 룸 컨디션&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;관리 메뉴 재표시&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="1030" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="close_checked" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="CHECKED_IN 없음?" vertex="1">
+          <mxGeometry height="90" width="165" x="780" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="close_checked_err" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="오류: 현재 사용 중 예약이 있어&lt;div&gt;즉시 휴업 불가&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="1000" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="close_impact" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="미래 RESERVED&lt;div&gt;영향 예약 존재?&lt;/div&gt;" vertex="1">
+          <mxGeometry height="95" width="165" x="790" y="955" as="geometry" />
+        </mxCell>
+        <mxCell id="impact_out_close" parent="1" style="shape=offPageConnector;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" value="I" vertex="1">
+          <mxGeometry height="60" width="80" x="880" y="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="impact_out_close_label" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;" value="영향예약 흐름으로 이동&lt;div&gt;(임시 휴업)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="35" width="220" x="810" y="1185" as="geometry" />
+        </mxCell>
+        <mxCell id="close_save" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="roomStatus = CLOSED 저장&lt;div&gt;변경 전/후 ROOM 출력&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="1050" y="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="open_input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="운영 재개 입력&lt;div&gt;roomId&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="220" x="60" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="open_format" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="입력 형식 정상?" vertex="1">
+          <mxGeometry height="100" width="160" x="90" y="835" as="geometry" />
+        </mxCell>
+        <mxCell id="open_err" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="오류 메시지 출력&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;후 룸 컨디션 관리 메뉴 재표시&lt;/span&gt;" vertex="1">
+          <mxGeometry height="55" width="170" x="60" y="995" as="geometry" />
+        </mxCell>
+        <mxCell id="open_save" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="roomStatus = OPEN 저장&lt;div&gt;변경 전/후 ROOM 출력&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="70" y="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="entry" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;" target="room_menu">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="room_menu" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="select">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="select" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=0;exitY=0.3;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="room_list" value="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="select" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=0.35;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="cap_input" value="2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="select" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=0.7;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="close_input" value="3">
+          <mxGeometry relative="1" x="0.1196" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-45" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" target="Vuiy7BZOiOXLk6wk-AvM-22" value="3">
+        <mxCell id="e6" edge="1" parent="1" source="select" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="open_input" value="4">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="922" y="-824" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="340" y="403" />
+              <mxPoint x="340" y="670" />
+              <mxPoint x="170" y="670" />
+            </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-46" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;exitX=1;exitY=0.75;exitDx=0;exitDy=0;" target="Vuiy7BZOiOXLk6wk-AvM-23" value="4">
+        <mxCell id="e7" edge="1" parent="1" source="select" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="return_admin" value="0">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="603" y="370" />
+              <mxPoint x="940" y="370" />
+              <mxPoint x="940" y="100" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="select" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="menu_error" value="기타">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-134" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-127">
+        <mxCell id="e9" edge="1" parent="1" source="menu_error" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;" target="room_menu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1045" y="330" />
+              <mxPoint x="900" y="330" />
+              <mxPoint x="900" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="room_list" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="room_menu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="560" />
+              <mxPoint x="50" y="250" />
+            </Array>
+            <mxPoint x="360" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="cap_input" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="cap_format">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-135" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-134" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="0" vertex="1">
-          <mxGeometry relative="1" x="-0.0202" y="3" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;div&gt;[룸 컨디션 관리]&lt;/div&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;현재 가상 시각: 2026-03-20 17:00&lt;/span&gt;&lt;/div&gt;&lt;div&gt;1. 전체 룸 조회&lt;/div&gt;&lt;div&gt;2. 최대 수용 인원 변경&lt;/div&gt;&lt;div&gt;3. 임시 휴업&lt;/div&gt;&lt;div&gt;4. 운영 재개&lt;/div&gt;&lt;div&gt;0. 상위 메뉴로&lt;br&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="145" width="309" x="714.5" y="-824" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-65" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-19" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18" value="">
-          <mxGeometry relative="1" x="-0.0015" as="geometry">
-            <mxPoint as="offset" />
-            <Array as="points">
-              <mxPoint x="640" y="-680" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="[전체 룸 조회]&lt;div&gt;&lt;div&gt;[&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 1, &quot;roomName&quot;: &quot;roomA&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;font-size: 10.9px; text-align: start; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;maxCapacity&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;: 4&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomStatus&quot;: &quot;OPEN&quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 2, &quot;roomName&quot;: &quot;roomB&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;&lt;/span&gt;&lt;span style=&quot;font-size: 10.9px; text-align: start; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;maxCapacity&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;: 8&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomStatus&quot;: &quot;CLOSE&quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;...&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;]&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;조회가 끝났습니다.&lt;/span&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="190" width="460" x="90" y="-805" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-44" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-20" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-21" value="맞는 형식">
+        <mxCell id="e12" edge="1" parent="1" source="cap_format" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="cap_checked" value="예">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-149" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-20" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-100" value="존재하지 않는 id">
-          <mxGeometry relative="1" x="-0.0038" as="geometry">
-            <mxPoint as="offset" />
-            <Array as="points">
-              <mxPoint x="780" y="-980" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-175" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-20" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-174" value="틀린 형식">
+        <mxCell id="e13" edge="1" parent="1" source="cap_format" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.4;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="cap_format_err" value="아니오">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="590" y="-950" />
+              <mxPoint x="580" y="677" />
+              <mxPoint x="580" y="768" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[최대 수용 인원 변경]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 17:00&lt;/div&gt;&lt;div&gt;룸 ID 입력:&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="180" x="670" y="-934" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-58" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-21" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-52">
+        <mxCell id="e14" edge="1" parent="1" source="cap_format_err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="room_menu">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-59" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-58" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="영향예약" vertex="1">
-          <mxGeometry relative="1" x="0.0036" y="3" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-104" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-21" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-103">
+        <mxCell id="e15" edge="1" parent="1" source="cap_checked" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.4;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="cap_checked_err" value="예">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-105" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-104" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="맞는 형식" vertex="1">
-          <mxGeometry relative="1" x="0.0336" y="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-180" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-21" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-174">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="500" y="-1000" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-181" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-180" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="틀린 형식" vertex="1">
-          <mxGeometry relative="1" x="-0.0019" y="4" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QFSLjn48WtyFdIYbTeSb-2" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-21" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QFSLjn48WtyFdIYbTeSb-1">
+        <mxCell id="e16" edge="1" parent="1" source="cap_checked" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="cap_impact" value="아니오">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="QFSLjn48WtyFdIYbTeSb-3" connectable="0" parent="QFSLjn48WtyFdIYbTeSb-2" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="체크인 상태의 룸 수용인원 초과" vertex="1">
-          <mxGeometry relative="1" x="-0.0081" y="-3" as="geometry">
-            <mxPoint x="1" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-21" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;새 최대 수용 인원 입력:&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="180" x="430" y="-1126.5" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-60" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-22" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-51" value="영향예약">
+        <mxCell id="e17" edge="1" parent="1" source="cap_checked_err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;" target="room_menu">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1020" y="-1040" />
+              <mxPoint x="770" y="260" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-150" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-22" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-100" value="존재하지 않는 id">
-          <mxGeometry relative="1" x="0.0028" as="geometry">
-            <mxPoint as="offset" />
-            <Array as="points">
-              <mxPoint x="950" y="-990" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-158" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-22" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-157" value="">
+        <mxCell id="e18" edge="1" parent="1" source="cap_impact" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="impact_out_cap" value="예">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-159" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-158" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="맞는 형식" vertex="1">
-          <mxGeometry relative="1" x="0.0118" y="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-172" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-22" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-171" value="틀린 형식">
-          <mxGeometry relative="1" x="-0.0094" as="geometry">
-            <mxPoint as="offset" />
-            <Array as="points">
-              <mxPoint x="1150" y="-960" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[룸 임시 휴업]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 17:00&lt;/div&gt;&lt;div&gt;휴업할 룸 ID 입력:&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="180" x="890" y="-934" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-110" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-23" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-109" value="맞는 형식">
+        <mxCell id="e19" edge="1" parent="1" source="cap_impact" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=0;exitY=0.65;exitDx=0;exitDy=0;entryX=1;entryY=0.45;entryDx=0;entryDy=0;" target="cap_save" value="아니오">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-167" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-23" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-166">
+        <mxCell id="e20" edge="1" parent="1" source="cap_save" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="room_menu">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1430" y="-740" />
+              <mxPoint x="10" y="1252" />
+              <mxPoint x="10" y="170" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-168" connectable="0" parent="Vuiy7BZOiOXLk6wk-AvM-167" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="존재하지 않는 id" vertex="1">
-          <mxGeometry relative="1" x="0.0196" y="-3" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-177" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-23" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="Vuiy7BZOiOXLk6wk-AvM-171" value="틀린 형식">
-          <mxGeometry relative="1" x="0.0037" as="geometry">
-            <mxPoint as="offset" />
-            <Array as="points">
-              <mxPoint x="1360" y="-870" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[룸 운영 재개]&lt;/div&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;현재 가상 시각: 2026-03-20 17:00&lt;/span&gt;운영 재개할 룸 ID 입력:" vertex="1">
-          <mxGeometry height="60" width="180" x="1180" y="-740" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-153" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-100" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-20">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="840" y="-970" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-154" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-100" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-22">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="900" y="-980" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-100" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="존재하지 않는 id입니다." vertex="1">
-          <mxGeometry height="40" width="150" x="794" y="-1064" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-106" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-103" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18">
+        <mxCell id="e21" edge="1" parent="1" source="close_input" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="close_format">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-103" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="룸 최대 수용 인원이 변경되었습니다.&lt;div&gt;변경된 room id: _&lt;br&gt;&lt;div&gt;기존 수용 인원: _&lt;/div&gt;&lt;div&gt;변경 후 수용 인원: _&lt;/div&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="86.5" width="196" x="40" y="-1140" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-111" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-109" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18">
+        <mxCell id="e22" edge="1" parent="1" source="close_format" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="close_checked" value="예">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-109" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;roomStatus = OPEN 저장&lt;/div&gt;&lt;div&gt;룸 운영이 재개되었습니다.&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="170" x="1185" y="-585" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-126" connectable="0" parent="1" style="group" value="" vertex="1">
-          <mxGeometry height="70" width="100" x="900" y="-550" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-127" parent="Vuiy7BZOiOXLk6wk-AvM-126" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
-          <mxGeometry height="70" width="74" x="13" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-128" parent="Vuiy7BZOiOXLk6wk-AvM-126" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="어드민 메뉴&lt;div&gt;출발 노드&lt;/div&gt;" vertex="1">
-          <mxGeometry height="33" width="100" y="14.5" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-129" connectable="0" parent="1" style="group" value="" vertex="1">
-          <mxGeometry height="70" width="100" x="740" y="-560" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-130" parent="Vuiy7BZOiOXLk6wk-AvM-129" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
-          <mxGeometry height="70" width="74" x="13" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-131" parent="Vuiy7BZOiOXLk6wk-AvM-129" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="어드민 메뉴&lt;div&gt;도착노드&lt;/div&gt;" vertex="1">
-          <mxGeometry height="33" width="100" y="18.5" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-133" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-130" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18">
+        <mxCell id="e23" edge="1" parent="1" source="close_format" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.4;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="close_format_err" value="아니오">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-139" connectable="0" parent="1" style="group" value="" vertex="1">
-          <mxGeometry height="60" width="100" x="980" y="-1140" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-51" parent="Vuiy7BZOiOXLk6wk-AvM-139" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
-          <mxGeometry height="60" width="60" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-52" parent="Vuiy7BZOiOXLk6wk-AvM-139" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;container=1;" value="영향예약" vertex="1">
-          <mxGeometry height="33" width="60" y="7" as="geometry">
-            <mxRectangle height="30" width="100" y="7" as="alternateBounds" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-144" connectable="0" parent="1" style="group" value="" vertex="1">
-          <mxGeometry height="60" width="116" x="80" y="-884" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-145" parent="Vuiy7BZOiOXLk6wk-AvM-144" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
-          <mxGeometry height="60" width="116" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-146" parent="Vuiy7BZOiOXLk6wk-AvM-144" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;container=1;" value="영향예약&lt;div&gt;수용인원 변경&amp;nbsp;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="33" width="116" y="7" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-147" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-146" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-103">
+        <mxCell id="e25" edge="1" parent="1" source="close_checked" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="close_checked_err" value="아니오">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-164" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-157" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18">
+        <mxCell id="e26" edge="1" parent="1" source="close_checked" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="close_impact" value="예">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-157" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="임시 휴업 상태로&lt;div&gt;변경되었습니다.&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="120" x="1180" y="-934" as="geometry" />
+        <mxCell id="e27" edge="1" parent="1" source="close_checked_err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;" target="room_menu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="970" y="820" />
+              <mxPoint x="970" y="220" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-160" connectable="0" parent="1" style="group" value="" vertex="1">
-          <mxGeometry height="60" width="116" x="1420" y="-1064" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-161" parent="Vuiy7BZOiOXLk6wk-AvM-160" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
-          <mxGeometry height="60" width="116" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-162" parent="Vuiy7BZOiOXLk6wk-AvM-160" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;container=1;" value="영향예약&lt;div&gt;임시휴업&amp;nbsp;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="33" width="116" y="7" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-163" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-162" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-157">
+        <mxCell id="e28" edge="1" parent="1" source="close_impact" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="impact_out_close" value="예">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-169" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-166" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-23">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1420" y="-710" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-166" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="존재하지 않는 id입니다." vertex="1">
-          <mxGeometry height="40" width="150" x="1490" y="-740" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-173" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-171" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-22">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1100" y="-990" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-178" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-171" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-23">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1310" y="-870" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-171" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="입력 형식이 틀렸습니다." vertex="1">
-          <mxGeometry height="60" width="150" x="1190" y="-1066.5" as="geometry" />
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-176" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-174" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-20">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="590" y="-860" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-182" edge="1" parent="1" source="Vuiy7BZOiOXLk6wk-AvM-174" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-21">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="430" y="-1000" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Vuiy7BZOiOXLk6wk-AvM-174" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="입력 형식이 틀렸습니다." vertex="1">
-          <mxGeometry height="60" width="140" x="380" y="-910" as="geometry" />
-        </mxCell>
-        <mxCell id="QFSLjn48WtyFdIYbTeSb-4" edge="1" parent="1" source="QFSLjn48WtyFdIYbTeSb-1" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="Vuiy7BZOiOXLk6wk-AvM-18">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="310" y="-850" />
-              <mxPoint x="430" y="-830" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QFSLjn48WtyFdIYbTeSb-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="오류: 현재 CHECKED_IN 예약 인원이 새 최대 수용 인원을 초과하여 변경할 수 없습니다" vertex="1">
-          <mxGeometry height="60" width="230" x="150" y="-980" as="geometry" />
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
-  <diagram name="페이지-1의 복사본" id="JrqIfzBD6-OfLNKkH1Yi">
-    <mxGraphModel dx="2909" dy="2034" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-      <root>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-0" />
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-1" parent="QaLJ_ruc6u2c_-SRrsET-0" />
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-2" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-11" value="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-3" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="QaLJ_ruc6u2c_-SRrsET-20" value="2">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1000" y="310" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-4" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-25">
+        <mxCell id="e29" edge="1" parent="1" source="close_impact" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.65;exitDx=0;exitDy=0;entryX=0;entryY=0.45;entryDx=0;entryDy=0;" target="close_save" value="아니오">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-5" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-4" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="3" vertex="1">
-          <mxGeometry relative="1" x="-0.0305" y="2" as="geometry">
-            <mxPoint as="offset" />
+        <mxCell id="e30" edge="1" parent="1" source="close_save" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;" target="room_menu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1270" y="170" />
+            </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-6" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-86">
+        <mxCell id="e31" edge="1" parent="1" source="open_input" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="open_format">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-7" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-6" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="0" vertex="1">
-          <mxGeometry relative="1" x="0.0223" y="3" as="geometry">
-            <mxPoint x="1" as="offset" />
+        <mxCell id="e32" edge="1" parent="1" source="open_format" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="open_save" value="예">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="885" />
+              <mxPoint x="310" y="1090" />
+              <mxPoint x="180" y="1090" />
+            </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-8" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[admin 메뉴]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 11:30&lt;/div&gt;&lt;div&gt;1. 현재 가상 시각 변경&lt;/div&gt;&lt;div&gt;2. 전체 예약 정보 조회&lt;/div&gt;&lt;div&gt;3. 예약 조정(방 이동)&lt;/div&gt;&lt;div&gt;4. 룸 컨디션 관리&lt;/div&gt;&lt;div&gt;0. 로그아웃&lt;/div&gt;&lt;div&gt;메뉴 선택: _&lt;/div&gt;" vertex="1">
-          <mxGeometry height="135" width="240" x="710" y="275" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-9" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-11" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-14" value="">
+        <mxCell id="e33" edge="1" parent="1" source="open_format" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="open_err" value="아니오">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-10" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-11" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-36" value="틀린 형식">
+        <mxCell id="e34" edge="1" parent="1" source="open_err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.008;entryY=0.62;entryDx=0;entryDy=0;entryPerimeter=0;" target="room_menu">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="620" y="510" />
+              <mxPoint x="40" y="1022" />
+              <mxPoint x="40" y="229" />
             </Array>
+            <mxPoint x="340" y="230" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-11" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[현재 가상 시각 변경]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 11:30&lt;/div&gt;&lt;div&gt;새 현재 시각 입력(yyyy-MM-dd HH:mm): _&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="350" x="230" y="350" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-12" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-14" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-16" value="예약 상태 변화 없음">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-13" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-14" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-18" value="예약 상태 변화 발생">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-14" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;기존 시각: 2026-03-20 11:30&lt;/div&gt;&lt;div&gt;새 시각: 2026-03-20 17:00&lt;/div&gt;&lt;div&gt;현재 시각이 변경되었습니다.&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="300" x="255" y="470" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-15" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-16" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-8">
+        <mxCell id="e35" edge="1" parent="1" source="open_save" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="room_menu">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="370" y="210" />
+              <mxPoint x="30" y="1160" />
+              <mxPoint x="30" y="210" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-16" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="상태 변화 없음" vertex="1">
-          <mxGeometry height="60" width="120" x="30" y="350" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-17" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-18" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-8">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-18" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="예약 상태 변화 건수 {num}&lt;div&gt;RESERVED -&amp;gt; NO_SHOW :&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;reservationId = [&quot;1&quot;, &quot;2&quot;], roomId = [&quot;1&quot;, &quot;2&quot;], roomName = [&quot;roomA&quot;, &quot;roomB&quot;]&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;CHECKED_ID -&amp;gt; COMPLETED : r&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;eservationId = [&quot;3&quot;, &quot;4&quot;], roomId = [&quot;3&quot;, &quot;4&quot;], roomName = [&quot;roomC&quot;, &quot;roomD&quot;]&lt;/span&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="140" width="450" x="255" y="730" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-19" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-20" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-8">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1000" y="370" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-20" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;[전체 예약 정보 조회]&lt;/div&gt;&lt;div&gt;현재 가상 시각: 2026-03-20 17:00&lt;/div&gt;&lt;div&gt;&lt;div&gt;[&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 1, &quot;reservationId&quot;: 1, &quot;date&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;startTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;endTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;partySize&quot;: 4&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;status&quot;: &quot;RESERVED&quot;, &quot;checkedInAt&quot;: null&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; {&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;roomId&quot;: 2, &quot;reservationId&quot;: 2, &quot;date&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;startTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;endTime&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;HH:mm&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;partySize&quot;: 4&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;status&quot;: &quot;COMPLETED&quot;, &quot;checkedInAt&quot;: &quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;yyyy-MM-dd HH:mm&quot;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;}&lt;br&gt;...&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;]&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="206" width="506" x="1050" y="250" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-21" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-25" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="QaLJ_ruc6u2c_-SRrsET-36" value="틀린 형식">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="970" y="560" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-22" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-25" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-32" value="맞는 형식">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-23" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-25" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-39">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1290" y="500" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-24" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-23" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="존재하지 않는 id" vertex="1">
-          <mxGeometry relative="1" x="-0.0072" y="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-25" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="[예약 조정(방 이동)]&lt;div&gt;현재 가상 시각: 2026-03-20 17:00&lt;br&gt;&lt;div&gt;대상 reservation id&amp;gt; _&lt;/div&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="100" width="190" x="1020" y="490" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-26" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-32" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-36" value="틀린 형식">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="890" y="640" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-27" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-32" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" target="QaLJ_ruc6u2c_-SRrsET-39" value="존재하지 않는 id">
-          <mxGeometry relative="1" x="-0.0023" as="geometry">
-            <mxPoint as="offset" />
-            <Array as="points">
-              <mxPoint x="1290" y="710" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-28" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-32" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-71" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-29" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-28" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="room-reservation 시간대 중복" vertex="1">
-          <mxGeometry relative="1" x="-0.2491" y="3" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-30" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-32" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-73">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-31" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-30" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" value="맞는 형식" vertex="1">
-          <mxGeometry relative="1" x="-0.061" y="-2" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-32" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="변경할 room id&amp;gt; _" vertex="1">
-          <mxGeometry height="80" width="180" x="1020" y="660" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-33" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-36" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-11">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="680" y="430" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-34" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-36" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-32">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="990" y="620" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-35" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-36" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-25">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="970" y="520" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-36" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="입력 형식이 틀렸습니다." vertex="1">
-          <mxGeometry height="80" width="180" x="740" y="500" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-37" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-39" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-25">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1270" y="590" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-38" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-39" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-32">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1250" y="640" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-39" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="존재하지 않는 id입니다." vertex="1">
-          <mxGeometry height="80" width="250" x="1330" y="560" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-71" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="오류: 대상 룸의 같은 시간대에 이미 예약이 있습니다." vertex="1">
-          <mxGeometry height="60" width="300" x="960" y="790" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-72" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-71" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.826;entryY=1.005;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-8">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-73" parent="QaLJ_ruc6u2c_-SRrsET-1" style="rounded=1;whiteSpace=wrap;html=1;" value="예약 조정이 완료되었습니다.&lt;div&gt;변경된 room id: _&lt;/div&gt;&lt;div&gt;변경된 시간: _&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="160" x="750" y="705" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-74" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-73" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0.917;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-8">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1040" y="580" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-82" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-1" style="group" value="" vertex="1">
-          <mxGeometry height="70" width="100" x="910" y="90" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-83" parent="QaLJ_ruc6u2c_-SRrsET-82" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
-          <mxGeometry height="70" width="74" x="13" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-84" parent="QaLJ_ruc6u2c_-SRrsET-82" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="룸 관리&lt;div&gt;출발노드&lt;/div&gt;" vertex="1">
-          <mxGeometry height="33" width="100" y="7.5" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-85" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-1" style="group" value="" vertex="1">
-          <mxGeometry height="70" width="100" x="521" y="150" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-86" parent="QaLJ_ruc6u2c_-SRrsET-85" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
-          <mxGeometry height="70" width="74" x="12" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-87" parent="QaLJ_ruc6u2c_-SRrsET-85" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="시작페이지" vertex="1">
-          <mxGeometry height="33" width="100" y="10.5" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-88" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.215;entryY=0.728;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" target="QaLJ_ruc6u2c_-SRrsET-83" value="4">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-89" connectable="0" parent="QaLJ_ruc6u2c_-SRrsET-1" style="group" value="" vertex="1">
-          <mxGeometry height="70" width="100" x="670" y="90" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-90" parent="QaLJ_ruc6u2c_-SRrsET-89" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=offPageConnector;rounded=0;size=0.5;" value="" vertex="1">
-          <mxGeometry height="70" width="74" x="13" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-91" parent="QaLJ_ruc6u2c_-SRrsET-89" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="룸 관리&amp;nbsp;&lt;div&gt;도착노드&lt;/div&gt;" vertex="1">
-          <mxGeometry height="33" width="100" y="7.5" as="geometry" />
-        </mxCell>
-        <mxCell id="QaLJ_ruc6u2c_-SRrsET-92" edge="1" parent="QaLJ_ruc6u2c_-SRrsET-1" source="QaLJ_ruc6u2c_-SRrsET-90" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.736;exitY=0.743;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;exitPerimeter=0;dashed=1;" target="QaLJ_ruc6u2c_-SRrsET-8">
+        <mxCell id="IkRzbDj6imA9uRffHvx1-2" edge="1" parent="1" source="close_format_err" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.35;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;" target="room_menu">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
