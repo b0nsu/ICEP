@@ -1,0 +1,280 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36">
+  <diagram name="Room_Condition" id="room-condition-flow">
+    <mxGraphModel dx="1059" dy="695" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="1700" math="0" shadow="0" adaptiveColors="auto">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="entry" parent="1" style="shape=offPageConnector;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" value="R" vertex="1">
+          <mxGeometry height="60" width="80" x="510" y="47" as="geometry" />
+        </mxCell>
+        <mxCell id="entry_label" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;" value="Admin 흐름에서 진입" vertex="1">
+          <mxGeometry height="30" width="260" x="420" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="room_menu" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=15;" value="[룸 컨디션 관리]&lt;div&gt;1. 전체 룸 조회&lt;/div&gt;&lt;div&gt;2. 최대 수용 인원 변경&lt;/div&gt;&lt;div&gt;3. 임시 휴업&lt;/div&gt;&lt;div&gt;4. 운영 재개&lt;/div&gt;&lt;div&gt;0. 상위 메뉴로&lt;/div&gt;" vertex="1">
+          <mxGeometry height="160" width="380" x="360" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="select" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=15;" value="선택값?" vertex="1">
+          <mxGeometry height="95" width="160" x="470" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="IkRzbDj6imA9uRffHvx1-4" edge="1" parent="1" source="menu_error" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;dashed=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1090" y="200" />
+              <mxPoint x="740" y="200" />
+            </Array>
+            <mxPoint x="740" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="menu_error" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="오류 메시지 출력&lt;div&gt;후 룸 컨디션 메뉴 재표시&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="180" x="1000" y="367" as="geometry" />
+        </mxCell>
+        <mxCell id="return_admin" parent="1" style="shape=offPageConnector;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" value="R" vertex="1">
+          <mxGeometry height="60" width="80" x="1130" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="return_admin_label" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;" value="Admin 메뉴로 복귀" vertex="1">
+          <mxGeometry height="30" width="260" x="1040" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="room_list" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="전체 룸 목록 출력&lt;div&gt;roomId / roomName / 정원 / status&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="250" x="60" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="정원 변경 입력&lt;div&gt;roomId / 새 정원&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="230" x="360" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_format" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="입력 형식 정상?" vertex="1">
+          <mxGeometry height="100" width="170" x="390" y="635" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_format_err" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="오류 메시지 출력&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;후 룸 컨디션&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;관리 메뉴 재표시&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="65" width="170" x="590" y="735" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_checked" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="현재 CHECKED_IN&lt;div&gt;인원 초과?&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="200" x="375" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_checked_err" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="오류: 현재 CHECKED_IN 예약 인원이&lt;div&gt;새 최대 수용 인원을 초과&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="250" x="620" y="1220" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_impact" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="미래 RESERVED&lt;div&gt;영향 예약 존재?&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="200" x="375" y="955" as="geometry" />
+        </mxCell>
+        <mxCell id="impact_out_cap" parent="1" style="shape=offPageConnector;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" value="I" vertex="1">
+          <mxGeometry height="60" width="80" x="380" y="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="impact_out_cap_label" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;" value="영향예약 흐름으로 이동&lt;div&gt;(정원 변경)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="35" width="280" x="280" y="1185" as="geometry" />
+        </mxCell>
+        <mxCell id="cap_save" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="정원 변경 저장&lt;div&gt;변경 전/후 ROOM 출력&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="210" x="120" y="1212" as="geometry" />
+        </mxCell>
+        <mxCell id="close_input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="임시 휴업 입력&lt;div&gt;roomId&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="160" x="800" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="close_format" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="입력 형식 정상?" vertex="1">
+          <mxGeometry height="85" width="150" x="790" y="635" as="geometry" />
+        </mxCell>
+        <mxCell id="close_format_err" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="오류 메시지 출력&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;후 룸 컨디션&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255)); background-color: transparent;&quot;&gt;관리 메뉴 재표시&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="1030" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="close_checked" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="CHECKED_IN 없음?" vertex="1">
+          <mxGeometry height="90" width="165" x="780" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="close_checked_err" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="오류: 현재 사용 중 예약이 있어&lt;div&gt;즉시 휴업 불가&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="1000" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="close_impact" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="미래 RESERVED&lt;div&gt;영향 예약 존재?&lt;/div&gt;" vertex="1">
+          <mxGeometry height="95" width="165" x="790" y="955" as="geometry" />
+        </mxCell>
+        <mxCell id="impact_out_close" parent="1" style="shape=offPageConnector;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" value="I" vertex="1">
+          <mxGeometry height="60" width="80" x="880" y="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="impact_out_close_label" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;" value="영향예약 흐름으로 이동&lt;div&gt;(임시 휴업)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="35" width="220" x="810" y="1185" as="geometry" />
+        </mxCell>
+        <mxCell id="close_save" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="roomStatus = CLOSED 저장&lt;div&gt;변경 전/후 ROOM 출력&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="1050" y="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="open_input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="운영 재개 입력&lt;div&gt;roomId&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="220" x="60" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="open_format" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" value="입력 형식 정상?" vertex="1">
+          <mxGeometry height="100" width="160" x="90" y="835" as="geometry" />
+        </mxCell>
+        <mxCell id="open_err" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;" value="오류 메시지 출력&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;후 룸 컨디션 관리 메뉴 재표시&lt;/span&gt;" vertex="1">
+          <mxGeometry height="55" width="170" x="60" y="995" as="geometry" />
+        </mxCell>
+        <mxCell id="open_save" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" value="roomStatus = OPEN 저장&lt;div&gt;변경 전/후 ROOM 출력&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="220" x="70" y="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="entry" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;" target="room_menu">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="room_menu" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="select">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="select" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=0;exitY=0.3;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="room_list" value="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="select" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=0.35;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="cap_input" value="2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="select" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=0.7;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="close_input" value="3">
+          <mxGeometry relative="1" x="0.1196" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="select" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="open_input" value="4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="340" y="403" />
+              <mxPoint x="340" y="670" />
+              <mxPoint x="170" y="670" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="select" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="return_admin" value="0">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="603" y="370" />
+              <mxPoint x="940" y="370" />
+              <mxPoint x="940" y="100" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="select" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="menu_error" value="기타">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="menu_error" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;" target="room_menu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1045" y="330" />
+              <mxPoint x="900" y="330" />
+              <mxPoint x="900" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="room_list" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="room_menu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="560" />
+              <mxPoint x="50" y="250" />
+            </Array>
+            <mxPoint x="360" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="cap_input" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="cap_format">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="cap_format" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="cap_checked" value="예">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="cap_format" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.4;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="cap_format_err" value="아니오">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="580" y="677" />
+              <mxPoint x="580" y="768" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="cap_format_err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="room_menu">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="cap_checked" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.4;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="cap_checked_err" value="예">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="cap_checked" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="cap_impact" value="아니오">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="cap_checked_err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;" target="room_menu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="770" y="260" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="cap_impact" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="impact_out_cap" value="예">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="cap_impact" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=0;exitY=0.65;exitDx=0;exitDy=0;entryX=1;entryY=0.45;entryDx=0;entryDy=0;" target="cap_save" value="아니오">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" source="cap_save" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="room_menu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="10" y="1252" />
+              <mxPoint x="10" y="170" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="1" source="close_input" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="close_format">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" edge="1" parent="1" source="close_format" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="close_checked" value="예">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" edge="1" parent="1" source="close_format" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.4;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="close_format_err" value="아니오">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e25" edge="1" parent="1" source="close_checked" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="close_checked_err" value="아니오">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e26" edge="1" parent="1" source="close_checked" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="close_impact" value="예">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e27" edge="1" parent="1" source="close_checked_err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;" target="room_menu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="970" y="820" />
+              <mxPoint x="970" y="220" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e28" edge="1" parent="1" source="close_impact" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="impact_out_close" value="예">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e29" edge="1" parent="1" source="close_impact" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=1;exitY=0.65;exitDx=0;exitDy=0;entryX=0;entryY=0.45;entryDx=0;entryDy=0;" target="close_save" value="아니오">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e30" edge="1" parent="1" source="close_save" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;" target="room_menu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1270" y="170" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e31" edge="1" parent="1" source="open_input" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="open_format">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e32" edge="1" parent="1" source="open_format" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;" target="open_save" value="예">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="885" />
+              <mxPoint x="310" y="1090" />
+              <mxPoint x="180" y="1090" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e33" edge="1" parent="1" source="open_format" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="open_err" value="아니오">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e34" edge="1" parent="1" source="open_err" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.008;entryY=0.62;entryDx=0;entryDy=0;entryPerimeter=0;" target="room_menu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="1022" />
+              <mxPoint x="40" y="229" />
+            </Array>
+            <mxPoint x="340" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e35" edge="1" parent="1" source="open_save" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;html=1;dashed=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="room_menu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="30" y="1160" />
+              <mxPoint x="30" y="210" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IkRzbDj6imA9uRffHvx1-2" edge="1" parent="1" source="close_format_err" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.35;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;" target="room_menu">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
