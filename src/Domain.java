@@ -60,13 +60,15 @@ enum ReservationStatus {
 
 final class User {
     final String userId;
+    final String loginId;
     final String password;
     final String userName;
     final Role role;
     final int sourceLine;
 
-    User(String userId, String password, String userName, Role role, int sourceLine) {
+    User(String userId, String loginId, String password, String userName, Role role, int sourceLine) {
         this.userId = userId;
+        this.loginId = loginId;
         this.password = password;
         this.userName = userName;
         this.role = role;
@@ -74,7 +76,7 @@ final class User {
     }
 
     String toRecord() {
-        return String.join("|", "USER", userId, password, userName, role.fileValue());
+        return String.join("|", "USER", userId, loginId, password, userName, role.fileValue());
     }
 }
 
@@ -214,6 +216,29 @@ final class SystemData {
             }
         }
         return String.format("rv%04d", max + 1);
+    }
+
+    String nextUserId() {
+        int max = 0;
+        for (String id : users.keySet()) {
+            if (!id.startsWith("user") || id.length() <= 4) {
+                continue;
+            }
+            try {
+                max = Math.max(max, Integer.parseInt(id.substring(4)));
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return String.format("user%03d", max + 1);
+    }
+
+    User findUserByLoginId(String loginId) {
+        for (User user : users.values()) {
+            if (user.loginId.equals(loginId)) {
+                return user;
+            }
+        }
+        return null;
     }
 
     List<Room> sortedRooms() {
