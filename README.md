@@ -1,65 +1,89 @@
-# ICEP
+# 스터디룸 예약 관리 시스템 (Java 17 CLI)
 
-가상 현재 일시 기반 **스터디룸 예약·이용 관리 시스템(Java CLI)** 프로젝트입니다.
+사용자가 회원가입/로그인 후 스터디룸 예약 가능 여부를 조회하고, 예약/취소/체크인을 수행하는 Java 17 기반 CLI 프로그램입니다.  
+관리자는 전체 예약 조회, 가상 현재 시각 변경, 예약 방 이동, 룸 정원/운영 상태 조정을 수행할 수 있습니다.
 
-## 프로젝트 개요
-
-이 프로젝트는 여러 사용자가 공용 가상 현재 시각을 기준으로 스터디룸을 검색, 예약, 체크인, 연장, 취소할 수 있도록 만든 Java CLI 프로그램입니다.  
-관리자는 전체 예약 조회, 사용자 패널티 관리, 룸 상태 변경 기능을 사용할 수 있습니다.
-
-## 주요 기능
-
-- 회원가입 / 로그인 / 로그아웃
-- member / admin 역할 분리
-- 공용 가상 현재 시각 조회 및 변경
-- 스터디룸 목록 조회
-- 조건 기반 사용 가능 룸 검색
-- 예약 생성 / 조회 / 취소
-- 체크인 및 30분 1회 연장
-- 패널티 조회 및 관리자 초기화
-- 관리자용 전체 예약 조회
-- 자동 `NO_SHOW`, `COMPLETED` 상태 갱신
-
-## 프로젝트 구조
-
-- `src/Main.java` : 프로그램 실행 진입점
-- `src/CliApp.java` : 전체 CLI 메뉴와 사용자 상호작용 흐름
-- `src/Domain.java` : 사용자, 룸, 예약, 데이터셋 도메인 모델
-- `src/TextDataStore.java` : 텍스트 파일 로드/검증/저장 처리
-- `src/AutoStateUpdater.java` : 예약 상태 자동 갱신
-- `src/TimeFormats.java` : 날짜/시간 파싱 및 포맷 유틸리티
-- `src/Exceptions.java` : 공통 예외 타입 정의
-- `users.txt`, `rooms.txt`, `reservations.txt`, `system_time.txt` : 실행용 데이터 파일
-- `docs/1차기획서_스터디룸예약CLI.md` : 1차 기획 문서
-- `docs/구현작업내용_스터디룸예약CLI.md` : 구현 작업 정리 문서
+모든 시간 판단은 실제 시스템 시간이 아니라 `data/system_time.txt`의 공용 가상 현재 시각을 기준으로 합니다.
 
 ## 실행 방법
 
-저장소 루트에서 아래 순서로 실행하면 됩니다.
-
+### 1) 빌드
 ```bash
-javac -d out src/*.java
-java -cp out Main
+./build.sh
 ```
 
-## 문서
+### 2) 실행
+```bash
+./run.sh
+```
 
-- 기획서: `docs/1차기획서_스터디룸예약CLI.md`
-- 구현 기록: `docs/구현작업내용_스터디룸예약CLI.md`
+또는:
+```bash
+java -jar out/study-room-cli.jar
+```
 
----
+## 기본 admin 계정
 
-## 기존 팀 정보
+- userId: `user001`
+- loginId: `user001`
+- userName: `admin`
+- password: `admin1234`
 
-2026-1 전기프
+## 데이터 파일 형식
 
-### 팀원
+기본 데이터 폴더는 프로젝트 루트의 `data/` 입니다.
 
-| 팀원 | 이름 | 학번 | 스킬 |
-|------|--------|--------|-----------|
-| 1번  |  김본수  |   202311266   | C, Python, ...... |
-| 2번  |  신동혁  |   202211313     |  Java     |
-| 3번  |  함형주  |  202112849      |  Java     |
-| 4번  |  강현구  |  202114213      |  Java      |
-| 5번  |  이다연   |   202214313      |   Frontend        |
-| 6번  |  조제욱      |  202415206      | Java          |
+- `data/users.txt`
+  - `USER|userId|loginId|password|userName|role`
+- `data/rooms.txt`
+  - `ROOM|roomId|roomName|maxCapacity|roomStatus`
+- `data/reservations.txt`
+  - `RESV|reservationId|userId|roomId|date|startTime|endTime|partySize|status|createdAt|checkedInAt`
+- `data/system_time.txt`
+  - `NOW|yyyy-MM-dd HH:mm`
+
+공통 규칙:
+
+- UTF-8
+- 필드 구분자 `|`
+- 빈 줄 허용
+- `#` 시작 줄은 주석으로 무시
+
+## 주요 기능
+
+- 비로그인: 회원가입, 로그인, 종료
+  - 회원가입 시 `userId` 자동 발급
+  - 로그인은 `loginId + password`
+- member:
+  - 현재 가상 시각 변경
+  - 예약 가능 스터디룸 조회
+  - 예약 신청
+  - 예약 취소
+  - 나의 예약 조회
+  - 체크인
+- admin:
+  - 현재 가상 시각 변경
+  - 전체 예약 정보 조회
+  - 예약 조정(방 이동)
+  - 룸 컨디션 관리
+
+## 주요 규칙
+
+- 예약 시작/종료는 정시(`HH:00`) 단위
+- 예약 길이 1시간 이상 4시간 이하
+- 같은 룸 시간 겹침 예약 금지
+- 같은 사용자 시간 겹침 예약 금지
+- 체크인 가능 구간: `[시작-10분, 시작+10분]`
+- `CLOSED` 룸은 신규 예약/체크인 불가
+- 예약 취소는 레코드 삭제로 처리
+- 자동 상태 갱신:
+  - `RESERVED` + 현재 시각이 `시작+10분` 초과 -> `NO_SHOW`
+  - `CHECKED_IN` + 현재 시각이 종료 시각 이상 -> `COMPLETED`
+
+## 파일 오류 처리 정책
+
+- 프로그램 시작 시 데이터 파일을 검증합니다.
+- 오류 발생 시 아래 형식으로 출력 후 시작을 중단합니다.
+  - `[파일 오류] <파일명> <줄번호>행: <원인>`
+  - 줄번호가 없으면 `[파일 오류] <파일명>: <원인>`
+- 필수 파일이 없으면 기본 파일을 자동 생성합니다.

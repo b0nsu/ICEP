@@ -27,6 +27,12 @@ class FatalAppException extends RuntimeException {
     }
 }
 
+class ActionAbortedException extends RuntimeException {
+    ActionAbortedException() {
+        super();
+    }
+}
+
 class CancelledActionException extends Exception {
     CancelledActionException() {
         super();

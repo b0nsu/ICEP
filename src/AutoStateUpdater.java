@@ -1,45 +1,70 @@
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-/**
- * 현재 공용 시각을 기준으로 예약 상태를 자동 전이하고,
- * 그 과정에서 발생한 변경 건수를 함께 집계하는 유틸리티다.
- */
-final class AutoStateUpdater {
-    private AutoStateUpdater() {
+record TransitionCount(ReservationStatus from, ReservationStatus to, int count) {
+}
+
+final class UpdateSummary {
+    private final LinkedHashMap<String, String> changes = new LinkedHashMap<>();
+
+    void addChange(String reservationId, ReservationStatus from, ReservationStatus to) {
+        if (from == to) {
+            return;
+        }
+        changes.put(reservationId, from.name() + "->" + to.name());
     }
 
-    static UpdateResult apply(SystemDataset dataset) {
-        UpdateResult result = new UpdateResult();
-        for (Reservation reservation : dataset.sortedReservations()) {
-            LocalDateTime startDateTime = reservation.startDateTime();
-            LocalDateTime endDateTime = reservation.endDateTime();
-            if (reservation.status == ReservationStatus.RESERVED && dataset.currentTime.isAfter(startDateTime.plusMinutes(15))) {
-                reservation.status = ReservationStatus.NO_SHOW;
-                reservation.checkedInAt = null;
-                User user = dataset.users.get(reservation.userId);
-                if (user != null) {
-                    user.penalty += 1;
-                    result.penaltyCount += 1;
-                }
-                result.noShowCount += 1;
-            } else if (reservation.status == ReservationStatus.CHECKED_IN && !dataset.currentTime.isBefore(endDateTime)) {
-                reservation.status = ReservationStatus.COMPLETED;
-                result.completedCount += 1;
-            }
+    boolean changed() {
+        return !changes.isEmpty();
+    }
+
+    List<TransitionCount> transitionCounts() {
+        Map<String, Integer> counter = new LinkedHashMap<>();
+        for (String transition : changes.values()) {
+            counter.put(transition, counter.getOrDefault(transition, 0) + 1);
+        }
+        List<TransitionCount> result = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : counter.entrySet()) {
+            String[] tokens = entry.getKey().split("->", -1);
+            result.add(new TransitionCount(
+                    ReservationStatus.valueOf(tokens[0]),
+                    ReservationStatus.valueOf(tokens[1]),
+                    entry.getValue()));
         }
         return result;
     }
 }
 
-/**
- * 자동 상태 갱신 과정에서 발생한 예약 상태 변경과 패널티 증가 건수를 담는다.
- */
-class UpdateResult {
-    int noShowCount;
-    int completedCount;
-    int penaltyCount;
+final class AutoStateUpdater {
+    private AutoStateUpdater() {
+    }
 
-    boolean changed() {
-        return noShowCount > 0 || completedCount > 0 || penaltyCount > 0;
+    static UpdateSummary apply(SystemData dataset) {
+        UpdateSummary summary = new UpdateSummary();
+        for (Reservation reservation : dataset.sortedReservations()) {
+            applyForOne(dataset, reservation, summary);
+        }
+        return summary;
+    }
+
+    private static void applyForOne(SystemData dataset, Reservation reservation, UpdateSummary summary) {
+        ReservationStatus before = reservation.status;
+        LocalDateTime now = dataset.currentTime;
+
+        if (reservation.status == ReservationStatus.RESERVED
+                && now.isAfter(reservation.startDateTime().plusMinutes(10))) {
+            reservation.status = ReservationStatus.NO_SHOW;
+            reservation.checkedInAt = null;
+        } else if (reservation.status == ReservationStatus.CHECKED_IN
+                && !now.isBefore(reservation.endDateTime())) {
+            reservation.status = ReservationStatus.COMPLETED;
+        }
+
+        if (before != reservation.status) {
+            summary.addChange(reservation.reservationId, before, reservation.status);
+        }
     }
 }
