@@ -24,7 +24,9 @@ java -jar out/study-room-cli.jar
 
 ## 기본 admin 계정
 
-- userId: `admin`
+- userId: `user001`
+- loginId: `user001`
+- userName: `admin`
 - password: `admin1234`
 
 ## 데이터 파일 형식
@@ -32,7 +34,7 @@ java -jar out/study-room-cli.jar
 기본 데이터 폴더는 프로젝트 루트의 `data/` 입니다.
 
 - `data/users.txt`
-  - `USER|userId|password|userName|role`
+  - `USER|userId|loginId|password|userName|role`
 - `data/rooms.txt`
   - `ROOM|roomId|roomName|maxCapacity|roomStatus`
 - `data/reservations.txt`
@@ -50,8 +52,9 @@ java -jar out/study-room-cli.jar
 ## 주요 기능
 
 - 비로그인: 회원가입, 로그인, 종료
+  - 회원가입 시 `userId` 자동 발급
+  - 로그인은 `loginId + password`
 - member:
-  - 현재 가상 시각 조회
   - 현재 가상 시각 변경
   - 예약 가능 스터디룸 조회
   - 예약 신청
@@ -59,7 +62,7 @@ java -jar out/study-room-cli.jar
   - 나의 예약 조회
   - 체크인
 - admin:
-  - 현재 가상 시각 조회/변경
+  - 현재 가상 시각 변경
   - 전체 예약 정보 조회
   - 예약 조정(방 이동)
   - 룸 컨디션 관리
