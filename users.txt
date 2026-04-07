@@ -1,2 +1,0 @@
-USER|admin01|Admin123!|관리자 계정|admin|0|ACTIVE
-USER|asdad|1234asdf|김본수|member|0|ACTIVE
