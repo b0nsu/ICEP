@@ -1,0 +1,7 @@
+[admin_all_reservations]
+        2
+user001
+admin1234
+2
+0
+0

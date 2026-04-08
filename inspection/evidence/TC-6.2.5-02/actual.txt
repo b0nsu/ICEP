@@ -1,0 +1,2 @@
+실제 결과:
+- my_reservations_none: 예약 없음 안내가 출력되었다.

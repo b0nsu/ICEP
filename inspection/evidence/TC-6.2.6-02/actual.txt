@@ -1,0 +1,2 @@
+실제 결과:
+- checkin_boundary_success: 체크인 성공 메시지가 출력되었고 after/reservations.txt에 CHECKED_IN과 checkedInAt=2026-03-20 11:10이 저장되었다.

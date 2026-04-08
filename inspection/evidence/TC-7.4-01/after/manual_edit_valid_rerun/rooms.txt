@@ -1,0 +1,3 @@
+# rooms
+ROOM|R101|A룸|4|OPEN
+ROOM|R102|B룸|6|OPEN

@@ -1,0 +1,12 @@
+[capacity_change_rollback]
+        2
+user001
+admin1234
+4
+2
+R101
+4
+0
+0
+0
+0

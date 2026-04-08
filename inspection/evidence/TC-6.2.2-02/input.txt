@@ -1,0 +1,9 @@
+[available_rooms_format_error]
+        2
+user011
+pw1234
+2
+2026-03-20
+13:30
+0
+0

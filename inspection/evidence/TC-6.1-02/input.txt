@@ -1,0 +1,6 @@
+[signup_duplicate_login_id]
+        1
+user011
+pass1234
+another01
+0

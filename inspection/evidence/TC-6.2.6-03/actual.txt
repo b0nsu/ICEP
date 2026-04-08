@@ -1,0 +1,2 @@
+실제 결과:
+- checkin_closed_room_fail: 운영 중이 아닌 룸 체크인 불가 오류가 출력되었고 after/reservations.txt는 RESERVED 상태를 유지했다.

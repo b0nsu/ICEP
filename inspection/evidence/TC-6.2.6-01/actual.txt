@@ -1,0 +1,2 @@
+실제 결과:
+- checkin_too_early: 체크인 가능 시간 이전 오류가 출력되었고 after/reservations.txt의 rv0001 status는 RESERVED였다.

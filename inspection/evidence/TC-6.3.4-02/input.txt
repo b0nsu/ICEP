@@ -1,0 +1,11 @@
+[capacity_change_fail_checked_in_over]
+        2
+user001
+admin1234
+4
+2
+R101
+2
+0
+0
+0

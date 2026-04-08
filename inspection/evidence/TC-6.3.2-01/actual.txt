@@ -1,0 +1,2 @@
+실제 결과:
+- admin_all_reservations: 전체 예약 표에 userId, userName 컬럼과 두 예약이 함께 출력되었다.

@@ -1,0 +1,9 @@
+[adjust_fail_capacity]
+        2
+user001
+admin1234
+3
+rv0001
+R102
+0
+0

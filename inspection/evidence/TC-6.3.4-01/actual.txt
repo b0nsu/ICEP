@@ -1,0 +1,2 @@
+실제 결과:
+- room_list_query: 전체 룸 조회 표에 R101, R102, R103과 status가 출력되었다.

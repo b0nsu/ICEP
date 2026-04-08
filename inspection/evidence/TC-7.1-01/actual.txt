@@ -1,0 +1,2 @@
+실제 결과:
+- auto_noshow: 상태 변화 요약에 RESERVED -> NO_SHOW : 1건이 출력되었고 after/reservations.txt의 rv0001 status가 NO_SHOW가 되었다.

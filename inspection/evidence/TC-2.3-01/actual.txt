@@ -1,0 +1,2 @@
+실제 결과:
+- missing_files: 비로그인 메뉴 출력 후 종료했고, after 스냅샷에 users.txt·rooms.txt·reservations.txt·system_time.txt 자동 생성이 확인되었다.

@@ -1,0 +1,2 @@
+실제 결과:
+- close_room_impacted_delete: 영향 예약 처리 흐름 후 rv0001이 삭제되었고 after/rooms.txt의 R101 status가 CLOSED가 되었다.

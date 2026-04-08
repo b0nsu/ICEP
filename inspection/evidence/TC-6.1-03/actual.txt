@@ -1,0 +1,2 @@
+실제 결과:
+- login_success_distinct_login_id: 로그인 성공: bonsu (role: member) 가 출력되어 loginId + password 기준 인증이 확인되었다.

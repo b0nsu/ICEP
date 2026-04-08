@@ -1,0 +1,5 @@
+실제 결과:
+            - length_1hour_success: 1시간 예약은 성공했고 after/reservations.txt에 13:00~14:00 RESERVED가 저장되었다.
+- length_4hour_success: 4시간 예약은 성공했고 after/reservations.txt에 13:00~17:00 RESERVED가 저장되었다.
+- length_0hour_fail: 시작=종료 입력은 시작/종료 역전 오류로 거부되었다.
+- length_5hour_fail: 5시간 예약은 길이 제한 오류로 거부되었다.

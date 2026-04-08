@@ -1,0 +1,3 @@
+실제 결과:
+            - party_min_1_success: partySize 1은 정상 저장되었다.
+- party_over_capacity_fail: room maxCapacity 6을 넘는 partySize 7은 수용 인원 초과 오류로 거부되었다.

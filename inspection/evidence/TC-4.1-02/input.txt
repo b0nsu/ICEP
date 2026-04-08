@@ -1,0 +1,25 @@
+[min_valid_4]
+        1
+alpha123
+pw12
+alphauser
+0
+
+[max_valid_20]
+        1
+alpha123
+abcdefghijklmnopqrst
+alphauser
+0
+
+[min_minus_1]
+        1
+alpha123
+abc
+0
+
+[max_plus_1]
+        1
+alpha123
+abcdefghijklmnopqrstu
+0

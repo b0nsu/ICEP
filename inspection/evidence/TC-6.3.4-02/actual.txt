@@ -1,0 +1,2 @@
+실제 결과:
+- capacity_change_fail_checked_in_over: 현재 CHECKED_IN 예약 인원 초과 오류가 출력되었고 after/rooms.txt의 R101 정원은 6 그대로였다.

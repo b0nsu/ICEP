@@ -1,0 +1,13 @@
+[capacity_change_move_impacted]
+        2
+user001
+admin1234
+4
+2
+R102
+3
+1
+R101
+0
+0
+0

@@ -1,0 +1,2 @@
+실제 결과:
+- broken_reservation_record: 터미널에 '[파일 오류] reservations.txt 1행: 필드 개수가 올바르지 않습니다.'와 '프로그램 시작을 중단합니다.'가 출력되었고 메뉴는 열리지 않았다.

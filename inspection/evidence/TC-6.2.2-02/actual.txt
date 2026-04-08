@@ -1,0 +1,2 @@
+실제 결과:
+- available_rooms_format_error: 시작 시각 입력 직후 '오류: 예약 시각은 1시간 단위여야 합니다.'가 출력되고 member 메뉴가 다시 표시되었다.

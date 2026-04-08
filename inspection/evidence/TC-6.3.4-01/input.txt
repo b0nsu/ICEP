@@ -1,0 +1,9 @@
+[room_list_query]
+        2
+user001
+admin1234
+4
+1
+0
+0
+0

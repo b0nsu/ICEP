@@ -1,0 +1,2 @@
+실제 결과:
+- reservation_create_fail_room_overlap: 같은 룸 충돌 오류가 출력되었고 after/reservations.txt에는 기존 rv0001만 유지되었다.

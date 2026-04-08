@@ -1,0 +1,3 @@
+TC ID: 6.1-03
+목표: 기획서 4.1, 6.1에 따라 로그인 기준 필드가 userId가 아니라 loginId + password 인지 확인
+방법: userId=user011, loginId=alpha011인 member 레코드를 둔 뒤 비로그인 메뉴에서 alpha011/pw1234로 로그인

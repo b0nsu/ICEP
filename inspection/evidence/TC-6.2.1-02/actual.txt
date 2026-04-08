@@ -1,0 +1,2 @@
+실제 결과:
+- member_time_change_fail_past: 과거 시각 거부 오류가 출력되었고 after/system_time.txt는 NOW|2026-03-20 09:00 그대로였다.

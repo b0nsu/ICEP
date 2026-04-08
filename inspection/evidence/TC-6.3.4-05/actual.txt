@@ -1,0 +1,2 @@
+실제 결과:
+- close_room_fail_checked_in: 현재 체크인 중 예약 존재 오류가 출력되었고 after/rooms.txt의 R101 status는 OPEN이었다.

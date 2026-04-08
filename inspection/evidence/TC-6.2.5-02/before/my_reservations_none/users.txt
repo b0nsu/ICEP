@@ -1,0 +1,3 @@
+USER|user001|user001|admin1234|admin|admin
+USER|user011|user011|pw1234|bonsu|member
+USER|user022|user022|pw5678|minseo|member

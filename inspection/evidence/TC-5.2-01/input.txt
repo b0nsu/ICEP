@@ -1,0 +1,2 @@
+[overlap_same_room]
+(no input)

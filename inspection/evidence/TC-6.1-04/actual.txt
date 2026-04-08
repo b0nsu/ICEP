@@ -1,0 +1,2 @@
+실제 결과:
+- login_failure_wrong_password: 비밀번호 불일치 오류가 출력된 뒤 비로그인 메뉴가 다시 표시되었다.

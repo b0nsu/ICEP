@@ -1,0 +1,8 @@
+[checkin_closed_room_fail]
+        2
+user011
+pw1234
+6
+rv0001
+0
+0

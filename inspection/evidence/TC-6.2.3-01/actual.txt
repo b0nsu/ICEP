@@ -1,0 +1,2 @@
+실제 결과:
+- reservation_create_success: 예약 완료 메시지와 rv0001이 출력되었고 after/reservations.txt에 RESERVED 레코드가 추가되었다.

@@ -1,0 +1,36 @@
+[invalid_time_format]
+        2
+user011
+pw1234
+3
+2026-03-20
+13
+0
+0
+
+[invalid_date_format]
+        2
+user011
+pw1234
+3
+2026/03/20
+0
+0
+
+[nonexistent_date]
+        2
+user011
+pw1234
+3
+2026-02-30
+0
+0
+
+[trim_rejected]
+        2
+user011
+pw1234
+3
+ 2026-03-20
+0
+0

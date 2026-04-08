@@ -1,0 +1,2 @@
+실제 결과:
+- signup_success: 회원가입 완료 메시지와 발급된 사용자 ID가 출력되었고, after/users.txt에 USER|user023|sujin01|pass1234|sujin01|member 레코드가 추가되었다.

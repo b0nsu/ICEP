@@ -1,0 +1,2 @@
+실제 결과:
+- cancel_success_delete: 취소 성공 메시지가 출력되었고 after/reservations.txt에서 rv0001 레코드가 삭제되었다.

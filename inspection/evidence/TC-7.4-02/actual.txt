@@ -1,0 +1,2 @@
+실제 결과:
+- manual_edit_invalid_rerun: 잘못 수정된 rooms.txt로 재실행하자 roomStatus 파일 오류와 시작 중단 메시지가 출력되었다.

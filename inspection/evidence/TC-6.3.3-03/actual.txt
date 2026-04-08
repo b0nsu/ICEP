@@ -1,0 +1,2 @@
+실제 결과:
+- adjust_fail_closed_room: CLOSED 룸 이동 불가 오류가 출력되었다.

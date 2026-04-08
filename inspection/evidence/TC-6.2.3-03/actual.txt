@@ -1,0 +1,2 @@
+실제 결과:
+- reservation_create_fail_time_unit: 시작 시각 입력 단계에서 1시간 단위 오류가 출력되었고 after/reservations.txt는 변경되지 않았다.

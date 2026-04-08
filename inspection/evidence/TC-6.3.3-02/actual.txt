@@ -1,0 +1,2 @@
+실제 결과:
+- adjust_fail_same_room: 동일 룸 이동 불가 오류가 출력되었고 after/reservations.txt의 rv0001은 R101 그대로였다.

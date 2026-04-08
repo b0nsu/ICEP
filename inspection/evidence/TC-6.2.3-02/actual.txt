@@ -1,0 +1,2 @@
+실제 결과:
+- reservation_create_fail_past_or_current: 현재보다 늦지 않은 시작 시각 오류가 출력되었고 after/reservations.txt는 빈 상태를 유지했다.

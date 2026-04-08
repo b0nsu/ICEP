@@ -1,0 +1,3 @@
+기획서 대응 절: 6.3.2 전체 예약 정보 조회
+기획서 기준 예상 결과:
+resvId / userId / userName / room / date / start / end / 인원 / status / checkedInAt 헤더와 예약 데이터가 출력된다.

@@ -1,0 +1,2 @@
+실제 결과:
+- available_rooms_success: 조회 표에 R102만 출력되고 R101(충돌)·R103(CLOSED/정원부족)는 제외되었다.

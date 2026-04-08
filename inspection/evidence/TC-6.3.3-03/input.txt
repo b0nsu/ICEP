@@ -1,0 +1,9 @@
+[adjust_fail_closed_room]
+        2
+user001
+admin1234
+3
+rv0001
+R103
+0
+0

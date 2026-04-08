@@ -1,0 +1,2 @@
+실제 결과:
+- auto_completed: 상태 변화 요약에 CHECKED_IN -> COMPLETED : 1건이 출력되었고 after/reservations.txt의 rv0002 status가 COMPLETED가 되었다.

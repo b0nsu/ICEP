@@ -1,0 +1,7 @@
+실제 결과:
+            - min_valid_4: 4자 userName은 회원가입 성공
+- max_valid_20: 20자 userName은 회원가입 성공
+- min_minus_1: 3자 userName은 형식 오류
+- max_plus_1: 21자 userName은 형식 오류
+- invalid_start_char: 숫자로 시작하는 userName은 형식 오류
+- invalid_allowed_char: 허용되지 않은 '-' 포함 userName은 형식 오류

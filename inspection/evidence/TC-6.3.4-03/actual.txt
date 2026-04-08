@@ -1,0 +1,2 @@
+실제 결과:
+- capacity_change_move_impacted: 영향 예약 처리 흐름이 실행되어 rv0015가 R101로 이동했고, after/rooms.txt의 R102 정원은 3으로 줄었다.

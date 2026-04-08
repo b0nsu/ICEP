@@ -1,0 +1,12 @@
+[reservation_create_success]
+        2
+user011
+pw1234
+3
+2026-03-20
+13:00
+15:00
+2
+R102
+0
+0

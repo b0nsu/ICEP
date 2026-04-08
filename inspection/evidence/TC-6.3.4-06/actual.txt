@@ -1,0 +1,2 @@
+실제 결과:
+- close_room_success: 변경 전/후 ROOM 레코드가 출력되었고 after/rooms.txt의 R102 status가 CLOSED로 저장되었다.

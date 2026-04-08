@@ -1,0 +1,10 @@
+[close_room_fail_checked_in]
+        2
+user001
+admin1234
+4
+3
+R101
+0
+0
+0

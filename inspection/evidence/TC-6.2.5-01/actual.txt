@@ -1,0 +1,2 @@
+실제 결과:
+- my_reservations_success: 나의 예약 조회 표에 rv0001, rv0003만 출력되고 rv0002(user022)는 제외되었다.

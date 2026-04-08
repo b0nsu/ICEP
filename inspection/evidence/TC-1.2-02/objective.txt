@@ -1,0 +1,3 @@
+TC ID: 1.2-02
+목표: 기획서 1.2, 5.2, 6.2.3에 따라 partySize 최소값과 정원 초과를 검증한다.
+방법: 서브케이스별로 예약 신청을 수행하고 partySize=1 성공, partySize가 maxCapacity를 넘는 경우 실패를 확인

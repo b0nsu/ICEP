@@ -1,0 +1,41 @@
+[min_valid_4]
+        1
+alpha123
+pass1234
+name
+0
+
+[max_valid_20]
+        1
+alpha123
+pass1234
+abcdefghijklmnopqrst
+0
+
+[min_minus_1]
+        1
+alpha123
+pass1234
+abc
+0
+
+[max_plus_1]
+        1
+alpha123
+pass1234
+abcdefghijklmnopqrstu
+0
+
+[invalid_start_char]
+        1
+alpha123
+pass1234
+1alpha
+0
+
+[invalid_allowed_char]
+        1
+alpha123
+pass1234
+alpha-1
+0

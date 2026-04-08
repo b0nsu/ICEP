@@ -1,0 +1,11 @@
+[close_room_impacted_delete]
+        2
+user001
+admin1234
+4
+3
+R101
+2
+0
+0
+0

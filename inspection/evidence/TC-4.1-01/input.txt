@@ -1,0 +1,33 @@
+[min_valid_4]
+        1
+abcd
+pass1234
+alphauser
+0
+
+[max_valid_20]
+        1
+abcdefghijklmnopqrst
+pass1234
+alphauser
+0
+
+[min_minus_1]
+        1
+abc
+0
+
+[max_plus_1]
+        1
+abcdefghijklmnopqrstu
+0
+
+[invalid_start_char]
+        1
+1alpha
+0
+
+[invalid_allowed_char]
+        1
+alpha-1
+0
