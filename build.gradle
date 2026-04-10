@@ -54,6 +54,10 @@ def javaToolOptionsWithUtf8 = { existingOptions ->
             .join(' ')
 }
 
+tasks.named('test') {
+    failOnNoDiscoveredTests = false
+}
+
 tasks.register('regressionTest', JavaExec) {
     group = 'verification'
     description = 'Runs the CLI regression test harness.'
