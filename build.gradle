@@ -48,12 +48,19 @@ tasks.named('run') {
     standardInput = System.in
 }
 
+def javaToolOptionsWithUtf8 = { existingOptions ->
+    [existingOptions, '-Dfile.encoding=UTF-8']
+            .findAll { it != null && !it.trim().isEmpty() }
+            .join(' ')
+}
+
 tasks.register('regressionTest', JavaExec) {
     group = 'verification'
     description = 'Runs the CLI regression test harness.'
     dependsOn tasks.named('jar'), tasks.named('testClasses')
     classpath = sourceSets.test.runtimeClasspath
     mainClass = 'RegressionTest'
+    environment 'JAVA_TOOL_OPTIONS', javaToolOptionsWithUtf8(System.getenv('JAVA_TOOL_OPTIONS'))
 }
 
 tasks.named('check') {
