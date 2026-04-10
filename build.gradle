@@ -1,0 +1,72 @@
+plugins {
+    id 'application'
+    id 'java'
+}
+
+group = 'com.b0nsu'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+application {
+    mainClass = 'Main'
+}
+
+layout.buildDirectory = file('out')
+
+sourceSets {
+    main {
+        java.srcDirs = ['src']
+        resources.srcDirs = []
+    }
+    test {
+        java.srcDirs = ['test']
+        resources.srcDirs = []
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.named('jar') {
+    archiveFileName = 'study-room-cli.jar'
+    destinationDirectory = layout.buildDirectory.dir('.')
+    manifest {
+        attributes('Main-Class': application.mainClass.get())
+    }
+}
+
+tasks.named('run') {
+    standardInput = System.in
+}
+
+def javaToolOptionsWithUtf8 = { existingOptions ->
+    [existingOptions, '-Dfile.encoding=UTF-8']
+            .findAll { it != null && !it.trim().isEmpty() }
+            .join(' ')
+}
+
+tasks.named('test') {
+    failOnNoDiscoveredTests = false
+}
+
+tasks.register('regressionTest', JavaExec) {
+    group = 'verification'
+    description = 'Runs the CLI regression test harness.'
+    dependsOn tasks.named('jar'), tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'RegressionTest'
+    environment 'JAVA_TOOL_OPTIONS', javaToolOptionsWithUtf8(System.getenv('JAVA_TOOL_OPTIONS'))
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('regressionTest')
+}

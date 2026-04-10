@@ -9,17 +9,32 @@
 
 ### 1) 빌드
 ```bash
+./gradlew clean jar
+```
+
+또는:
+```bash
 ./build.sh
 ```
 
 ### 2) 실행
 ```bash
-./run.sh
+./gradlew run
 ```
 
 또는:
 ```bash
+./run.sh
+```
+
+직접 실행:
+```bash
 java -jar out/study-room-cli.jar
+```
+
+### 3) 회귀 검사
+```bash
+./gradlew regressionTest
 ```
 
 ## 기본 admin 계정
