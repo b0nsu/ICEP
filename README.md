@@ -9,7 +9,7 @@ Java 17 기반의 문자 인터페이스 프로그램입니다. 회원은 스터
 Windows:
 
 ```powershell
-gradlew.bat clean check
+.\gradlew.bat clean check
 ```
 
 macOS / Linux:
@@ -20,10 +20,16 @@ macOS / Linux:
 
 ## 실행
 
-빌드가 끝나면 운영체제와 관계없이 아래 명령으로 실행합니다.
+Windows:
+
+```powershell
+.\gradlew.bat run
+```
+
+macOS / Linux:
 
 ```bash
-java -jar out/study-room-cli.jar
+./gradlew run
 ```
 
 ## 기본 admin 계정
