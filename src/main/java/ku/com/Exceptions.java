@@ -1,3 +1,5 @@
+package ku.com;
+
 /*
  * 데이터 검증, 사용자 취소, 정상 종료, 치명적 종료처럼
  * CLI 흐름 제어에 사용하는 공통 예외 타입들을 모아 둔 파일이다.
@@ -23,6 +25,12 @@ class AppDataException extends Exception {
 
 class FatalAppException extends RuntimeException {
     FatalAppException() {
+        super();
+    }
+}
+
+class ActionAbortedException extends RuntimeException {
+    ActionAbortedException() {
         super();
     }
 }

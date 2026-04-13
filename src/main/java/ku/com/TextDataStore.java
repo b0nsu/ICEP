@@ -1,3 +1,5 @@
+package ku.com;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -18,6 +20,8 @@ final class TextDataStore {
     static final String SYSTEM_TIME_FILE = "system_time.txt";
 
     private static final Pattern USER_ID_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
+    private static final Pattern LOGIN_ID_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
+    private static final Pattern USER_NAME_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
     private static final Pattern ROOM_ID_PATTERN = Pattern.compile("^R[0-9]{3}$");
     private static final Pattern RESERVATION_ID_PATTERN = Pattern.compile("^rv[0-9]{4}$");
 
@@ -77,25 +81,33 @@ final class TextDataStore {
     private LinkedHashMap<String, User> parseUsers() throws AppDataException {
         List<LineRecord> lines = readLogicalLines(usersPath, USERS_FILE);
         LinkedHashMap<String, User> users = new LinkedHashMap<>();
+        LinkedHashMap<String, User> usersByLoginId = new LinkedHashMap<>();
         for (LineRecord line : lines) {
-            String[] fields = splitFields(line, USERS_FILE, 5);
+            String[] fields = splitFields(line, USERS_FILE, 6);
             require("USER".equals(fields[0]), USERS_FILE, line.lineNumber, "레코드 접두어는 USER여야 합니다.");
             String userId = fields[1].trim();
-            String password = fields[2].trim();
-            String userName = fields[3].trim();
-            Role role = Role.fromFile(fields[4], USERS_FILE, line.lineNumber);
+            String loginId = fields[2].trim();
+            String password = fields[3].trim();
+            String userName = fields[4].trim();
+            Role role = Role.fromFile(fields[5], USERS_FILE, line.lineNumber);
 
             require(USER_ID_PATTERN.matcher(userId).matches(), USERS_FILE, line.lineNumber,
                     "userId 형식이 올바르지 않습니다.");
+            require(LOGIN_ID_PATTERN.matcher(loginId).matches(), USERS_FILE, line.lineNumber,
+                    "loginId 형식이 올바르지 않습니다.");
             require(password.length() >= 4 && password.length() <= 20, USERS_FILE, line.lineNumber,
                     "password 길이는 4~20이어야 합니다.");
+            validateNoPipeOrNewline(loginId, USERS_FILE, line.lineNumber, "loginId");
             validateNoPipeOrNewline(password, USERS_FILE, line.lineNumber, "password");
-            require(userName.length() >= 1 && userName.length() <= 20, USERS_FILE, line.lineNumber,
-                    "userName 길이는 1~20이어야 합니다.");
+            require(USER_NAME_PATTERN.matcher(userName).matches(), USERS_FILE, line.lineNumber,
+                    "userName 형식이 올바르지 않습니다.");
             validateNoPipeOrNewline(userName, USERS_FILE, line.lineNumber, "userName");
 
-            User prev = users.put(userId, new User(userId, password, userName, role, line.lineNumber));
+            User parsed = new User(userId, loginId, password, userName, role, line.lineNumber);
+            User prev = users.put(userId, parsed);
             require(prev == null, USERS_FILE, line.lineNumber, "중복된 userId가 존재합니다.");
+            User byLoginId = usersByLoginId.put(loginId, parsed);
+            require(byLoginId == null, USERS_FILE, line.lineNumber, "중복된 loginId가 존재합니다.");
         }
         return users;
     }
@@ -343,7 +355,7 @@ final class TextDataStore {
     }
 
     private String defaultUsers() {
-        return "USER|admin|admin1234|관리자|admin\n";
+        return "USER|user001|user001|admin1234|admin|admin\n";
     }
 
     private String defaultRooms() {
