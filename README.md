@@ -1,65 +1,60 @@
-# ICEP
+# 스터디룸 예약 관리 CLI
 
-가상 현재 일시 기반 **스터디룸 예약·이용 관리 시스템(Java CLI)** 프로젝트입니다.
+Java 17 기반의 문자 인터페이스 프로그램입니다. 회원은 스터디룸 예약 조회, 예약, 취소, 체크인을 할 수 있고, 관리자는 전체 예약 조회와 예약 이동, 룸 정원 및 운영 상태 조정 기능을 사용할 수 있습니다.
 
-## 프로젝트 개요
+모든 시간 판단은 실제 OS 시계가 아니라 `data/system_time.txt`에 저장된 공용 가상 현재 시각을 기준으로 합니다.
 
-이 프로젝트는 여러 사용자가 공용 가상 현재 시각을 기준으로 스터디룸을 검색, 예약, 체크인, 연장, 취소할 수 있도록 만든 Java CLI 프로그램입니다.  
-관리자는 전체 예약 조회, 사용자 패널티 관리, 룸 상태 변경 기능을 사용할 수 있습니다.
+## 빌드
 
-## 주요 기능
+Windows:
 
-- 회원가입 / 로그인 / 로그아웃
-- member / admin 역할 분리
-- 공용 가상 현재 시각 조회 및 변경
-- 스터디룸 목록 조회
-- 조건 기반 사용 가능 룸 검색
-- 예약 생성 / 조회 / 취소
-- 체크인 및 30분 1회 연장
-- 패널티 조회 및 관리자 초기화
-- 관리자용 전체 예약 조회
-- 자동 `NO_SHOW`, `COMPLETED` 상태 갱신
-
-## 프로젝트 구조
-
-- `src/Main.java` : 프로그램 실행 진입점
-- `src/CliApp.java` : 전체 CLI 메뉴와 사용자 상호작용 흐름
-- `src/Domain.java` : 사용자, 룸, 예약, 데이터셋 도메인 모델
-- `src/TextDataStore.java` : 텍스트 파일 로드/검증/저장 처리
-- `src/AutoStateUpdater.java` : 예약 상태 자동 갱신
-- `src/TimeFormats.java` : 날짜/시간 파싱 및 포맷 유틸리티
-- `src/Exceptions.java` : 공통 예외 타입 정의
-- `users.txt`, `rooms.txt`, `reservations.txt`, `system_time.txt` : 실행용 데이터 파일
-- `docs/1차기획서_스터디룸예약CLI.md` : 1차 기획 문서
-- `docs/구현작업내용_스터디룸예약CLI.md` : 구현 작업 정리 문서
-
-## 실행 방법
-
-저장소 루트에서 아래 순서로 실행하면 됩니다.
-
-```bash
-javac -d out src/*.java
-java -cp out Main
+```powershell
+.\gradlew.bat clean check
 ```
 
-## 문서
+macOS / Linux:
 
-- 기획서: `docs/1차기획서_스터디룸예약CLI.md`
-- 구현 기록: `docs/구현작업내용_스터디룸예약CLI.md`
+```bash
+./gradlew clean check
+```
 
----
+## 실행
 
-## 기존 팀 정보
+Windows:
 
-2026-1 전기프
+```powershell
+.\gradlew.bat run
+```
 
-### 팀원
+macOS / Linux:
 
-| 팀원 | 이름 | 학번 | 스킬 |
-|------|--------|--------|-----------|
-| 1번  |  김본수  |   202311266   | C, Python, ...... |
-| 2번  |  신동혁  |   202211313     |  Java     |
-| 3번  |  함형주  |  202112849      |  Java     |
-| 4번  |  강현구  |  202114213      |  Java      |
-| 5번  |  이다연   |   202214313      |   Frontend        |
-| 6번  |  조제욱      |  202415206      | Java          |
+```bash
+./gradlew run
+```
+
+## 기본 admin 계정
+
+- userId: `user001`
+- loginId: `user001`
+- userName: `admin`
+- password: `admin1234`
+
+## 데이터 파일
+
+프로젝트 루트의 `data/` 폴더를 사용합니다.
+
+- `users.txt`: `USER|userId|loginId|password|userName|role`
+- `rooms.txt`: `ROOM|roomId|roomName|maxCapacity|roomStatus`
+- `reservations.txt`: `RESV|reservationId|userId|roomId|date|startTime|endTime|partySize|status|createdAt|checkedInAt`
+- `system_time.txt`: `NOW|yyyy-MM-dd HH:mm`
+
+공통 규칙:
+
+- UTF-8 인코딩
+- 필드 구분자 `|`
+- 빈 줄 허용
+- `#`로 시작하는 줄은 주석으로 무시
+
+## 검증
+
+`check` 작업은 컴파일과 함께 CLI 회귀 테스트를 실행합니다.
