@@ -1,6 +1,9 @@
 package ku.com;
 
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -18,6 +21,11 @@ public class RegressionTest {
 
         testMissingFilesAutoCreated();
         testInvalidFileSyntaxStopsStartup();
+        testRuntimeMissingFileRejectedWithoutAutoCreate();
+        testFileErrorMessageUsesRuntimeStopTextAfterStartup();
+        testInvalidFileLeadingWhitespaceRejected();
+        testInvalidFileFieldWhitespaceRejected();
+        testInvalidFileNumericWhitespaceRejected();
         testSignupDuplicateAndSuccess();
         testLoginFailureAndSuccess();
         testMemberTimeChangeSuccess();
@@ -132,6 +140,84 @@ public class RegressionTest {
 
         String output = runCli(root, "");
         assertContains(output, "[파일 오류] reservations.txt");
+        assertContains(output, "프로그램 시작을 중단합니다.");
+    }
+
+    private static void testRuntimeMissingFileRejectedWithoutAutoCreate() throws Exception {
+        Path root = Files.createTempDirectory("study-room-runtime-missing-file-");
+        TextDataStore store = new TextDataStore(root);
+        store.ensureDataFiles();
+        Files.delete(root.resolve("data").resolve("rooms.txt"));
+
+        AppDataException error = expectLoadFailure(root);
+        assertEquals("rooms.txt", error.getFileName(), "Expected runtime reload to fail when a required file was deleted after startup setup.");
+        assertEquals(0, error.getLineNumber(), "Missing-file failure should be reported without a line number.");
+    }
+
+    private static void testFileErrorMessageUsesRuntimeStopTextAfterStartup() throws Exception {
+        CliApp app = new CliApp();
+        Field startupCompleted = CliApp.class.getDeclaredField("startupCompleted");
+        startupCompleted.setAccessible(true);
+        startupCompleted.setBoolean(app, true);
+
+        Method printFileErrorAndExit = CliApp.class.getDeclaredMethod("printFileErrorAndExit", AppDataException.class);
+        printFileErrorAndExit.setAccessible(true);
+
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        try (PrintStream capture = new PrintStream(buffer, true, StandardCharsets.UTF_8)) {
+            System.setOut(capture);
+            printFileErrorAndExit.invoke(app, new AppDataException("rooms.txt", 0, "파일이 존재하지 않습니다."));
+        } finally {
+            System.setOut(originalOut);
+        }
+
+        String output = buffer.toString(StandardCharsets.UTF_8);
+        assertContains(output, "현재 작업을 중단합니다.");
+    }
+
+    private static void testInvalidFileLeadingWhitespaceRejected() throws Exception {
+        Path root = Files.createTempDirectory("study-room-invalid-line-space-");
+        writeData(root,
+                "USER|user001|user001|admin1234|admin|admin\n"
+                        + " USER|user011|user011|pw1234|bonsu|member\n",
+                baseRooms(),
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        AppDataException error = expectLoadFailure(root);
+        assertEquals("users.txt", error.getFileName(), "Expected users.txt load failure for record-level leading whitespace.");
+        assertEquals(2, error.getLineNumber(), "Expected second users.txt line to fail when the record starts with whitespace.");
+    }
+
+    private static void testInvalidFileFieldWhitespaceRejected() throws Exception {
+        Path root = Files.createTempDirectory("study-room-invalid-field-space-");
+        writeData(root,
+                baseUsers(),
+                "ROOM|R101| A猷? |4|OPEN\n"
+                        + "ROOM|R102|B猷?6|OPEN\n"
+                        + "ROOM|R103|C猷?8|OPEN\n",
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        AppDataException error = expectLoadFailure(root);
+        assertEquals("rooms.txt", error.getFileName(), "Expected rooms.txt load failure for roomName outer whitespace.");
+        assertEquals(1, error.getLineNumber(), "Expected first rooms.txt line to fail when roomName has leading/trailing whitespace.");
+    }
+
+    private static void testInvalidFileNumericWhitespaceRejected() throws Exception {
+        Path root = Files.createTempDirectory("study-room-invalid-number-space-");
+        writeData(root,
+                baseUsers(),
+                "ROOM|R101|A猷?| 4|OPEN\n"
+                        + "ROOM|R102|B猷?6|OPEN\n"
+                        + "ROOM|R103|C猷?8|OPEN\n",
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        AppDataException error = expectLoadFailure(root);
+        assertEquals("rooms.txt", error.getFileName(), "Expected rooms.txt load failure for maxCapacity outer whitespace.");
+        assertEquals(1, error.getLineNumber(), "Expected first rooms.txt line to fail when maxCapacity has leading whitespace.");
     }
 
     private static void testSignupDuplicateAndSuccess() throws Exception {
@@ -147,7 +233,6 @@ public class RegressionTest {
         String output = runCli(root, input);
 
         assertContains(output, "회원가입이 완료되었습니다.");
-        assertContains(output, "발급된 사용자 ID: user023");
         assertFileContains(root, "users.txt", "USER|user023|user023|pw12|bonsu|member");
     }
 
@@ -231,7 +316,8 @@ public class RegressionTest {
                 "0");
         String output = runCli(root, input);
 
-        assertContains(output, "예약이 완료되었습니다. 예약번호: rv0001");
+        assertContains(output, "예약이 완료되었습니다.");
+        assertContains(output, "예약번호: rv0001");
         assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-");
     }
 
@@ -723,9 +809,24 @@ public class RegressionTest {
                 + "ROOM|R103|C룸|8|OPEN\n";
     }
 
+    private static AppDataException expectLoadFailure(Path root) throws Exception {
+        try {
+            new TextDataStore(root).loadAll();
+        } catch (AppDataException error) {
+            return error;
+        }
+        throw new AssertionError("Expected loadAll() to fail for root: " + root);
+    }
+
     private static void assertContains(String output, String expected) {
         if (!output.contains(expected)) {
             throw new AssertionError("Expected output to contain: " + expected + "\nActual output:\n" + output);
+        }
+    }
+
+    private static void assertEquals(Object expected, Object actual, String message) {
+        if (expected == null ? actual != null : !expected.equals(actual)) {
+            throw new AssertionError(message + "\nExpected: " + expected + "\nActual: " + actual);
         }
     }
 

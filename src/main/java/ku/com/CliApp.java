@@ -27,6 +27,7 @@ final class CliApp {
 
     private String loggedInUserId;
     private Role loggedInRole;
+    private boolean startupCompleted;
 
     private static Path resolveProjectRoot() {
         try {
@@ -59,6 +60,7 @@ final class CliApp {
         try {
             store.ensureDataFiles();
             loadAndSync();
+            startupCompleted = true;
             while (true) {
                 if (loggedInUserId == null) {
                     guestMenu();
@@ -164,7 +166,6 @@ final class CliApp {
         data.users.put(userId, new User(userId, loginId, password, userName, Role.MEMBER, 0));
         store.saveAll(data);
         System.out.println("회원가입이 완료되었습니다.");
-        System.out.println("발급된 사용자 ID: " + userId);
     }
 
     private void handleLogin() throws AppDataException {
@@ -308,7 +309,8 @@ final class CliApp {
                 0);
         data.reservations.put(reservationId, reservation);
         store.saveAll(data);
-        System.out.println("예약이 완료되었습니다. 예약번호: " + reservationId);
+        System.out.println("예약이 완료되었습니다.");
+        System.out.println("예약번호: " + reservationId);
     }
 
     private void handleCancelReservation() throws AppDataException {
@@ -1036,6 +1038,10 @@ final class CliApp {
         } else {
             System.out.println("[파일 오류] " + e.getFileName() + ": " + e.getMessage());
         }
-        System.out.println("프로그램 시작을 중단합니다.");
+        if (startupCompleted) {
+            System.out.println("현재 작업을 중단합니다.");
+        } else {
+            System.out.println("프로그램 시작을 중단합니다.");
+        }
     }
 }

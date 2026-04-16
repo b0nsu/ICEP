@@ -55,7 +55,6 @@ final class TextDataStore {
     }
 
     SystemData loadAll() throws AppDataException {
-        ensureDataFiles();
         verifyAccessible(usersPath, USERS_FILE);
         verifyAccessible(roomsPath, ROOMS_FILE);
         verifyAccessible(reservationsPath, RESERVATIONS_FILE);
@@ -85,11 +84,14 @@ final class TextDataStore {
         for (LineRecord line : lines) {
             String[] fields = splitFields(line, USERS_FILE, 6);
             require("USER".equals(fields[0]), USERS_FILE, line.lineNumber, "레코드 접두어는 USER여야 합니다.");
-            String userId = fields[1].trim();
-            String loginId = fields[2].trim();
-            String password = fields[3].trim();
-            String userName = fields[4].trim();
-            Role role = Role.fromFile(fields[5], USERS_FILE, line.lineNumber);
+            String userId = requireNoOuterWhitespaceStrict(fields[1], USERS_FILE, line.lineNumber, "userId");
+            String loginId = requireNoOuterWhitespaceStrict(fields[2], USERS_FILE, line.lineNumber, "loginId");
+            String password = requireNoOuterWhitespaceStrict(fields[3], USERS_FILE, line.lineNumber, "password");
+            String userName = requireNoOuterWhitespaceStrict(fields[4], USERS_FILE, line.lineNumber, "userName");
+            Role role = Role.fromFile(
+                    requireNoOuterWhitespaceStrict(fields[5], USERS_FILE, line.lineNumber, "role"),
+                    USERS_FILE,
+                    line.lineNumber);
 
             require(USER_ID_PATTERN.matcher(userId).matches(), USERS_FILE, line.lineNumber,
                     "userId 형식이 올바르지 않습니다.");
@@ -118,10 +120,13 @@ final class TextDataStore {
         for (LineRecord line : lines) {
             String[] fields = splitFields(line, ROOMS_FILE, 5);
             require("ROOM".equals(fields[0]), ROOMS_FILE, line.lineNumber, "레코드 접두어는 ROOM이어야 합니다.");
-            String roomId = fields[1].trim();
-            String roomName = fields[2].trim();
+            String roomId = requireNoOuterWhitespaceStrict(fields[1], ROOMS_FILE, line.lineNumber, "roomId");
+            String roomName = requireNoOuterWhitespaceStrict(fields[2], ROOMS_FILE, line.lineNumber, "roomName");
             int maxCapacity = parseInt(fields[3], ROOMS_FILE, line.lineNumber, "maxCapacity");
-            RoomStatus roomStatus = RoomStatus.fromFile(fields[4], ROOMS_FILE, line.lineNumber);
+            RoomStatus roomStatus = RoomStatus.fromFile(
+                    requireNoOuterWhitespaceStrict(fields[4], ROOMS_FILE, line.lineNumber, "roomStatus"),
+                    ROOMS_FILE,
+                    line.lineNumber);
 
             require(ROOM_ID_PATTERN.matcher(roomId).matches(), ROOMS_FILE, line.lineNumber,
                     "roomId 형식이 올바르지 않습니다.");
@@ -141,16 +146,35 @@ final class TextDataStore {
         for (LineRecord line : lines) {
             String[] fields = splitFields(line, RESERVATIONS_FILE, 11);
             require("RESV".equals(fields[0]), RESERVATIONS_FILE, line.lineNumber, "레코드 접두어는 RESV여야 합니다.");
-            String reservationId = fields[1].trim();
-            String userId = fields[2].trim();
-            String roomId = fields[3].trim();
-            LocalDate date = TimeFormats.parseDate(fields[4], RESERVATIONS_FILE, line.lineNumber, "date");
-            LocalTime startTime = TimeFormats.parseTime(fields[5], RESERVATIONS_FILE, line.lineNumber, "startTime");
-            LocalTime endTime = TimeFormats.parseTime(fields[6], RESERVATIONS_FILE, line.lineNumber, "endTime");
+            String reservationId = requireNoOuterWhitespaceStrict(fields[1], RESERVATIONS_FILE, line.lineNumber, "reservationId");
+            String userId = requireNoOuterWhitespaceStrict(fields[2], RESERVATIONS_FILE, line.lineNumber, "userId");
+            String roomId = requireNoOuterWhitespaceStrict(fields[3], RESERVATIONS_FILE, line.lineNumber, "roomId");
+            LocalDate date = TimeFormats.parseDate(
+                    requireNoOuterWhitespaceStrict(fields[4], RESERVATIONS_FILE, line.lineNumber, "date"),
+                    RESERVATIONS_FILE,
+                    line.lineNumber,
+                    "date");
+            LocalTime startTime = TimeFormats.parseTime(
+                    requireNoOuterWhitespaceStrict(fields[5], RESERVATIONS_FILE, line.lineNumber, "startTime"),
+                    RESERVATIONS_FILE,
+                    line.lineNumber,
+                    "startTime");
+            LocalTime endTime = TimeFormats.parseTime(
+                    requireNoOuterWhitespaceStrict(fields[6], RESERVATIONS_FILE, line.lineNumber, "endTime"),
+                    RESERVATIONS_FILE,
+                    line.lineNumber,
+                    "endTime");
             int partySize = parseInt(fields[7], RESERVATIONS_FILE, line.lineNumber, "partySize");
-            ReservationStatus status = ReservationStatus.fromFile(fields[8], RESERVATIONS_FILE, line.lineNumber);
-            LocalDateTime createdAt = TimeFormats.parseDateTime(fields[9], RESERVATIONS_FILE, line.lineNumber, "createdAt");
-            String checkedInRaw = fields[10].trim();
+            ReservationStatus status = ReservationStatus.fromFile(
+                    requireNoOuterWhitespaceStrict(fields[8], RESERVATIONS_FILE, line.lineNumber, "status"),
+                    RESERVATIONS_FILE,
+                    line.lineNumber);
+            LocalDateTime createdAt = TimeFormats.parseDateTime(
+                    requireNoOuterWhitespaceStrict(fields[9], RESERVATIONS_FILE, line.lineNumber, "createdAt"),
+                    RESERVATIONS_FILE,
+                    line.lineNumber,
+                    "createdAt");
+            String checkedInRaw = requireNoOuterWhitespaceStrict(fields[10], RESERVATIONS_FILE, line.lineNumber, "checkedInAt");
 
             require(RESERVATION_ID_PATTERN.matcher(reservationId).matches(), RESERVATIONS_FILE, line.lineNumber,
                     "reservationId 형식이 올바르지 않습니다.");
@@ -280,11 +304,10 @@ final class TextDataStore {
             List<LineRecord> lines = new ArrayList<>();
             for (int i = 0; i < rawLines.size(); i++) {
                 String line = rawLines.get(i);
-                String trimmed = line.trim();
-                if (trimmed.isEmpty() || trimmed.startsWith("#")) {
+                if (line.isBlank() || line.startsWith("#")) {
                     continue;
                 }
-                lines.add(new LineRecord(i + 1, trimmed));
+                lines.add(new LineRecord(i + 1, line));
             }
             return lines;
         } catch (IOException e) {
@@ -302,10 +325,24 @@ final class TextDataStore {
 
     private int parseInt(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
         try {
-            return Integer.parseInt(raw.trim());
+            return Integer.parseInt(raw);
         } catch (NumberFormatException e) {
             throw new AppDataException(fileName, lineNumber, fieldName + " 값은 정수여야 합니다.");
         }
+    }
+
+    private String requireNoOuterWhitespace(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
+        if (!raw.equals(raw.trim())) {
+            throw new AppDataException(fileName, lineNumber, fieldName + " 媛믪쓽 ?욌뮘 怨듬갚? ?덉슜?섏? ?딆뒿?덈떎.");
+        }
+        return raw;
+    }
+
+    private String requireNoOuterWhitespaceStrict(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
+        if (!raw.equals(raw.trim())) {
+            throw new AppDataException(fileName, lineNumber, fieldName + " 값의 앞뒤 공백은 허용되지 않습니다.");
+        }
+        return raw;
     }
 
     private void validateNoPipeOrNewline(String value, String fileName, int lineNumber, String fieldName) throws AppDataException {
