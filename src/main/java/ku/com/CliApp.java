@@ -223,6 +223,14 @@ final class CliApp {
 
         LocalDateTime startAt = LocalDateTime.of(date, start);
         LocalDateTime endAt = LocalDateTime.of(date, end);
+        if (!startAt.isAfter(data.currentTime)) {
+            System.out.println("오류: 예약 시작 시각은 현재 가상 시각보다 미래여야 합니다.");
+            return;
+        }
+        if (hasUserOverlap(data, loggedInUserId, startAt, endAt, null)) {
+            System.out.println("오류: 같은 시간대에 이미 다른 예약이 있습니다.");
+            return;
+        }
 
         printRoomHeader();
         int count = 0;

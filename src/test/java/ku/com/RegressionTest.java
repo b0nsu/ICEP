@@ -18,10 +18,13 @@ public class RegressionTest {
 
         testMissingFilesAutoCreated();
         testInvalidFileSyntaxStopsStartup();
+        testInvalidUserIdSyntaxStopsStartup();
         testSignupDuplicateAndSuccess();
         testLoginFailureAndSuccess();
         testMemberTimeChangeSuccess();
         testAvailableRoomQueryFiltersRooms();
+        testAvailableRoomQueryRejectsPastStart();
+        testAvailableRoomQueryRejectsUserOverlap();
         testCreateReservationSuccess();
         testCreateReservationRejectsHalfHourTime();
         testCreateReservationRejectsRoomOverlap();
@@ -134,6 +137,19 @@ public class RegressionTest {
         assertContains(output, "[파일 오류] reservations.txt");
     }
 
+    private static void testInvalidUserIdSyntaxStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                "USER|user001|user001|admin1234|admin|admin\n"
+                        + "USER|abcd|user011|pw1234|bonsu|member\n",
+                baseRooms(),
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] users.txt 2행: userId 형식이 올바르지 않습니다.");
+    }
+
     private static void testSignupDuplicateAndSuccess() throws Exception {
         Path root = createCliRoot();
         writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
@@ -211,6 +227,50 @@ public class RegressionTest {
         String output = runCli(root, input);
 
         assertContains(output, "조회 결과가 없습니다.");
+    }
+
+    private static void testAvailableRoomQueryRejectsPastStart() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 14:00\n");
+
+        String input = lines(
+                "2",
+                "user011",
+                "pw1234",
+                "2",
+                "2026-03-20",
+                "13:00",
+                "15:00",
+                "2",
+                "0",
+                "0");
+        String output = runCli(root, input);
+
+        assertContains(output, "오류: 예약 시작 시각은 현재 가상 시각보다 미래여야 합니다.");
+    }
+
+    private static void testAvailableRoomQueryRejectsUserOverlap() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String input = lines(
+                "2",
+                "user011",
+                "pw1234",
+                "2",
+                "2026-03-20",
+                "13:00",
+                "15:00",
+                "2",
+                "0",
+                "0");
+        String output = runCli(root, input);
+
+        assertContains(output, "오류: 같은 시간대에 이미 다른 예약이 있습니다.");
     }
 
     private static void testCreateReservationSuccess() throws Exception {

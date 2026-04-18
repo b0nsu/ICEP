@@ -19,7 +19,7 @@ final class TextDataStore {
     static final String RESERVATIONS_FILE = "reservations.txt";
     static final String SYSTEM_TIME_FILE = "system_time.txt";
 
-    private static final Pattern USER_ID_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
+    private static final Pattern USER_ID_PATTERN = Pattern.compile("^user[0-9]{3}$");
     private static final Pattern LOGIN_ID_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
     private static final Pattern USER_NAME_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
     private static final Pattern ROOM_ID_PATTERN = Pattern.compile("^R[0-9]{3}$");
