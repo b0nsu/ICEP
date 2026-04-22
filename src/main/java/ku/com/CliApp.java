@@ -164,15 +164,14 @@ final class CliApp {
         data.users.put(userId, new User(userId, loginId, password, userName, Role.MEMBER, 0));
         store.saveAll(data);
         System.out.println("회원가입이 완료되었습니다.");
-        System.out.println("발급된 사용자 ID: " + userId);
     }
 
     private void handleLogin() throws AppDataException {
-        SystemData loaded = store.loadAll();
         System.out.println("[로그인]");
         String loginId = promptLoginId("로그인 ID: ");
         String password = promptPassword("비밀번호: ");
-        User user = loaded.findUserByLoginId(loginId);
+        SystemData data = loadAndSync();
+        User user = data.findUserByLoginId(loginId);
         if (user == null) {
             System.out.println("오류: 존재하지 않는 로그인 ID입니다.");
             return;
@@ -182,27 +181,15 @@ final class CliApp {
             return;
         }
 
-        SystemData synced = loadAndSync();
-        User syncedUser = synced.users.get(user.userId);
-        if (syncedUser == null) {
-            System.out.println("오류: 로그인할 수 없는 계정입니다.");
-            return;
-        }
-
-        loggedInUserId = syncedUser.userId;
-        loggedInRole = syncedUser.role;
-        System.out.println("로그인 성공: " + syncedUser.userName + " (role: " + syncedUser.role.fileValue() + ")");
+        loggedInUserId = user.userId;
+        loggedInRole = user.role;
+        System.out.println("로그인 성공: " + user.userName + " (role: " + user.role.fileValue() + ")");
     }
 
     private void handleLogout() {
         loggedInUserId = null;
         loggedInRole = null;
         System.out.println("로그아웃되었습니다.");
-    }
-
-    private void handleViewCurrentTime() throws AppDataException {
-        SystemData data = store.loadAll();
-        System.out.println("현재 가상 시각: " + TimeFormats.formatDateTime(data.currentTime));
     }
 
     private void handleSearchAvailableRooms() throws AppDataException {
@@ -316,7 +303,8 @@ final class CliApp {
                 0);
         data.reservations.put(reservationId, reservation);
         store.saveAll(data);
-        System.out.println("예약이 완료되었습니다. 예약번호: " + reservationId);
+        System.out.println("예약이 완료되었습니다.");
+        System.out.println("예약번호: " + reservationId);
     }
 
     private void handleCancelReservation() throws AppDataException {

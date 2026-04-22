@@ -19,14 +19,19 @@ public class RegressionTest {
         testMissingFilesAutoCreated();
         testInvalidFileSyntaxStopsStartup();
         testInvalidUserIdSyntaxStopsStartup();
+        testDuplicateSystemTimeStopsStartup();
         testSignupDuplicateAndSuccess();
+        testSignupRejectsShortLoginId();
+        testSignupRejectsShortPassword();
         testLoginFailureAndSuccess();
         testMemberTimeChangeSuccess();
         testAvailableRoomQueryFiltersRooms();
         testAvailableRoomQueryRejectsPastStart();
         testAvailableRoomQueryRejectsUserOverlap();
         testCreateReservationSuccess();
+        testCreateReservationAllowsFourHourBoundary();
         testCreateReservationRejectsHalfHourTime();
+        testCreateReservationRejectsTooLongWindow();
         testCreateReservationRejectsRoomOverlap();
         testCreateReservationRejectsUserOverlap();
         testCancelDeletesReservation();
@@ -36,6 +41,7 @@ public class RegressionTest {
         testCheckInClosedRoomRejected();
         testAdminTimeChangeRejectsPastAndAppliesTransitions();
         testAllReservationsShowsUserNames();
+        testManualMoveRejectsClosedRoom();
         testManualMoveSameRoomRejectedAndThenSucceeds();
         testCapacityChangeWithHistoricalCompletedReservation();
         testCapacityChangeImpactedSameRoomRejectedAndMoveSuccess();
@@ -120,7 +126,7 @@ public class RegressionTest {
         Path root = createCliRoot();
         String output = runCli(root, "0\n");
         assertContains(output, "[비로그인 메뉴]");
-        assertFileContains(root, "users.txt", "USER|user001|user001|admin1234|admin|admin");
+        assertFileContains(root, "users.txt", "USER|user001|admin|admin1234|admin|admin");
         assertFileContains(root, "rooms.txt", "ROOM|R101|A룸|4|OPEN");
         assertFileContains(root, "system_time.txt", "NOW|2026-03-20 09:00");
     }
@@ -140,7 +146,7 @@ public class RegressionTest {
     private static void testInvalidUserIdSyntaxStopsStartup() throws Exception {
         Path root = createCliRoot();
         writeData(root,
-                "USER|user001|user001|admin1234|admin|admin\n"
+                "USER|user001|admin|admin1234|admin|admin\n"
                         + "USER|abcd|user011|pw1234|bonsu|member\n",
                 baseRooms(),
                 "",
@@ -148,6 +154,14 @@ public class RegressionTest {
 
         String output = runCli(root, "");
         assertContains(output, "[파일 오류] users.txt 2행: userId 형식이 올바르지 않습니다.");
+    }
+
+    private static void testDuplicateSystemTimeStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\nNOW|2026-03-20 10:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] system_time.txt");
     }
 
     private static void testSignupDuplicateAndSuccess() throws Exception {
@@ -163,8 +177,35 @@ public class RegressionTest {
         String output = runCli(root, input);
 
         assertContains(output, "회원가입이 완료되었습니다.");
-        assertContains(output, "발급된 사용자 ID: user023");
         assertFileContains(root, "users.txt", "USER|user023|user023|pw12|bonsu|member");
+    }
+
+    private static void testSignupRejectsShortLoginId() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "1",
+                "abc",
+                "pw12",
+                "bonsu",
+                "0"));
+
+        assertContains(output, "오류: 로그인 ID는 영문자로 시작하고 영문자/숫자/_ 만 사용하여 4~20자로 입력해야 합니다.");
+    }
+
+    private static void testSignupRejectsShortPassword() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "1",
+                "user023",
+                "abc",
+                "bonsu",
+                "0"));
+
+        assertContains(output, "오류: 비밀번호는 4~20자로 입력해야 합니다.");
     }
 
     private static void testLoginFailureAndSuccess() throws Exception {
@@ -291,8 +332,31 @@ public class RegressionTest {
                 "0");
         String output = runCli(root, input);
 
-        assertContains(output, "예약이 완료되었습니다. 예약번호: rv0001");
+        assertContains(output, "예약이 완료되었습니다.");
+        assertContains(output, "예약번호: rv0001");
         assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-");
+    }
+
+    private static void testCreateReservationAllowsFourHourBoundary() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "3",
+                "2026-03-20",
+                "13:00",
+                "17:00",
+                "2",
+                "R102",
+                "0",
+                "0"));
+
+        assertContains(output, "예약이 완료되었습니다.");
+        assertContains(output, "예약번호: rv0001");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-20|13:00|17:00|2|RESERVED|2026-03-20 09:00|-");
     }
 
     private static void testCreateReservationRejectsHalfHourTime() throws Exception {
@@ -315,6 +379,26 @@ public class RegressionTest {
         String output = runCli(root, input);
 
         assertContains(output, "오류: 예약 시각은 1시간 단위여야 합니다.");
+    }
+
+    private static void testCreateReservationRejectsTooLongWindow() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "3",
+                "2026-03-20",
+                "13:00",
+                "18:00",
+                "2",
+                "R102",
+                "0",
+                "0"));
+
+        assertContains(output, "오류: 예약 길이는 1시간, 2시간, 3시간, 4시간 중 하나여야 합니다.");
     }
 
     private static void testCreateReservationRejectsRoomOverlap() throws Exception {
@@ -486,7 +570,7 @@ public class RegressionTest {
 
         String input = lines(
                 "2",
-                "user001",
+                "admin",
                 "admin1234",
                 "1",
                 "2026-03-20 08:00",
@@ -515,7 +599,7 @@ public class RegressionTest {
 
         String output = runCli(root, lines(
                 "2",
-                "user001",
+                "admin",
                 "admin1234",
                 "2",
                 "0",
@@ -540,7 +624,7 @@ public class RegressionTest {
 
         String input = lines(
                 "2",
-                "user001",
+                "admin",
                 "admin1234",
                 "3",
                 "rv0001",
@@ -559,6 +643,28 @@ public class RegressionTest {
         assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-");
     }
 
+    private static void testManualMoveRejectsClosedRoom() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                "ROOM|R101|A룸|4|OPEN\n"
+                        + "ROOM|R102|B룸|6|CLOSED\n",
+                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "admin",
+                "admin1234",
+                "3",
+                "rv0001",
+                "R102",
+                "0",
+                "0"));
+
+        assertContains(output, "오류: 대상 룸이 OPEN 상태가 아니어서 이동할 수 없습니다.");
+    }
+
     private static void testCapacityChangeWithHistoricalCompletedReservation() throws Exception {
         Path root = createCliRoot();
         writeData(root,
@@ -570,7 +676,7 @@ public class RegressionTest {
 
         String output = runCli(root, lines(
                 "2",
-                "user001",
+                "admin",
                 "admin1234",
                 "4",
                 "2",
@@ -597,7 +703,7 @@ public class RegressionTest {
 
         String output = runCli(root, lines(
                 "2",
-                "user001",
+                "admin",
                 "admin1234",
                 "4",
                 "2",
@@ -635,7 +741,7 @@ public class RegressionTest {
 
         String output = runCli(root, lines(
                 "2",
-                "user001",
+                "admin",
                 "admin1234",
                 "4",
                 "2",
@@ -661,7 +767,7 @@ public class RegressionTest {
 
         String output = runCli(root, lines(
                 "2",
-                "user001",
+                "admin",
                 "admin1234",
                 "4",
                 "3",
@@ -684,7 +790,7 @@ public class RegressionTest {
 
         String output = runCli(root, lines(
                 "2",
-                "user001",
+                "admin",
                 "admin1234",
                 "4",
                 "3",
@@ -713,7 +819,7 @@ public class RegressionTest {
 
         String output = runCli(root, lines(
                 "2",
-                "user001",
+                "admin",
                 "admin1234",
                 "4",
                 "4",
@@ -773,7 +879,7 @@ public class RegressionTest {
     }
 
     private static String users(String userId, String password, String userName) {
-        return "USER|user001|user001|admin1234|admin|admin\n"
+        return "USER|user001|admin|admin1234|admin|admin\n"
                 + "USER|" + userId + "|" + userId + "|" + password + "|" + userName + "|member\n";
     }
 
