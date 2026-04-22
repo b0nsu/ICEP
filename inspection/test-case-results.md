@@ -21,7 +21,7 @@ BUILD SUCCESSFUL
 | TC02 | 다음 예약번호 생성 | 기존 `rv0001`, `rv0003` 존재 | `rv0004` 생성 | `rv0004` 확인, PASS |
 | TC03 | 과거 `COMPLETED` 예약 적재 | 현재 정원보다 큰 완료 예약 | 정상 로드 | `COMPLETED` 유지, PASS |
 | TC04 | 같은 룸으로 이동 거절 | 방 이동 대상=`현재 룸` | 거절 메시지 | 거절 확인, PASS |
-| TC05 | 필수 파일 자동 생성 | `data`/파일 없음 | 기본 파일 생성 | `users/rooms/system_time` 생성 확인, PASS |
+| TC05 | 필수 파일 자동 생성 | `data`/필수 파일 없음 | 기본 파일 생성 | `users/rooms/reservations/system_time` 생성 확인, PASS |
 | TC06 | 잘못된 예약 파일 문법 | `RESV|broken|line` | 시작 중단 | `[파일 오류] reservations.txt` 확인, PASS |
 | TC07 | 잘못된 `userId` 형식 | `USER|abcd|...` | 시작 중단 | `[파일 오류] users.txt 2행` 확인, PASS |
 | TC08 | 중복 `NOW` 레코드 | `system_time.txt`에 `NOW` 2개 | 시작 중단 | `[파일 오류] system_time.txt` 확인, PASS |
@@ -52,7 +52,7 @@ BUILD SUCCESSFUL
 | TC33 | 정원 변경 영향예약 이동 성공 | 동일 룸 거절 후 다른 룸 이동 | 영향예약 처리 + 변경 성공 | RESV/ROOM 변경 확인, PASS |
 | TC34 | 정원 변경 전체 취소 복구 | 영향예약 처리 중 `0` 선택 | 원상복구 | ROOM/RESV 원복 확인, PASS |
 | TC35 | 체크인 중 예약 있는 룸 휴업 거절 | `CHECKED_IN` 존재 | 오류 | 즉시 휴업 불가 확인, PASS |
-| TC36 | 영향예약 삭제 후 룸 휴업 성공 | 미래 `RESERVED` 존재, 삭제 선택 | 휴업 성공 | ROOM `CLOSED`, 예약 삭제 확인, PASS |
+| TC36 | 영향예약 예약 취소 후 룸 휴업 성공 | 미래 `RESERVED` 존재, 예약 취소 선택 | 휴업 성공 | ROOM `CLOSED`, 예약 삭제 확인, PASS |
 | TC37 | 룸 운영 재개 성공 | `R101(CLOSED)` | `OPEN` 전환 | ROOM `OPEN` 확인, PASS |
 
 ## 근거
