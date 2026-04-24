@@ -201,7 +201,7 @@ final class CliApp {
         LocalDate date = promptDate("날짜 입력(yyyy-MM-dd): ");
         LocalTime start = promptTime("시작 시각 입력(HH:mm): ");
         LocalTime end = promptTime("종료 시각 입력(HH:mm): ");
-        int partySize = promptPositiveInt("인원 수 입력: ");
+        BigInteger partySize = promptPositiveBigInteger("인원 수 입력: ");
 
         String error = validateReservationWindow(date, start, end);
         if (error != null) {
@@ -226,7 +226,7 @@ final class CliApp {
             if (room.roomStatus != RoomStatus.OPEN) {
                 continue;
             }
-            if (room.maxCapacity.compareTo(BigInteger.valueOf(partySize)) < 0) {
+            if (room.maxCapacity.compareTo(partySize) < 0) {
                 continue;
             }
             if (hasRoomOverlap(data, room.roomId, startAt, endAt, null)) {
@@ -251,7 +251,7 @@ final class CliApp {
         LocalDate date = promptDate("날짜 입력(yyyy-MM-dd): ");
         LocalTime start = promptTime("시작 시각 입력(HH:mm): ");
         LocalTime end = promptTime("종료 시각 입력(HH:mm): ");
-        BigInteger partySize1 = promptPositiveBigInteger("인원 수 입력: ");
+        BigInteger partySize = promptPositiveBigInteger("인원 수 입력: ");
         String roomId = promptRoomId("룸 ID 입력: ");
 
         String windowError = validateReservationWindow(date, start, end);
@@ -269,7 +269,7 @@ final class CliApp {
             System.out.println("오류: 해당 룸은 현재 운영 중이 아닙니다.");
             return;
         }
-        if (room.maxCapacity.compareTo(partySize1) < 0) {
+        if (room.maxCapacity.compareTo(partySize) < 0) {
             System.out.println("오류: 수용 인원을 초과했습니다.");
             return;
         }
@@ -297,7 +297,7 @@ final class CliApp {
                 date,
                 start,
                 end,
-                partySize1,
+                partySize,
                 ReservationStatus.RESERVED,
                 data.currentTime,
                 null,
@@ -545,7 +545,7 @@ final class CliApp {
         System.out.println("[최대 수용 인원 변경]");
         System.out.println("현재 가상 시각: " + TimeFormats.formatDateTime(data.currentTime));
         String roomId = promptRoomId("룸 ID 입력: ");
-        BigInteger newCapacity1 = promptPositiveBigInteger("새 최대 수용 인원 입력: ");
+        BigInteger newCapacity = promptPositiveBigInteger("새 최대 수용 인원 입력: ");
 
         Room room = data.rooms.get(roomId);
         if (room == null) {
@@ -553,12 +553,12 @@ final class CliApp {
             return;
         }
 
-        if (hasActiveReservationOverCapacity(data, roomId, newCapacity1)) {
+        if (hasActiveReservationOverCapacity(data, roomId, newCapacity)) {
             System.out.println("오류: 현재 CHECKED_IN 예약 인원이 새 최대 수용 인원을 초과하여 변경할 수 없습니다.");
             return;
         }
 
-        List<Reservation> impacted = findFutureReservedWithTooManyPeople(data, roomId, newCapacity1);
+        List<Reservation> impacted = findFutureReservedWithTooManyPeople(data, roomId, newCapacity);
         if (!impacted.isEmpty()) {
             System.out.println("현재 CHECKED_IN 예약 인원 검사 통과");
             System.out.println("영향 예약이 있어 처리 흐름을 시작합니다.");
@@ -571,7 +571,7 @@ final class CliApp {
         }
 
         String beforeRoomRecord = room.toRecord();
-        room.maxCapacity = newCapacity1;
+        room.maxCapacity = newCapacity;
         store.saveAll(data);
         printRecordChange("ROOM", beforeRoomRecord, room.toRecord());
         System.out.println("룸 최대 수용 인원이 변경되었습니다.");
@@ -980,20 +980,6 @@ final class CliApp {
         } catch (DateTimeParseException e) {
             abortAction("오류: 날짜/시각 형식이 올바르지 않습니다. 예: 2026-03-20 09:00");
             return null;
-        }
-    }
-
-    private int promptPositiveInt(String prompt) {
-        String text = promptStrictValue(prompt);
-        try {
-            int value = Integer.parseInt(text);
-            if (value < 1) {
-                abortAction("오류: 1 이상의 정수를 입력해야 합니다.");
-            }
-            return value;
-        } catch (NumberFormatException e) {
-            abortAction("오류: 숫자를 입력해야 합니다.");
-            return -1;
         }
     }
 
