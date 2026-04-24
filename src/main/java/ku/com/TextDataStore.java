@@ -19,7 +19,7 @@ final class TextDataStore {
     static final String RESERVATIONS_FILE = "reservations.txt";
     static final String SYSTEM_TIME_FILE = "system_time.txt";
 
-    private static final Pattern USER_ID_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
+    private static final Pattern USER_ID_PATTERN = Pattern.compile("^user[0-9]{3}$");
     private static final Pattern LOGIN_ID_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
     private static final Pattern USER_NAME_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
     private static final Pattern ROOM_ID_PATTERN = Pattern.compile("^R[0-9]{3}$");
@@ -56,11 +56,6 @@ final class TextDataStore {
 
     SystemData loadAll() throws AppDataException {
         ensureDataFiles();
-        verifyAccessible(usersPath, USERS_FILE);
-        verifyAccessible(roomsPath, ROOMS_FILE);
-        verifyAccessible(reservationsPath, RESERVATIONS_FILE);
-        verifyAccessible(systemTimePath, SYSTEM_TIME_FILE);
-
         LinkedHashMap<String, User> users = parseUsers();
         LinkedHashMap<String, Room> rooms = parseRooms();
         LinkedHashMap<String, Reservation> reservations = parseReservations();
@@ -262,18 +257,6 @@ final class TextDataStore {
         }
     }
 
-    private void verifyAccessible(Path path, String logicalName) throws AppDataException {
-        if (!Files.exists(path)) {
-            throw new AppDataException(logicalName, 0, "파일이 존재하지 않습니다.");
-        }
-        if (!Files.isReadable(path)) {
-            throw new AppDataException(logicalName, 0, "파일 읽기 권한이 없습니다.");
-        }
-        if (!Files.isWritable(path)) {
-            throw new AppDataException(logicalName, 0, "파일 쓰기 권한이 없습니다.");
-        }
-    }
-
     private List<LineRecord> readLogicalLines(Path path, String logicalName) throws AppDataException {
         try {
             List<String> rawLines = Files.readAllLines(path, StandardCharsets.UTF_8);
@@ -355,7 +338,7 @@ final class TextDataStore {
     }
 
     private String defaultUsers() {
-        return "USER|user001|user001|admin1234|admin|admin\n";
+        return "USER|user001|admin|admin1234|admin|admin\n";
     }
 
     private String defaultRooms() {
