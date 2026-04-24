@@ -35,9 +35,11 @@ public class RegressionTest {
         testAllReservationsShowsUserNames();
         testManualMoveSameRoomRejectedAndThenSucceeds();
         testCapacityChangeWithHistoricalCompletedReservation();
+        testCapacityChangeCheckInWindowReservedHandledAsImpacted();
         testCapacityChangeImpactedSameRoomRejectedAndMoveSuccess();
         testCapacityChangeRollbackRestoresState();
         testCloseRoomWithCheckedInReservationRejected();
+        testCloseRoomCheckInWindowReservedHandledAsImpacted();
         testCloseRoomImpactedDeleteAndSucceeds();
         testOpenRoomSuccess();
 
@@ -526,6 +528,35 @@ public class RegressionTest {
         assertFileContains(root, "rooms.txt", "ROOM|R101|A룸|4|OPEN");
     }
 
+    private static void testCapacityChangeCheckInWindowReservedHandledAsImpacted() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                "ROOM|R101|A룸|6|OPEN\n"
+                        + "ROOM|R102|B룸|6|OPEN\n",
+                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|5|RESERVED|2026-03-20 08:00|-\n",
+                "NOW|2026-03-20 09:05\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user001",
+                "admin1234",
+                "4",
+                "2",
+                "R101",
+                "4",
+                "2",
+                "0",
+                "0",
+                "0"));
+
+        assertContains(output, "영향 예약이 있어 처리 흐름을 시작합니다.");
+        assertContains(output, "영향 예약 처리가 완료되었습니다.");
+        assertContains(output, "룸 최대 수용 인원이 변경되었습니다.");
+        assertFileContains(root, "rooms.txt", "ROOM|R101|A룸|4|OPEN");
+        assertFileNotContains(root, "reservations.txt", "rv0001");
+    }
+
     private static void testCapacityChangeImpactedSameRoomRejectedAndMoveSuccess() throws Exception {
         Path root = createCliRoot();
         writeData(root,
@@ -612,6 +643,32 @@ public class RegressionTest {
 
         assertContains(output, "오류: 현재 체크인 중인 예약이 있어 즉시 휴업할 수 없습니다.");
         assertFileContains(root, "rooms.txt", "ROOM|R101|A룸|4|OPEN");
+    }
+
+    private static void testCloseRoomCheckInWindowReservedHandledAsImpacted() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|2|RESERVED|2026-03-20 08:00|-\n",
+                "NOW|2026-03-20 09:05\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user001",
+                "admin1234",
+                "4",
+                "3",
+                "R101",
+                "2",
+                "0",
+                "0",
+                "0"));
+
+        assertContains(output, "영향 예약이 있어 처리 흐름을 시작합니다.");
+        assertContains(output, "룸이 임시 휴업 처리되었습니다.");
+        assertFileContains(root, "rooms.txt", "ROOM|R101|A룸|4|CLOSED");
+        assertFileNotContains(root, "reservations.txt", "rv0001");
     }
 
     private static void testCloseRoomImpactedDeleteAndSucceeds() throws Exception {
