@@ -1,5 +1,6 @@
 package ku.com;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -85,11 +86,11 @@ final class User {
 final class Room {
     final String roomId;
     final String roomName;
-    int maxCapacity;
+    BigInteger maxCapacity;
     RoomStatus roomStatus;
     final int sourceLine;
 
-    Room(String roomId, String roomName, int maxCapacity, RoomStatus roomStatus, int sourceLine) {
+    Room(String roomId, String roomName, BigInteger maxCapacity, RoomStatus roomStatus, int sourceLine) {
         this.roomId = roomId;
         this.roomName = roomName;
         this.maxCapacity = maxCapacity;
@@ -109,7 +110,7 @@ final class Reservation {
     final LocalDate date;
     final LocalTime startTime;
     final LocalTime endTime;
-    final int partySize;
+    final BigInteger partySize;
     ReservationStatus status;
     final LocalDateTime createdAt;
     LocalDateTime checkedInAt;
@@ -121,7 +122,7 @@ final class Reservation {
                 LocalDate date,
                 LocalTime startTime,
                 LocalTime endTime,
-                int partySize,
+                BigInteger partySize,
                 ReservationStatus status,
                 LocalDateTime createdAt,
                 LocalDateTime checkedInAt,
