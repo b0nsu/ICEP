@@ -685,8 +685,7 @@ final class CliApp {
         List<Reservation> impacted = new ArrayList<>();
         for (Reservation reservation : data.sortedReservations()) {
             if (reservation.roomId.equals(roomId)
-                    && reservation.status == ReservationStatus.RESERVED
-                    && reservation.startDateTime().isAfter(data.currentTime)
+                    && isReservedStillAwaitingUse(reservation, data.currentTime)
                     && reservation.partySize > newCapacity) {
                 impacted.add(reservation);
             }
@@ -698,8 +697,7 @@ final class CliApp {
         List<Reservation> impacted = new ArrayList<>();
         for (Reservation reservation : data.sortedReservations()) {
             if (reservation.roomId.equals(roomId)
-                    && reservation.status == ReservationStatus.RESERVED
-                    && reservation.startDateTime().isAfter(data.currentTime)) {
+                    && isReservedStillAwaitingUse(reservation, data.currentTime)) {
                 impacted.add(reservation);
             }
         }
@@ -709,12 +707,16 @@ final class CliApp {
     private boolean hasFutureReservedInRoom(SystemData data, String roomId) {
         for (Reservation reservation : data.reservations.values()) {
             if (reservation.roomId.equals(roomId)
-                    && reservation.status == ReservationStatus.RESERVED
-                    && reservation.startDateTime().isAfter(data.currentTime)) {
+                    && isReservedStillAwaitingUse(reservation, data.currentTime)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private boolean isReservedStillAwaitingUse(Reservation reservation, LocalDateTime now) {
+        return reservation.status == ReservationStatus.RESERVED
+                && !now.isAfter(reservation.startDateTime().plusMinutes(10));
     }
 
     private boolean hasActiveReservationOverCapacity(SystemData data, String roomId, int newCapacity) {
