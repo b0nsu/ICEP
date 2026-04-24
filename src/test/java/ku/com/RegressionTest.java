@@ -33,6 +33,7 @@ public class RegressionTest {
         testCheckInClosedRoomRejected();
         testAdminTimeChangeRejectsPastAndAppliesTransitions();
         testAllReservationsShowsUserNames();
+        testRoomConditionInputErrorReturnsToRoomConditionMenu();
         testManualMoveSameRoomRejectedAndThenSucceeds();
         testCapacityChangeWithHistoricalCompletedReservation();
         testCapacityChangeImpactedSameRoomRejectedAndMoveSuccess();
@@ -470,6 +471,25 @@ public class RegressionTest {
         assertContains(output, "minseo");
     }
 
+    private static void testRoomConditionInputErrorReturnsToRoomConditionMenu() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user001",
+                "admin1234",
+                "4",
+                "2",
+                "bad",
+                "0",
+                "0"));
+
+        assertContains(output, "[룸 컨디션 관리]");
+        assertContains(output, "오류: 룸 ID 형식이 올바르지 않습니다. 예: R101");
+        assertAppearsBeforeLast(output, "오류: 룸 ID 형식이 올바르지 않습니다. 예: R101", "[룸 컨디션 관리]");
+    }
+
     private static void testManualMoveSameRoomRejectedAndThenSucceeds() throws Exception {
         Path root = createCliRoot();
         writeData(root,
@@ -740,6 +760,14 @@ public class RegressionTest {
         String content = Files.readString(root.resolve("data").resolve(fileName), StandardCharsets.UTF_8);
         if (content.contains(unexpected)) {
             throw new AssertionError("Did not expect " + fileName + " to contain: " + unexpected + "\nActual content:\n" + content);
+        }
+    }
+
+    private static void assertAppearsBeforeLast(String output, String first, String second) {
+        int firstIndex = output.indexOf(first);
+        int secondIndex = output.lastIndexOf(second);
+        if (firstIndex < 0 || secondIndex < 0 || firstIndex >= secondIndex) {
+            throw new AssertionError("Expected '" + first + "' to appear before the last '" + second + "'.\nActual output:\n" + output);
         }
     }
 }
