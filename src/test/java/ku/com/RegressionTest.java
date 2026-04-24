@@ -49,6 +49,7 @@ public class RegressionTest {
         testAdminTimeChangeRejectsPastAndAppliesTransitions();
         testAllReservationsShowsUserNamesCheckedInAtAndSortedRows();
         testRoomListShowsAllRooms();
+        testRoomConditionInputErrorReturnsToRoomConditionMenu();
         testManualMoveRejectsClosedRoom();
         testManualMoveSameRoomRejectedAndThenSucceeds();
         testCapacityChangeWithHistoricalCompletedReservation();
@@ -796,6 +797,25 @@ public class RegressionTest {
         assertContains(output, "CLOSED");
     }
 
+    private static void testRoomConditionInputErrorReturnsToRoomConditionMenu() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "admin",
+                "admin1234",
+                "4",
+                "2",
+                "bad",
+                "0",
+                "0"));
+
+        assertContains(output, "[룸 컨디션 관리]");
+        assertContains(output, "오류: 룸 ID 형식이 올바르지 않습니다. 예: R101");
+        assertAppearsBeforeLast(output, "오류: 룸 ID 형식이 올바르지 않습니다. 예: R101", "[룸 컨디션 관리]");
+    }
+
     private static void testManualMoveSameRoomRejectedAndThenSucceeds() throws Exception {
         Path root = createCliRoot();
         writeData(root,
@@ -1102,6 +1122,14 @@ public class RegressionTest {
         int secondIndex = output.indexOf(second);
         if (firstIndex < 0 || secondIndex < 0 || firstIndex >= secondIndex) {
             throw new AssertionError("Expected '" + first + "' to appear before '" + second + "'.\nActual output:\n" + output);
+        }
+    }
+
+    private static void assertAppearsBeforeLast(String output, String first, String second) {
+        int firstIndex = output.indexOf(first);
+        int secondIndex = output.lastIndexOf(second);
+        if (firstIndex < 0 || secondIndex < 0 || firstIndex >= secondIndex) {
+            throw new AssertionError("Expected '" + first + "' to appear before the last '" + second + "'.\nActual output:\n" + output);
         }
     }
 }

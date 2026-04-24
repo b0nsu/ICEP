@@ -514,14 +514,17 @@ final class CliApp {
             if (menu == 0) {
                 return;
             }
-            if (menu == 1) {
-                handleRoomList();
-            } else if (menu == 2) {
-                handleChangeRoomCapacity();
-            } else if (menu == 3) {
-                handleCloseRoom();
-            } else {
-                handleOpenRoom();
+            try {
+                if (menu == 1) {
+                    handleRoomList();
+                } else if (menu == 2) {
+                    handleChangeRoomCapacity();
+                } else if (menu == 3) {
+                    handleCloseRoom();
+                } else {
+                    handleOpenRoom();
+                }
+            } catch (ActionAbortedException ignored) {
             }
         }
     }
