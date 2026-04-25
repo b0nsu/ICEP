@@ -29,6 +29,7 @@ public class RegressionTest {
         testDuplicateRoomIdStopsStartup();
         testInvalidRoomStatusStopsStartup();
         testEmptyRoomNameStopsStartup();
+        testRoomNameRejectsEscapedTabStopsStartup();
         testRoomRejectsZeroMaxCapacity();
         testRoomRejectsNegativeMaxCapacity();
         testRoomRejectsNonNumericMaxCapacity();
@@ -41,6 +42,7 @@ public class RegressionTest {
         testInvalidReservationEndTimeFormatStopsStartup();
         testInvalidCreatedAtFormatStopsStartup();
         testInvalidCheckedInAtFormatStopsStartup();
+        testPasswordRejectsEscapedNewlineStopsStartup();
         testReservationRejectsMissingUserReference();
         testReservationRejectsMissingRoomReference();
         testReservationRejectsMissingCheckedInAtForCheckedIn();
@@ -64,6 +66,7 @@ public class RegressionTest {
         testSignupRejectsShortPassword();
         testSignupRejectsLongPassword();
         testSignupAcceptsMaxBoundaryPassword();
+        testSignupRejectsEscapedNewlinePassword();
         testSignupRejectsDuplicateLoginId();
         testSignupRejectsUnderscoreLeadingLoginId();
         testSignupRejectsKoreanLeadingLoginId();
@@ -384,6 +387,18 @@ public class RegressionTest {
         assertContains(output, "[파일 오류] rooms.txt 1행: roomName은 비어 있을 수 없습니다.");
     }
 
+    private static void testRoomNameRejectsEscapedTabStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                "ROOM|R101|A\\t룸|4|OPEN\n",
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] rooms.txt 1행: roomName에 사용할 수 없는 문자가 포함되어 있습니다.");
+    }
+
     private static void testRoomRejectsZeroMaxCapacity() throws Exception {
         Path root = createCliRoot();
         writeData(root,
@@ -519,6 +534,18 @@ public class RegressionTest {
 
         String output = runCli(root, "");
         assertContains(output, "[파일 오류] reservations.txt 1행: checkedInAt 형식이 올바르지 않습니다.");
+    }
+
+    private static void testPasswordRejectsEscapedNewlineStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                "USER|user001|admin|123\\n45|admin|admin\n",
+                baseRooms(),
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] users.txt 1행: password에 사용할 수 없는 문자가 포함되어 있습니다.");
     }
 
     private static void testReservationRejectsMissingUserReference() throws Exception {
@@ -835,6 +862,20 @@ public class RegressionTest {
 
         assertContains(output, "회원가입이 완료되었습니다.");
         assertFileContains(root, "users.txt", "USER|user023|user023|abcdefghijklmnopqrst|bonsu|member");
+    }
+
+    private static void testSignupRejectsEscapedNewlinePassword() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "1",
+                "user023",
+                "123\\n45",
+                "bonsu",
+                "0"));
+
+        assertContains(output, "오류: 비밀번호에 사용할 수 없는 문자가 포함되어 있습니다.");
     }
 
     private static void testSignupRejectsDuplicateLoginId() throws Exception {

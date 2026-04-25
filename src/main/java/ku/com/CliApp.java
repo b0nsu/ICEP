@@ -1011,7 +1011,14 @@ final class CliApp {
     }
 
     private boolean hasForbiddenChars(String text) {
-        return text.indexOf('|') >= 0 || text.indexOf('\n') >= 0 || text.indexOf('\r') >= 0;
+        // Escape-like control strings are blocked as well so file-backed values
+        // and interactive input do not diverge on hidden/control-looking content.
+        return text.indexOf('|') >= 0
+                || text.indexOf('\n') >= 0
+                || text.indexOf('\r') >= 0
+                || text.contains("\\n")
+                || text.contains("\\r")
+                || text.contains("\\t");
     }
 
     private String promptStrictValue(String prompt) {
