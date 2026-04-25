@@ -1,5 +1,6 @@
 package ku.com;
 
+import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -200,7 +201,7 @@ final class CliApp {
         LocalDate date = promptDate("날짜 입력(yyyy-MM-dd): ");
         LocalTime start = promptTime("시작 시각 입력(HH:mm): ");
         LocalTime end = promptTime("종료 시각 입력(HH:mm): ");
-        int partySize = promptPositiveInt("인원 수 입력: ");
+        BigInteger partySize = promptPositiveBigInteger("인원 수 입력: ");
 
         String error = validateReservationWindow(date, start, end);
         if (error != null) {
@@ -225,7 +226,7 @@ final class CliApp {
             if (room.roomStatus != RoomStatus.OPEN) {
                 continue;
             }
-            if (room.maxCapacity < partySize) {
+            if (room.maxCapacity.compareTo(partySize) < 0) {
                 continue;
             }
             if (hasRoomOverlap(data, room.roomId, startAt, endAt, null)) {
@@ -250,7 +251,7 @@ final class CliApp {
         LocalDate date = promptDate("날짜 입력(yyyy-MM-dd): ");
         LocalTime start = promptTime("시작 시각 입력(HH:mm): ");
         LocalTime end = promptTime("종료 시각 입력(HH:mm): ");
-        int partySize = promptPositiveInt("인원 수 입력: ");
+        BigInteger partySize = promptPositiveBigInteger("인원 수 입력: ");
         String roomId = promptRoomId("룸 ID 입력: ");
 
         String windowError = validateReservationWindow(date, start, end);
@@ -268,7 +269,7 @@ final class CliApp {
             System.out.println("오류: 해당 룸은 현재 운영 중이 아닙니다.");
             return;
         }
-        if (partySize > room.maxCapacity) {
+        if (room.maxCapacity.compareTo(partySize) < 0) {
             System.out.println("오류: 수용 인원을 초과했습니다.");
             return;
         }
@@ -544,7 +545,7 @@ final class CliApp {
         System.out.println("[최대 수용 인원 변경]");
         System.out.println("현재 가상 시각: " + TimeFormats.formatDateTime(data.currentTime));
         String roomId = promptRoomId("룸 ID 입력: ");
-        int newCapacity = promptPositiveInt("새 최대 수용 인원 입력: ");
+        BigInteger newCapacity = promptPositiveBigInteger("새 최대 수용 인원 입력: ");
 
         Room room = data.rooms.get(roomId);
         if (room == null) {
@@ -681,12 +682,12 @@ final class CliApp {
         }
     }
 
-    private List<Reservation> findFutureReservedWithTooManyPeople(SystemData data, String roomId, int newCapacity) {
+    private List<Reservation> findFutureReservedWithTooManyPeople(SystemData data, String roomId, BigInteger newCapacity) {
         List<Reservation> impacted = new ArrayList<>();
         for (Reservation reservation : data.sortedReservations()) {
             if (reservation.roomId.equals(roomId)
                     && isReservedStillAwaitingUse(reservation, data.currentTime)
-                    && reservation.partySize > newCapacity) {
+                    && reservation.partySize.compareTo(newCapacity) > 0) {
                 impacted.add(reservation);
             }
         }
@@ -719,7 +720,7 @@ final class CliApp {
                 && !now.isAfter(reservation.startDateTime().plusMinutes(10));
     }
 
-    private boolean hasActiveReservationOverCapacity(SystemData data, String roomId, int newCapacity) {
+    private boolean hasActiveReservationOverCapacity(SystemData data, String roomId, BigInteger newCapacity) {
         for (Reservation reservation : data.reservations.values()) {
             if (!reservation.roomId.equals(roomId)) {
                 continue;
@@ -727,7 +728,7 @@ final class CliApp {
             if (reservation.status != ReservationStatus.CHECKED_IN) {
                 continue;
             }
-            if (reservation.partySize > newCapacity) {
+            if (reservation.partySize.compareTo(newCapacity) > 0) {
                 return true;
             }
         }
@@ -745,7 +746,7 @@ final class CliApp {
         if (target.roomStatus != RoomStatus.OPEN) {
             return "대상 룸이 OPEN 상태가 아니어서 이동할 수 없습니다.";
         }
-        if (target.maxCapacity < reservation.partySize) {
+        if (target.maxCapacity.compareTo(reservation.partySize) < 0) {
             return "대상 룸의 수용 인원이 부족합니다.";
         }
         if (hasRoomOverlap(data, targetRoomId, reservation.startDateTime(), reservation.endDateTime(), reservation.reservationId)) {
@@ -982,17 +983,17 @@ final class CliApp {
         }
     }
 
-    private int promptPositiveInt(String prompt) {
+    private BigInteger promptPositiveBigInteger(String prompt) {
         String text = promptStrictValue(prompt);
         try {
-            int value = Integer.parseInt(text);
-            if (value < 1) {
+            BigInteger value = new BigInteger(text);
+            if (value.compareTo(BigInteger.ONE) < 0) {
                 abortAction("오류: 1 이상의 정수를 입력해야 합니다.");
             }
             return value;
         } catch (NumberFormatException e) {
             abortAction("오류: 숫자를 입력해야 합니다.");
-            return -1;
+            return BigInteger.valueOf(-1);
         }
     }
 
