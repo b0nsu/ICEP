@@ -61,6 +61,7 @@ public class RegressionTest {
         testCreateReservationRejectsTooLongWindow();
         testCreateReservationRejectsInvalidRoomIdFormat();
         testCreateReservationRejectsNonexistentRoomId();
+        testCreateReservationRejectsZeroYearDate();
         testCreateReservationRejectsZeroPartySize();
         testCreateReservationRejectsCapacityOverflow();
         testCreateReservationRejectsRoomOverlap();
@@ -94,6 +95,9 @@ public class RegressionTest {
         testCloseRoomCheckInWindowReservedHandledAsImpacted();
         testCloseRoomImpactedDeleteAndSucceeds();
         testOpenRoomSuccess();
+        testSignupRejectsLeadingIdeographicSpaceInPassword();
+        testDataFileRejectsZeroYearDate();
+        testDataFileRejectsNegativeYearDate();
 
         System.out.println("Regression tests passed.");
     }
@@ -462,6 +466,20 @@ public class RegressionTest {
                 "0"));
 
         assertContains(output, "오류: 비밀번호는 4~20자로 입력해야 합니다.");
+    }
+
+    private static void testSignupRejectsLeadingIdeographicSpaceInPassword() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "1",
+                "user023",
+                "\u3000pw12",
+                "bonsu",
+                "0"));
+
+        assertContains(output, "오류: 입력값 앞뒤에 공백을 넣을 수 없습니다.");
     }
 
     private static void testMenuInvalidChoiceRepromptsInPlace() throws Exception {
@@ -879,6 +897,26 @@ public class RegressionTest {
                 "0"));
 
         assertContains(output, "오류: 존재하지 않는 룸 ID입니다.");
+    }
+
+    private static void testCreateReservationRejectsZeroYearDate() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "3",
+                "0000-01-01",
+                "13:00",
+                "14:00",
+                "2",
+                "R102",
+                "0",
+                "0"));
+
+        assertContains(output, "오류: 날짜 형식이 올바르지 않습니다. 예: 2026-03-20");
     }
 
     private static void testCreateReservationRejectsZeroPartySize() throws Exception {
@@ -1659,6 +1697,30 @@ public class RegressionTest {
         assertContains(output, "변경 후 ROOM 레코드:");
         assertContains(output, "룸 운영이 재개되었습니다.");
         assertFileContains(root, "rooms.txt", "ROOM|R101|A룸|4|OPEN");
+    }
+
+    private static void testDataFileRejectsZeroYearDate() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|0000-01-01|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: date 형식이 올바르지 않습니다.");
+    }
+
+    private static void testDataFileRejectsNegativeYearDate() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|-0001-01-01|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: date 형식이 올바르지 않습니다.");
     }
 
     private static Path createCliRoot() throws Exception {
