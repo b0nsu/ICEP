@@ -878,7 +878,7 @@ final class CliApp {
     private int promptMenuChoice(Set<Integer> allowed) {
         while (true) {
             String input = promptLine("메뉴 선택: ");
-            if (!input.equals(input.trim())) {
+            if (hasOuterWhitespace(input)) {
                 System.out.println("오류: 메뉴 선택 앞뒤에 공백을 넣을 수 없습니다.");
                 continue;
             }

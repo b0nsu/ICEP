@@ -78,6 +78,8 @@ public class RegressionTest {
         testGuestMenuRejectsLeadingSpaceInput();
         testGuestMenuRejectsTrailingSpaceInput();
         testGuestMenuRejectsTabbedInput();
+        testGuestMenuRejectsIdeographicLeadingSpaceInput();
+        testGuestMenuRejectsNbspLeadingSpaceInput();
         testGuestMenuRejectsMiddleSpaceInput();
         testGuestMenuRejectsOverflowInput();
         testGuestMenuAcceptsLeadingZeroChoice();
@@ -991,6 +993,28 @@ public class RegressionTest {
 
         String output = runCli(root, lines(
                 "\t1",
+                "0"));
+
+        assertContains(output, "오류: 메뉴 선택 앞뒤에 공백을 넣을 수 없습니다.");
+    }
+
+    private static void testGuestMenuRejectsIdeographicLeadingSpaceInput() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "\u30001",
+                "0"));
+
+        assertContains(output, "오류: 메뉴 선택 앞뒤에 공백을 넣을 수 없습니다.");
+    }
+
+    private static void testGuestMenuRejectsNbspLeadingSpaceInput() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "\u00A01",
                 "0"));
 
         assertContains(output, "오류: 메뉴 선택 앞뒤에 공백을 넣을 수 없습니다.");
