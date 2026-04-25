@@ -17,7 +17,9 @@ final class TimeFormats {
 
     static LocalDate parseDate(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
         try {
-            return LocalDate.parse(raw, DATE);
+            LocalDate parsed = LocalDate.parse(raw, DATE);
+            requirePositiveYear(parsed.getYear(), fileName, lineNumber, fieldName);
+            return parsed;
         } catch (DateTimeParseException e) {
             throw new AppDataException(fileName, lineNumber, fieldName + " 형식이 올바르지 않습니다.");
         }
@@ -33,8 +35,16 @@ final class TimeFormats {
 
     static LocalDateTime parseDateTime(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
         try {
-            return LocalDateTime.parse(raw, DATE_TIME);
+            LocalDateTime parsed = LocalDateTime.parse(raw, DATE_TIME);
+            requirePositiveYear(parsed.getYear(), fileName, lineNumber, fieldName);
+            return parsed;
         } catch (DateTimeParseException e) {
+            throw new AppDataException(fileName, lineNumber, fieldName + " 형식이 올바르지 않습니다.");
+        }
+    }
+
+    private static void requirePositiveYear(int year, String fileName, int lineNumber, String fieldName) throws AppDataException {
+        if (year <= 0) {
             throw new AppDataException(fileName, lineNumber, fieldName + " 형식이 올바르지 않습니다.");
         }
     }
