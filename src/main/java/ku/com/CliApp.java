@@ -951,8 +951,11 @@ final class CliApp {
     private LocalDate promptDate(String prompt) {
         String dateText = promptStrictValue(prompt);
         try {
-            return LocalDate.parse(dateText, TimeFormats.DATE);
+            return TimeFormats.parseDate(dateText, "input", 0, "날짜");
         } catch (DateTimeParseException e) {
+            abortAction("오류: 날짜 형식이 올바르지 않습니다. 예: 2026-03-20");
+            return null;
+        } catch (AppDataException e) {
             abortAction("오류: 날짜 형식이 올바르지 않습니다. 예: 2026-03-20");
             return null;
         }
@@ -975,8 +978,11 @@ final class CliApp {
     private LocalDateTime promptDateTime(String prompt) {
         String text = promptStrictValue(prompt);
         try {
-            return LocalDateTime.parse(text, TimeFormats.DATE_TIME);
+            return TimeFormats.parseDateTime(text, "input", 0, "날짜/시각");
         } catch (DateTimeParseException e) {
+            abortAction("오류: 날짜/시각 형식이 올바르지 않습니다. 예: 2026-03-20 09:00");
+            return null;
+        } catch (AppDataException e) {
             abortAction("오류: 날짜/시각 형식이 올바르지 않습니다. 예: 2026-03-20 09:00");
             return null;
         }
@@ -1010,13 +1016,24 @@ final class CliApp {
 
     private String promptStrictValue(String prompt) {
         String raw = promptLine(prompt);
-        if (!raw.equals(raw.trim())) {
+        if (hasOuterWhitespace(raw)) {
             abortAction("오류: 입력값 앞뒤에 공백을 넣을 수 없습니다.");
         }
         if (raw.isEmpty()) {
             abortAction("오류: 빈 값을 입력할 수 없습니다.");
         }
         return raw;
+    }
+
+    private boolean hasOuterWhitespace(String text) {
+        if (text.isEmpty()) {
+            return false;
+        }
+        return isSpaceLike(text.charAt(0)) || isSpaceLike(text.charAt(text.length() - 1));
+    }
+
+    private boolean isSpaceLike(char ch) {
+        return Character.isWhitespace(ch) || Character.isSpaceChar(ch);
     }
 
     private void abortAction(String message) {
