@@ -2,11 +2,11 @@
 
 - 기준 문서: `/Users/bonsu/Downloads/전기프-06-검사 (2).pdf`
 - 실행 명령: `sh gradlew test regressionTest`
-- 실행 결과: `170/170 PASS`
+- 실행 결과: `169/169 PASS`
 
 ## 요약
 
-최신 실행 기준으로 전체 `170`개 테스트케이스가 모두 통과했다.
+최신 실행 기준으로 전체 `169`개 테스트케이스가 모두 통과했다.
 
 ```text
 Regression tests passed.
@@ -104,7 +104,7 @@ ID 형식은 `기획서절-TC번호` 예: `6.2.3-TC42` 이다.
 
 ## 추가 테스트케이스별 결과
 
-아래 항목은 이후 회귀 확장 과정에서 추가된 `TC83 ~ TC153`이며, 모두 통과하였다.
+아래 항목은 이후 회귀 확장 과정에서 추가된 `TC83 ~ TC152`이며, 모두 통과하였다.
 
 | ID | 테스트케이스 | 핵심 입력/조건 | 예상 결과 | 실제 결과 |
 | --- | --- | --- | --- | --- |
@@ -174,28 +174,27 @@ ID 형식은 `기획서절-TC번호` 예: `6.2.3-TC42` 이다.
 | 6.1-TC146 | guest 메뉴 NBSP 입력 거절 | 비로그인 메뉴에서 `NBSP+1` 입력 | 메뉴 선택 앞뒤에 공백을 넣을 수 없다는 오류 메시지를 출력한 뒤 같은 메뉴 선택 단계에서 다시 입력을 받아야 한다. | NBSP 메뉴 입력 거절 확인, PASS |
 | 5.2-TC147 | users.txt 최소 admin 부재 거절 | 모든 사용자 레코드가 `member` | 전체 사용자 중 `role=admin` 계정이 하나도 없으면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | 최소 1명의 admin 계정 필요 오류 확인, PASS |
 | 5.1-TC148 | 데이터파일 주석/빈 줄 무시 | `#` 주석 줄과 빈 줄 포함 | 빈 줄과 `#`로 시작하는 줄은 무시하고 나머지 정상 레코드만 읽어 프로그램이 정상 시작되어야 한다. | 비로그인 메뉴 정상 표시 확인, PASS |
-| 5.1-TC149 | roomName의 제어문자 표기 문자열 보강 거절 | `rooms.txt`의 `roomName=A\\t룸` | 구현상 추가 방어로 `\\t`처럼 제어문자를 나타내는 문자열도 `[파일 오류]` 메시지를 출력하고 시작을 중단해야 한다. | roomName 금지 문자열 오류 확인, PASS |
-| 5.1-TC150 | password의 제어문자 표기 문자열 보강 거절 | `users.txt`의 `password=123\\n45` | 구현상 추가 방어로 `\\n`처럼 개행을 나타내는 문자열이 들어간 비밀번호는 `[파일 오류]` 메시지를 출력하고 시작을 중단해야 한다. | password 금지 문자열 오류 확인, PASS |
-| 6.1-TC151 | 회원가입 제어문자 표기 비밀번호 거절 | 회원가입 비밀번호 입력 `123\\n45` | 구현상 추가 방어로 개행을 나타내는 문자열이 포함된 비밀번호는 사용할 수 없는 문자가 포함되었다는 오류 메시지를 출력하고 회원가입을 중단해야 한다. | 회원가입 제어문자 표기 비밀번호 거절 확인, PASS |
-| 6.2.3-TC152 | CLOSED 룸 예약 신청 거절 | `roomStatus=CLOSED`인 룸으로 예약 신청 | 운영 중이 아닌 룸이라는 오류 메시지를 출력하고 예약 레코드를 추가하지 않아야 한다. | CLOSED 룸 예약 거절 및 레코드 미추가 확인, PASS |
-| 6.2.6-TC153 | 이미 CHECKED_IN인 예약 재체크인 거절 | `CHECKED_IN` 상태 예약번호 입력 | 이미 체크인된 예약은 체크인 가능한 상태가 아니라는 오류 메시지를 출력하고 기존 레코드를 유지해야 한다. | 재체크인 거절 및 레코드 유지 확인, PASS |
-| 5.1-TC154 | users.txt loginId 형식 오류 | `loginId=ad min` | loginId 형식이 잘못된 레코드는 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | users.txt loginId 형식 오류 확인, PASS |
-| 5.1-TC155 | users.txt userName 형식 오류 | `userName=ad min` | userName 형식이 잘못된 레코드는 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | users.txt userName 형식 오류 확인, PASS |
-| 5.1-TC156 | users.txt password 길이 오류 | `password=abc` | 비밀번호 길이가 4~20 범위를 벗어나면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | users.txt password 길이 오류 확인, PASS |
-| 5.1-TC157 | reservations.txt userId 형식 오류 | `userId=user 011` | reservation 레코드의 userId 형식이 잘못되면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | reservations.txt userId 형식 오류 확인, PASS |
-| 5.1-TC158 | reservations.txt roomId 형식 오류 | `roomId=R1 01` | reservation 레코드의 roomId 형식이 잘못되면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | reservations.txt roomId 형식 오류 확인, PASS |
-| 5.1-TC159 | reservations.txt date 형식 오류 | `date=2026-02-30` | reservation 레코드의 날짜가 유효하지 않으면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | reservations.txt date 형식 오류 확인, PASS |
-| 5.2-TC160 | reservations.txt partySize 0 거절 | `partySize=0` | reservation 인원 수가 1 미만이면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | reservations.txt partySize 하한 오류 확인, PASS |
-| 5.2-TC161 | reservations.txt 시작/종료 역전 거절 | `startTime=15:00`, `endTime=13:00` | reservation 시작 시각이 종료 시각보다 늦으면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | reservations.txt start/end 순서 오류 확인, PASS |
-| 5.2-TC162 | reservations.txt 예약 길이 위반 거절 | `13:00~18:00` | reservation 길이가 1,2,3,4시간 중 하나가 아니면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | reservations.txt 예약 길이 오류 확인, PASS |
-| 5.1-TC163 | users.txt 제어문자 표기 loginId 거절 | `loginId=ad\\nmin` | loginId에 백슬래시 조합 문자열이 포함되어 형식 규칙을 만족하지 않으면 형식 오류 메시지를 출력하고 프로그램 시작을 중단해야 한다. | users.txt 제어문자 표기 loginId 거절 확인, PASS |
-| 5.1-TC164 | users.txt 제어문자 표기 userName 거절 | `userName=bo\\nsu` | userName에 백슬래시 조합 문자열이 포함되어 형식 규칙을 만족하지 않으면 형식 오류 메시지를 출력하고 프로그램 시작을 중단해야 한다. | users.txt 제어문자 표기 userName 거절 확인, PASS |
-| 5.1-TC165 | rooms.txt 제어문자 표기 roomName 거절 | `roomName=A\\n룸` | 구현상 추가 방어로 roomName에 개행을 나타내는 문자열이 들어가면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | rooms.txt 제어문자 표기 roomName 거절 확인, PASS |
-| 6.1-TC166 | 회원가입 제어문자 표기 userName 거절 | 회원가입 `userName=bo\\nsu` | 사용자명에 백슬래시 조합 문자열이 포함되어 형식 규칙을 만족하지 않으면 형식 오류 메시지를 출력하고 회원가입을 중단해야 한다. | 회원가입 제어문자 표기 userName 거절 확인, PASS |
-| 6.2.3-TC167 | 같은 룸 인접 시간 예약 허용 | 기존 `R101 13:00~15:00`, 신규 `R101 15:00~16:00` | 예약 충돌은 `[start, end)` 반열린 구간 기준이므로 종료 시각과 시작 시각이 맞닿은 같은 룸 예약은 충돌로 보지 않고 예약이 완료되어야 한다. | 인접 같은 룸 예약 저장 확인, PASS |
-| 6.2.3-TC168 | 같은 회원 인접 시간 예약 허용 | 같은 회원 기존 `13:00~15:00`, 신규 `15:00~16:00` | 예약 충돌은 `[start, end)` 반열린 구간 기준이므로 종료 시각과 시작 시각이 맞닿은 같은 회원 예약은 충돌로 보지 않고 예약이 완료되어야 한다. | 인접 같은 회원 예약 저장 확인, PASS |
-| 7.1-TC169 | 프로그램 시작 시 RESERVED 자동 NO_SHOW 전환 | 시작+10분 초과 RESERVED 예약 존재 | 프로그램 시작 직후 상태 자동 갱신이 수행되어 해당 예약 상태가 NO_SHOW로 저장되어야 한다. | 시작 시 NO_SHOW 저장 확인, PASS |
-| 7.1-TC170 | 프로그램 시작 시 CHECKED_IN 자동 COMPLETED 전환 | 종료 시각에 도달한 CHECKED_IN 예약 존재 | 프로그램 시작 직후 상태 자동 갱신이 수행되어 해당 예약 상태가 COMPLETED로 저장되어야 한다. | 시작 시 COMPLETED 저장 확인, PASS |
+| 5.1-TC149 | password의 제어문자 표기 문자열 보강 거절 | `users.txt`의 `password=123\\n45` | 구현상 추가 방어로 `\\n`처럼 개행을 나타내는 문자열이 들어간 비밀번호는 `[파일 오류]` 메시지를 출력하고 시작을 중단해야 한다. | password 금지 문자열 오류 확인, PASS |
+| 6.1-TC150 | 회원가입 제어문자 표기 비밀번호 거절 | 회원가입 비밀번호 입력 `123\\n45` | 구현상 추가 방어로 개행을 나타내는 문자열이 포함된 비밀번호는 사용할 수 없는 문자가 포함되었다는 오류 메시지를 출력하고 회원가입을 중단해야 한다. | 회원가입 제어문자 표기 비밀번호 거절 확인, PASS |
+| 6.2.3-TC151 | CLOSED 룸 예약 신청 거절 | `roomStatus=CLOSED`인 룸으로 예약 신청 | 운영 중이 아닌 룸이라는 오류 메시지를 출력하고 예약 레코드를 추가하지 않아야 한다. | CLOSED 룸 예약 거절 및 레코드 미추가 확인, PASS |
+| 6.2.6-TC152 | 이미 CHECKED_IN인 예약 재체크인 거절 | `CHECKED_IN` 상태 예약번호 입력 | 이미 체크인된 예약은 체크인 가능한 상태가 아니라는 오류 메시지를 출력하고 기존 레코드를 유지해야 한다. | 재체크인 거절 및 레코드 유지 확인, PASS |
+| 5.1-TC153 | users.txt loginId 형식 오류 | `loginId=ad min` | loginId 형식이 잘못된 레코드는 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | users.txt loginId 형식 오류 확인, PASS |
+| 5.1-TC154 | users.txt userName 형식 오류 | `userName=ad min` | userName 형식이 잘못된 레코드는 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | users.txt userName 형식 오류 확인, PASS |
+| 5.1-TC155 | users.txt password 길이 오류 | `password=abc` | 비밀번호 길이가 4~20 범위를 벗어나면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | users.txt password 길이 오류 확인, PASS |
+| 5.1-TC156 | reservations.txt userId 형식 오류 | `userId=user 011` | reservation 레코드의 userId 형식이 잘못되면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | reservations.txt userId 형식 오류 확인, PASS |
+| 5.1-TC157 | reservations.txt roomId 형식 오류 | `roomId=R1 01` | reservation 레코드의 roomId 형식이 잘못되면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | reservations.txt roomId 형식 오류 확인, PASS |
+| 5.1-TC158 | reservations.txt date 형식 오류 | `date=2026-02-30` | reservation 레코드의 날짜가 유효하지 않으면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | reservations.txt date 형식 오류 확인, PASS |
+| 5.2-TC159 | reservations.txt partySize 0 거절 | `partySize=0` | reservation 인원 수가 1 미만이면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | reservations.txt partySize 하한 오류 확인, PASS |
+| 5.2-TC160 | reservations.txt 시작/종료 역전 거절 | `startTime=15:00`, `endTime=13:00` | reservation 시작 시각이 종료 시각보다 늦으면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | reservations.txt start/end 순서 오류 확인, PASS |
+| 5.2-TC161 | reservations.txt 예약 길이 위반 거절 | `13:00~18:00` | reservation 길이가 1,2,3,4시간 중 하나가 아니면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | reservations.txt 예약 길이 오류 확인, PASS |
+| 5.1-TC162 | users.txt 제어문자 표기 loginId 거절 | `loginId=ad\\nmin` | loginId에 백슬래시 조합 문자열이 포함되어 형식 규칙을 만족하지 않으면 형식 오류 메시지를 출력하고 프로그램 시작을 중단해야 한다. | users.txt 제어문자 표기 loginId 거절 확인, PASS |
+| 5.1-TC163 | users.txt 제어문자 표기 userName 거절 | `userName=bo\\nsu` | userName에 백슬래시 조합 문자열이 포함되어 형식 규칙을 만족하지 않으면 형식 오류 메시지를 출력하고 프로그램 시작을 중단해야 한다. | users.txt 제어문자 표기 userName 거절 확인, PASS |
+| 5.1-TC164 | rooms.txt 제어문자 표기 roomName 거절 | `roomName=A\\n룸` | 구현상 추가 방어로 roomName에 개행을 나타내는 문자열이 들어가면 `[파일 오류]` 메시지를 출력하고 프로그램 시작을 중단해야 한다. | rooms.txt 제어문자 표기 roomName 거절 확인, PASS |
+| 6.1-TC165 | 회원가입 제어문자 표기 userName 거절 | 회원가입 `userName=bo\\nsu` | 사용자명에 백슬래시 조합 문자열이 포함되어 형식 규칙을 만족하지 않으면 형식 오류 메시지를 출력하고 회원가입을 중단해야 한다. | 회원가입 제어문자 표기 userName 거절 확인, PASS |
+| 6.2.3-TC166 | 같은 룸 인접 시간 예약 허용 | 기존 `R101 13:00~15:00`, 신규 `R101 15:00~16:00` | 예약 충돌은 `[start, end)` 반열린 구간 기준이므로 종료 시각과 시작 시각이 맞닿은 같은 룸 예약은 충돌로 보지 않고 예약이 완료되어야 한다. | 인접 같은 룸 예약 저장 확인, PASS |
+| 6.2.3-TC167 | 같은 회원 인접 시간 예약 허용 | 같은 회원 기존 `13:00~15:00`, 신규 `15:00~16:00` | 예약 충돌은 `[start, end)` 반열린 구간 기준이므로 종료 시각과 시작 시각이 맞닿은 같은 회원 예약은 충돌로 보지 않고 예약이 완료되어야 한다. | 인접 같은 회원 예약 저장 확인, PASS |
+| 7.1-TC168 | 프로그램 시작 시 RESERVED 자동 NO_SHOW 전환 | 시작+10분 초과 RESERVED 예약 존재 | 프로그램 시작 직후 상태 자동 갱신이 수행되어 해당 예약 상태가 NO_SHOW로 저장되어야 한다. | 시작 시 NO_SHOW 저장 확인, PASS |
+| 7.1-TC169 | 프로그램 시작 시 CHECKED_IN 자동 COMPLETED 전환 | 종료 시각에 도달한 CHECKED_IN 예약 존재 | 프로그램 시작 직후 상태 자동 갱신이 수행되어 해당 예약 상태가 COMPLETED로 저장되어야 한다. | 시작 시 COMPLETED 저장 확인, PASS |
 
 ## 근거
 
