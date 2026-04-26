@@ -12,6 +12,8 @@ public class RegressionTest {
 
     public static void main(String[] args) throws Exception {
         testAutoNoShowTransition();
+        testStartupAutoNoShowTransition();
+        testStartupAutoCompletedTransition();
         testNextReservationId();
         testHistoricalCompletedReservationCanExceedCurrentCapacity();
         testSameRoomMoveRejected();
@@ -21,14 +23,21 @@ public class RegressionTest {
         testInvalidFileSyntaxStopsStartup();
         testInvalidUsersFieldCountStopsStartup();
         testInvalidUserIdSyntaxStopsStartup();
+        testInvalidLoginIdSyntaxStopsStartup();
+        testInvalidUserNameSyntaxStopsStartup();
+        testLoginIdRejectsEscapedNewlineStopsStartup();
+        testUserNameRejectsEscapedNewlineStopsStartup();
+        testInvalidPasswordLengthStopsStartup();
         testDuplicateUserIdStopsStartup();
         testDuplicateLoginIdStopsStartup();
         testInvalidRoleStopsStartup();
+        testMissingAdminStopsStartup();
         testInvalidRoomsFieldCountStopsStartup();
         testInvalidRoomIdSyntaxStopsStartup();
         testDuplicateRoomIdStopsStartup();
         testInvalidRoomStatusStopsStartup();
         testEmptyRoomNameStopsStartup();
+        testRoomNameRejectsEscapedNewlineStopsStartup();
         testRoomNameRejectsEscapedTabStopsStartup();
         testRoomRejectsZeroMaxCapacity();
         testRoomRejectsNegativeMaxCapacity();
@@ -36,10 +45,16 @@ public class RegressionTest {
         testDuplicateSystemTimeStopsStartup();
         testInvalidSystemTimeFormatStopsStartup();
         testInvalidReservationIdSyntaxStopsStartup();
+        testInvalidReservationUserIdSyntaxStopsStartup();
+        testInvalidReservationRoomIdSyntaxStopsStartup();
         testDuplicateReservationIdStopsStartup();
         testInvalidReservationStatusStopsStartup();
+        testInvalidReservationDateStopsStartup();
         testInvalidReservationStartTimeFormatStopsStartup();
         testInvalidReservationEndTimeFormatStopsStartup();
+        testReservationRejectsNonPositivePartySizeInData();
+        testReservationRejectsStartAfterEndInData();
+        testReservationRejectsInvalidDurationInData();
         testInvalidCreatedAtFormatStopsStartup();
         testInvalidCheckedInAtFormatStopsStartup();
         testPasswordRejectsEscapedNewlineStopsStartup();
@@ -50,6 +65,7 @@ public class RegressionTest {
         testReservationRejectsPartySizeOverRoomCapacity();
         testReservationRejectsRoomOverlapInData();
         testReservationRejectsUserOverlapInData();
+        testCommentAndBlankLinesAreIgnored();
         testSignupDuplicateAndSuccess();
         testSignupAcceptsBoundaryLengthFields();
         testSignupRejectsShortLoginId();
@@ -67,6 +83,7 @@ public class RegressionTest {
         testSignupRejectsLongPassword();
         testSignupAcceptsMaxBoundaryPassword();
         testSignupRejectsEscapedNewlinePassword();
+        testSignupRejectsEscapedNewlineUserName();
         testSignupRejectsDuplicateLoginId();
         testSignupRejectsUnderscoreLeadingLoginId();
         testSignupRejectsKoreanLeadingLoginId();
@@ -124,8 +141,11 @@ public class RegressionTest {
         testCreateReservationRejectsZeroYearDate();
         testCreateReservationRejectsZeroPartySize();
         testCreateReservationRejectsCapacityOverflow();
+        testCreateReservationRejectsClosedRoom();
         testCreateReservationRejectsRoomOverlap();
         testCreateReservationRejectsUserOverlap();
+        testCreateReservationAllowsAdjacentRoomWindow();
+        testCreateReservationAllowsAdjacentUserWindow();
         testCancelDeletesReservation();
         testCancelRejectsOtherUsersReservation();
         testCancelRejectsMissingReservation();
@@ -135,6 +155,7 @@ public class RegressionTest {
         testCheckInLowerBoundarySuccess();
         testCheckInBoundarySuccess();
         testCheckInAtStartTimeSuccess();
+        testCheckInRejectsAlreadyCheckedInReservation();
         testCheckInRejectsOtherUsersReservation();
         testCheckInRejectsMissingReservation();
         testCheckInAfterNoShowTransitionRejected();
@@ -182,6 +203,34 @@ public class RegressionTest {
         if (dataset.reservations.get("rv0001").status != ReservationStatus.NO_SHOW) {
             throw new AssertionError("Expected rv0001 to become NO_SHOW.");
         }
+    }
+
+    private static void testStartupAutoNoShowTransition() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                users("user011", "pw1234", "bonsu"),
+                "ROOM|R101|A룸|4|OPEN\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-19 09:00|-\n",
+                "NOW|2026-03-20 11:11\n");
+
+        String output = runCli(root, lines("0"));
+
+        assertContains(output, "프로그램을 종료합니다.");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|NO_SHOW|2026-03-19 09:00|-");
+    }
+
+    private static void testStartupAutoCompletedTransition() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                users("user011", "pw1234", "bonsu"),
+                "ROOM|R101|A룸|4|OPEN\n",
+                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|2|CHECKED_IN|2026-03-20 08:30|2026-03-20 08:55\n",
+                "NOW|2026-03-20 10:00\n");
+
+        String output = runCli(root, lines("0"));
+
+        assertContains(output, "프로그램을 종료합니다.");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|2|COMPLETED|2026-03-20 08:30|2026-03-20 08:55");
     }
 
     private static void testNextReservationId() throws Exception {
@@ -288,6 +337,66 @@ public class RegressionTest {
         assertContains(output, "[파일 오류] users.txt 2행: userId 형식이 올바르지 않습니다.");
     }
 
+    private static void testInvalidLoginIdSyntaxStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                "USER|user001|ad min|admin1234|admin|admin\n",
+                baseRooms(),
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] users.txt 1행: loginId 형식이 올바르지 않습니다.");
+    }
+
+    private static void testInvalidUserNameSyntaxStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                "USER|user001|admin|admin1234|ad min|admin\n",
+                baseRooms(),
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] users.txt 1행: userName 형식이 올바르지 않습니다.");
+    }
+
+    private static void testLoginIdRejectsEscapedNewlineStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                "USER|user001|ad\\nmin|admin1234|admin|admin\n",
+                baseRooms(),
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] users.txt 1행: loginId 형식이 올바르지 않습니다.");
+    }
+
+    private static void testUserNameRejectsEscapedNewlineStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                "USER|user001|admin|admin1234|bo\\nsu|admin\n",
+                baseRooms(),
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] users.txt 1행: userName 형식이 올바르지 않습니다.");
+    }
+
+    private static void testInvalidPasswordLengthStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                "USER|user001|admin|abc|admin|admin\n",
+                baseRooms(),
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] users.txt 1행: password 길이는 4~20이어야 합니다.");
+    }
+
     private static void testDuplicateUserIdStopsStartup() throws Exception {
         Path root = createCliRoot();
         writeData(root,
@@ -324,6 +433,19 @@ public class RegressionTest {
 
         String output = runCli(root, "");
         assertContains(output, "[파일 오류] users.txt 1행: role 값은 member 또는 admin 이어야 합니다.");
+    }
+
+    private static void testMissingAdminStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                "USER|user011|user011|pw1234|bonsu|member\n"
+                        + "USER|user022|user022|pw5678|minseo|member\n",
+                baseRooms(),
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] users.txt: 최소 1명의 admin 계정이 필요합니다.");
     }
 
     private static void testInvalidRoomsFieldCountStopsStartup() throws Exception {
@@ -385,6 +507,18 @@ public class RegressionTest {
 
         String output = runCli(root, "");
         assertContains(output, "[파일 오류] rooms.txt 1행: roomName은 비어 있을 수 없습니다.");
+    }
+
+    private static void testRoomNameRejectsEscapedNewlineStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                "ROOM|R101|A\\n룸|4|OPEN\n",
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] rooms.txt 1행: roomName에 사용할 수 없는 문자가 포함되어 있습니다.");
     }
 
     private static void testRoomNameRejectsEscapedTabStopsStartup() throws Exception {
@@ -463,6 +597,30 @@ public class RegressionTest {
         assertContains(output, "[파일 오류] reservations.txt 1행: reservationId 형식이 올바르지 않습니다.");
     }
 
+    private static void testInvalidReservationUserIdSyntaxStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user 011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: userId 형식이 올바르지 않습니다.");
+    }
+
+    private static void testInvalidReservationRoomIdSyntaxStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R1 01|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: roomId 형식이 올바르지 않습니다.");
+    }
+
     private static void testDuplicateReservationIdStopsStartup() throws Exception {
         Path root = createCliRoot();
         writeData(root,
@@ -488,6 +646,18 @@ public class RegressionTest {
         assertContains(output, "[파일 오류] reservations.txt 1행: status 값이 올바르지 않습니다.");
     }
 
+    private static void testInvalidReservationDateStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-02-30|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: date 형식이 올바르지 않습니다.");
+    }
+
     private static void testInvalidReservationStartTimeFormatStopsStartup() throws Exception {
         Path root = createCliRoot();
         writeData(root,
@@ -510,6 +680,42 @@ public class RegressionTest {
 
         String output = runCli(root, "");
         assertContains(output, "[파일 오류] reservations.txt 1행: endTime 형식이 올바르지 않습니다.");
+    }
+
+    private static void testReservationRejectsNonPositivePartySizeInData() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|0|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: partySize는 1 이상이어야 합니다.");
+    }
+
+    private static void testReservationRejectsStartAfterEndInData() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|15:00|13:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: startTime은 endTime보다 빨라야 합니다.");
+    }
+
+    private static void testReservationRejectsInvalidDurationInData() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|18:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: 예약 길이는 1시간, 2시간, 3시간, 4시간 중 하나여야 합니다.");
     }
 
     private static void testInvalidCreatedAtFormatStopsStartup() throws Exception {
@@ -632,6 +838,19 @@ public class RegressionTest {
 
         String output = runCli(root, "");
         assertContains(output, "[파일 오류] reservations.txt 2행: 같은 사용자의 겹치는 시간대 예약이 존재합니다.");
+    }
+
+    private static void testCommentAndBlankLinesAreIgnored() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                "\n# admin user\nUSER|user001|admin|admin1234|admin|admin\n\nUSER|user011|user011|pw1234|bonsu|member\n",
+                "# rooms\n\nROOM|R101|A룸|4|OPEN\n",
+                "\n# no reservations yet\n",
+                "\nNOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines("0"));
+        assertContains(output, "[비로그인 메뉴]");
+        assertContains(output, "프로그램을 종료합니다.");
     }
 
     private static void testSignupDuplicateAndSuccess() throws Exception {
@@ -876,6 +1095,20 @@ public class RegressionTest {
                 "0"));
 
         assertContains(output, "오류: 비밀번호에 사용할 수 없는 문자가 포함되어 있습니다.");
+    }
+
+    private static void testSignupRejectsEscapedNewlineUserName() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "1",
+                "user023",
+                "pw12",
+                "bo\\nsu",
+                "0"));
+
+        assertContains(output, "오류: 사용자명은 영문자로 시작하고 영문자/숫자/_ 만 사용하여 4~20자로 입력해야 합니다.");
     }
 
     private static void testSignupRejectsDuplicateLoginId() throws Exception {
@@ -1839,6 +2072,32 @@ public class RegressionTest {
         assertContains(output, "오류: 수용 인원을 초과했습니다.");
     }
 
+    private static void testCreateReservationRejectsClosedRoom() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                "ROOM|R101|A룸|4|CLOSED\n"
+                        + "ROOM|R102|B룸|6|OPEN\n",
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "3",
+                "2026-03-20",
+                "15:00",
+                "17:00",
+                "2",
+                "R101",
+                "0",
+                "0"));
+
+        assertContains(output, "오류: 해당 룸은 현재 운영 중이 아닙니다.");
+        assertFileNotContains(root, "reservations.txt", "RESV|");
+    }
+
     private static void testCreateReservationRejectsRoomOverlap() throws Exception {
         Path root = createCliRoot();
         writeData(root,
@@ -1887,6 +2146,56 @@ public class RegressionTest {
         String output = runCli(root, input);
 
         assertContains(output, "오류: 같은 시간대에 이미 다른 예약이 있습니다.");
+    }
+
+    private static void testCreateReservationAllowsAdjacentRoomWindow() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user022|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "3",
+                "2026-03-20",
+                "15:00",
+                "16:00",
+                "2",
+                "R101",
+                "0",
+                "0"));
+
+        assertContains(output, "예약이 완료되었습니다.");
+        assertFileContains(root, "reservations.txt", "RESV|rv0002|user011|R101|2026-03-20|15:00|16:00|2|RESERVED|2026-03-20 09:00|-");
+    }
+
+    private static void testCreateReservationAllowsAdjacentUserWindow() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "3",
+                "2026-03-20",
+                "15:00",
+                "16:00",
+                "2",
+                "R102",
+                "0",
+                "0"));
+
+        assertContains(output, "예약이 완료되었습니다.");
+        assertFileContains(root, "reservations.txt", "RESV|rv0002|user011|R102|2026-03-20|15:00|16:00|2|RESERVED|2026-03-20 09:00|-");
     }
 
     private static void testCancelDeletesReservation() throws Exception {
@@ -2085,6 +2394,27 @@ public class RegressionTest {
 
         assertContains(output, "체크인이 완료되었습니다.");
         assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 11:00");
+    }
+
+    private static void testCheckInRejectsAlreadyCheckedInReservation() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|15:00|17:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 14:55\n",
+                "NOW|2026-03-20 15:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "6",
+                "rv0001",
+                "0",
+                "0"));
+
+        assertContains(output, "오류: 체크인 가능한 상태의 예약이 아닙니다.");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|15:00|17:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 14:55");
     }
 
     private static void testCheckInRejectsOtherUsersReservation() throws Exception {
