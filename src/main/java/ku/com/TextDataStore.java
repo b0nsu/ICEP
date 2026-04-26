@@ -293,8 +293,14 @@ final class TextDataStore {
     }
 
     private void validateNoPipeOrNewline(String value, String fileName, int lineNumber, String fieldName) throws AppDataException {
-        if (value.contains("|") || value.contains("\n") || value.contains("\r") ||
-                value.contains("\\n") || value.contains("\\r")) {
+        // Treat escape-like control strings as invalid file content too so the
+        // persisted representation cannot smuggle control-looking sequences.
+        if (value.indexOf('|') >= 0
+                || value.indexOf('\n') >= 0
+                || value.indexOf('\r') >= 0
+                || value.contains("\\n")
+                || value.contains("\\r")
+                || value.contains("\\t")) {
             throw new AppDataException(fileName, lineNumber, fieldName + "에 사용할 수 없는 문자가 포함되어 있습니다.");
         }
     }

@@ -879,7 +879,7 @@ final class CliApp {
     private int promptMenuChoice(Set<Integer> allowed) {
         while (true) {
             String input = promptLine("메뉴 선택: ");
-            if (!input.equals(input.trim())) {
+            if (hasOuterWhitespace(input)) {
                 System.out.println("오류: 메뉴 선택 앞뒤에 공백을 넣을 수 없습니다.");
                 continue;
             }
@@ -1012,8 +1012,14 @@ final class CliApp {
     }
 
     private boolean hasForbiddenChars(String text) {
-        return text.contains("|") || text.contains("\n") || text.contains("\r") ||
-                text.contains("\\n") || text.contains("\\r");
+        // Escape-like control strings are blocked as well so file-backed values
+        // and interactive input do not diverge on hidden/control-looking content.
+        return text.indexOf('|') >= 0
+                || text.indexOf('\n') >= 0
+                || text.indexOf('\r') >= 0
+                || text.contains("\\n")
+                || text.contains("\\r")
+                || text.contains("\\t");
     }
 
     private String promptStrictValue(String prompt) {
