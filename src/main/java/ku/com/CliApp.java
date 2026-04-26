@@ -1012,7 +1012,8 @@ final class CliApp {
     }
 
     private boolean hasForbiddenChars(String text) {
-        return text.indexOf('|') >= 0 || text.indexOf('\n') >= 0 || text.indexOf('\r') >= 0;
+        return text.contains("|") || text.contains("\n") || text.contains("\r") ||
+                text.contains("\\n") || text.contains("\\r");
     }
 
     private String promptStrictValue(String prompt) {
