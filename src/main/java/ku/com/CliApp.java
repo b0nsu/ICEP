@@ -239,6 +239,7 @@ final class CliApp {
         }
         if (count == 0) {
             System.out.println("조회 결과가 없습니다.");
+            System.out.println("조회가 끝났습니다.");
             return;
         }
         System.out.println("조회가 끝났습니다.");

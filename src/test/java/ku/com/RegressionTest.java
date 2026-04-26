@@ -1656,6 +1656,8 @@ public class RegressionTest {
         String output = runCli(root, input);
 
         assertContains(output, "조회 결과가 없습니다.");
+        assertContains(output, "조회가 끝났습니다.");
+        assertAppearsBefore(output, "조회 결과가 없습니다.", "조회가 끝났습니다.");
     }
 
     private static void testAvailableRoomQueryListsMatchingRooms() throws Exception {
@@ -2288,6 +2290,7 @@ public class RegressionTest {
                 "0",
                 "0"));
         assertContains(emptyOutput, "나의 예약이 없습니다.");
+        assertNotContains(emptyOutput, "조회가 끝났습니다.");
 
         Path sortedRoot = createCliRoot();
         writeData(sortedRoot,
@@ -2538,6 +2541,7 @@ public class RegressionTest {
                 "0"));
 
         assertContains(output, "예약 데이터가 없습니다.");
+        assertNotContains(output, "조회가 끝났습니다.");
     }
 
     private static void testAllReservationsShowsUserNamesCheckedInAtAndSortedRows() throws Exception {
