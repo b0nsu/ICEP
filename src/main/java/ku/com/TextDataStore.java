@@ -1,6 +1,7 @@
 package ku.com;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -115,14 +116,14 @@ final class TextDataStore {
             require("ROOM".equals(fields[0]), ROOMS_FILE, line.lineNumber, "레코드 접두어는 ROOM이어야 합니다.");
             String roomId = fields[1].trim();
             String roomName = fields[2].trim();
-            int maxCapacity = parseInt(fields[3], ROOMS_FILE, line.lineNumber, "maxCapacity");
+            BigInteger maxCapacity = parseBigInteger(fields[3], ROOMS_FILE, line.lineNumber, "maxCapacity");
             RoomStatus roomStatus = RoomStatus.fromFile(fields[4], ROOMS_FILE, line.lineNumber);
 
             require(ROOM_ID_PATTERN.matcher(roomId).matches(), ROOMS_FILE, line.lineNumber,
                     "roomId 형식이 올바르지 않습니다.");
             require(!roomName.isEmpty(), ROOMS_FILE, line.lineNumber, "roomName은 비어 있을 수 없습니다.");
             validateNoPipeOrNewline(roomName, ROOMS_FILE, line.lineNumber, "roomName");
-            require(maxCapacity >= 1, ROOMS_FILE, line.lineNumber, "maxCapacity는 1 이상이어야 합니다.");
+            require(maxCapacity.compareTo(BigInteger.ONE) >= 0, ROOMS_FILE, line.lineNumber, "maxCapacity는 1 이상이어야 합니다.");
 
             Room prev = rooms.put(roomId, new Room(roomId, roomName, maxCapacity, roomStatus, line.lineNumber));
             require(prev == null, ROOMS_FILE, line.lineNumber, "중복된 roomId가 존재합니다.");
@@ -142,7 +143,7 @@ final class TextDataStore {
             LocalDate date = TimeFormats.parseDate(fields[4], RESERVATIONS_FILE, line.lineNumber, "date");
             LocalTime startTime = TimeFormats.parseTime(fields[5], RESERVATIONS_FILE, line.lineNumber, "startTime");
             LocalTime endTime = TimeFormats.parseTime(fields[6], RESERVATIONS_FILE, line.lineNumber, "endTime");
-            int partySize = parseInt(fields[7], RESERVATIONS_FILE, line.lineNumber, "partySize");
+            BigInteger partySize = parseBigInteger(fields[7], RESERVATIONS_FILE, line.lineNumber, "partySize");
             ReservationStatus status = ReservationStatus.fromFile(fields[8], RESERVATIONS_FILE, line.lineNumber);
             LocalDateTime createdAt = TimeFormats.parseDateTime(fields[9], RESERVATIONS_FILE, line.lineNumber, "createdAt");
             String checkedInRaw = fields[10].trim();
@@ -153,7 +154,7 @@ final class TextDataStore {
                     "userId 형식이 올바르지 않습니다.");
             require(ROOM_ID_PATTERN.matcher(roomId).matches(), RESERVATIONS_FILE, line.lineNumber,
                     "roomId 형식이 올바르지 않습니다.");
-            require(partySize >= 1, RESERVATIONS_FILE, line.lineNumber, "partySize는 1 이상이어야 합니다.");
+            require(partySize.compareTo(BigInteger.ONE) >= 0, RESERVATIONS_FILE, line.lineNumber, "partySize는 1 이상이어야 합니다.");
             require(startTime.getMinute() == 0 && endTime.getMinute() == 0,
                     RESERVATIONS_FILE, line.lineNumber, "startTime/endTime은 1시간 단위여야 합니다.");
             require(startTime.isBefore(endTime), RESERVATIONS_FILE, line.lineNumber,
@@ -219,7 +220,7 @@ final class TextDataStore {
             require(room != null, RESERVATIONS_FILE, reservation.sourceLine,
                     "존재하지 않는 roomId를 참조합니다: " + reservation.roomId);
             if (reservation.activeForOverlap()) {
-                require(reservation.partySize <= room.maxCapacity, RESERVATIONS_FILE, reservation.sourceLine,
+                require(reservation.partySize.compareTo(room.maxCapacity) <= 0, RESERVATIONS_FILE, reservation.sourceLine,
                         "partySize가 해당 room의 maxCapacity를 초과합니다.");
             }
         }
@@ -283,9 +284,9 @@ final class TextDataStore {
         return fields;
     }
 
-    private int parseInt(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
+    private BigInteger parseBigInteger(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
         try {
-            return Integer.parseInt(raw.trim());
+            return new BigInteger(raw.trim());
         } catch (NumberFormatException e) {
             throw new AppDataException(fileName, lineNumber, fieldName + " 값은 정수여야 합니다.");
         }
