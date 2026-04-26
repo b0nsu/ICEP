@@ -1,6 +1,6 @@
 스터디룸 예약 관리 CLI 실행 방법
 
-이 브랜치는 프로그램 실행에 필요한 제출 파일만 포함합니다.
+이 브랜치는 프로그램 실행과 빌드에 필요한 제출 파일만 포함합니다.
 
 필수 실행 파일:
 - study-room-cli.jar
@@ -9,10 +9,23 @@
 - data/reservations.txt
 - data/system_time.txt
 
+빌드 관련 파일:
+- src/main/java/
+- build.gradle
+- settings.gradle
+- gradlew
+- gradle/wrapper/
+
 실행 방법:
 
 ```bash
 java -jar study-room-cli.jar
+```
+
+빌드 방법:
+
+```bash
+sh gradlew jar
 ```
 
 기본 로그인 계정:
