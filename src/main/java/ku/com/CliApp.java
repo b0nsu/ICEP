@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.nio.charset.Charset;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -23,7 +24,8 @@ final class CliApp {
     private static final Pattern ROOM_ID_PATTERN = Pattern.compile("^R[0-9]{3}$");
     private static final Pattern RESERVATION_ID_PATTERN = Pattern.compile("^rv[0-9]{4}$");
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in,
+            Charset.forName(System.getProperty("native.encoding", "UTF-8")));
     private final TextDataStore store = new TextDataStore(resolveProjectRoot());
 
     private String loggedInUserId;
