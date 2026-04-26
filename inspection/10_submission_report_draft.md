@@ -16,7 +16,7 @@ sh gradlew test regressionTest
 ```
 
 최종 실행 결과:
-- 전체 `170`개 테스트케이스 통과
+- 전체 `169`개 테스트케이스 통과
 - `Regression tests passed.`
 - `BUILD SUCCESSFUL`
 
@@ -38,7 +38,7 @@ sh gradlew test regressionTest
 - 잘못된 `date`, `startTime`, `endTime`, `createdAt`, `checkedInAt`, `NOW`
 - 잘못된 `maxCapacity`
 - 잘못된 reservation `userId`, `roomId`
-- `roomName`, `password`의 제어문자 표기 문자열(`\\n`, `\\t`)에 대한 구현상 추가 방어
+- `password`의 개행 표기 문자열(`\\n`)에 대한 추가 방어
 - 주석 줄 / 빈 줄 무시
 
 대표 예상 결과:
@@ -322,7 +322,7 @@ sh gradlew test regressionTest
 - 중복 ID
 - 잘못된 role / roomStatus / status
 - 잘못된 날짜 / 시각 / 일시
-- 제어문자 표기 문자열 `\\n`, `\\t`, `\\r`에 대한 구현상 추가 방어
+- 개행/캐리지 리턴 표기 문자열 `\\n`, `\\r`에 대한 추가 방어
 
 대표 예상 결과:
 - 문법 또는 의미 규칙을 위반한 수동 수정 결과는 다음 실행 시 시작 단계 검증에서 탐지되어야 한다.

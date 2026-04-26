@@ -38,7 +38,6 @@ public class RegressionTest {
         testInvalidRoomStatusStopsStartup();
         testEmptyRoomNameStopsStartup();
         testRoomNameRejectsEscapedNewlineStopsStartup();
-        testRoomNameRejectsEscapedTabStopsStartup();
         testRoomRejectsZeroMaxCapacity();
         testRoomRejectsNegativeMaxCapacity();
         testRoomRejectsNonNumericMaxCapacity();
@@ -514,18 +513,6 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 "ROOM|R101|A\\n룸|4|OPEN\n",
-                "",
-                "NOW|2026-03-20 09:00\n");
-
-        String output = runCli(root, "");
-        assertContains(output, "[파일 오류] rooms.txt 1행: roomName에 사용할 수 없는 문자가 포함되어 있습니다.");
-    }
-
-    private static void testRoomNameRejectsEscapedTabStopsStartup() throws Exception {
-        Path root = createCliRoot();
-        writeData(root,
-                baseUsers(),
-                "ROOM|R101|A\\t룸|4|OPEN\n",
                 "",
                 "NOW|2026-03-20 09:00\n");
 
