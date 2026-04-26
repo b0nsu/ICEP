@@ -1,5 +1,6 @@
 package ku.com;
 
+import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -164,15 +165,14 @@ final class CliApp {
         data.users.put(userId, new User(userId, loginId, password, userName, Role.MEMBER, 0));
         store.saveAll(data);
         System.out.println("회원가입이 완료되었습니다.");
-        System.out.println("발급된 사용자 ID: " + userId);
     }
 
     private void handleLogin() throws AppDataException {
-        SystemData loaded = store.loadAll();
         System.out.println("[로그인]");
         String loginId = promptLoginId("로그인 ID: ");
         String password = promptPassword("비밀번호: ");
-        User user = loaded.findUserByLoginId(loginId);
+        SystemData data = loadAndSync();
+        User user = data.findUserByLoginId(loginId);
         if (user == null) {
             System.out.println("오류: 존재하지 않는 로그인 ID입니다.");
             return;
@@ -182,27 +182,15 @@ final class CliApp {
             return;
         }
 
-        SystemData synced = loadAndSync();
-        User syncedUser = synced.users.get(user.userId);
-        if (syncedUser == null) {
-            System.out.println("오류: 로그인할 수 없는 계정입니다.");
-            return;
-        }
-
-        loggedInUserId = syncedUser.userId;
-        loggedInRole = syncedUser.role;
-        System.out.println("로그인 성공: " + syncedUser.userName + " (role: " + syncedUser.role.fileValue() + ")");
+        loggedInUserId = user.userId;
+        loggedInRole = user.role;
+        System.out.println("로그인 성공: " + user.userName + " (role: " + user.role.fileValue() + ")");
     }
 
     private void handleLogout() {
         loggedInUserId = null;
         loggedInRole = null;
         System.out.println("로그아웃되었습니다.");
-    }
-
-    private void handleViewCurrentTime() throws AppDataException {
-        SystemData data = store.loadAll();
-        System.out.println("현재 가상 시각: " + TimeFormats.formatDateTime(data.currentTime));
     }
 
     private void handleSearchAvailableRooms() throws AppDataException {
@@ -213,7 +201,7 @@ final class CliApp {
         LocalDate date = promptDate("날짜 입력(yyyy-MM-dd): ");
         LocalTime start = promptTime("시작 시각 입력(HH:mm): ");
         LocalTime end = promptTime("종료 시각 입력(HH:mm): ");
-        int partySize = promptPositiveInt("인원 수 입력: ");
+        BigInteger partySize = promptPositiveBigInteger("인원 수 입력: ");
 
         String error = validateReservationWindow(date, start, end);
         if (error != null) {
@@ -223,6 +211,14 @@ final class CliApp {
 
         LocalDateTime startAt = LocalDateTime.of(date, start);
         LocalDateTime endAt = LocalDateTime.of(date, end);
+        if (!startAt.isAfter(data.currentTime)) {
+            System.out.println("오류: 예약 시작 시각은 현재 가상 시각보다 미래여야 합니다.");
+            return;
+        }
+        if (hasUserOverlap(data, loggedInUserId, startAt, endAt, null)) {
+            System.out.println("오류: 같은 시간대에 이미 다른 예약이 있습니다.");
+            return;
+        }
 
         printRoomHeader();
         int count = 0;
@@ -230,7 +226,7 @@ final class CliApp {
             if (room.roomStatus != RoomStatus.OPEN) {
                 continue;
             }
-            if (room.maxCapacity < partySize) {
+            if (room.maxCapacity.compareTo(partySize) < 0) {
                 continue;
             }
             if (hasRoomOverlap(data, room.roomId, startAt, endAt, null)) {
@@ -255,7 +251,7 @@ final class CliApp {
         LocalDate date = promptDate("날짜 입력(yyyy-MM-dd): ");
         LocalTime start = promptTime("시작 시각 입력(HH:mm): ");
         LocalTime end = promptTime("종료 시각 입력(HH:mm): ");
-        int partySize = promptPositiveInt("인원 수 입력: ");
+        BigInteger partySize = promptPositiveBigInteger("인원 수 입력: ");
         String roomId = promptRoomId("룸 ID 입력: ");
 
         String windowError = validateReservationWindow(date, start, end);
@@ -273,7 +269,7 @@ final class CliApp {
             System.out.println("오류: 해당 룸은 현재 운영 중이 아닙니다.");
             return;
         }
-        if (partySize > room.maxCapacity) {
+        if (room.maxCapacity.compareTo(partySize) < 0) {
             System.out.println("오류: 수용 인원을 초과했습니다.");
             return;
         }
@@ -308,7 +304,8 @@ final class CliApp {
                 0);
         data.reservations.put(reservationId, reservation);
         store.saveAll(data);
-        System.out.println("예약이 완료되었습니다. 예약번호: " + reservationId);
+        System.out.println("예약이 완료되었습니다.");
+        System.out.println("예약번호: " + reservationId);
     }
 
     private void handleCancelReservation() throws AppDataException {
@@ -518,14 +515,17 @@ final class CliApp {
             if (menu == 0) {
                 return;
             }
-            if (menu == 1) {
-                handleRoomList();
-            } else if (menu == 2) {
-                handleChangeRoomCapacity();
-            } else if (menu == 3) {
-                handleCloseRoom();
-            } else {
-                handleOpenRoom();
+            try {
+                if (menu == 1) {
+                    handleRoomList();
+                } else if (menu == 2) {
+                    handleChangeRoomCapacity();
+                } else if (menu == 3) {
+                    handleCloseRoom();
+                } else {
+                    handleOpenRoom();
+                }
+            } catch (ActionAbortedException ignored) {
             }
         }
     }
@@ -545,7 +545,7 @@ final class CliApp {
         System.out.println("[최대 수용 인원 변경]");
         System.out.println("현재 가상 시각: " + TimeFormats.formatDateTime(data.currentTime));
         String roomId = promptRoomId("룸 ID 입력: ");
-        int newCapacity = promptPositiveInt("새 최대 수용 인원 입력: ");
+        BigInteger newCapacity = promptPositiveBigInteger("새 최대 수용 인원 입력: ");
 
         Room room = data.rooms.get(roomId);
         if (room == null) {
@@ -682,13 +682,12 @@ final class CliApp {
         }
     }
 
-    private List<Reservation> findFutureReservedWithTooManyPeople(SystemData data, String roomId, int newCapacity) {
+    private List<Reservation> findFutureReservedWithTooManyPeople(SystemData data, String roomId, BigInteger newCapacity) {
         List<Reservation> impacted = new ArrayList<>();
         for (Reservation reservation : data.sortedReservations()) {
             if (reservation.roomId.equals(roomId)
-                    && reservation.status == ReservationStatus.RESERVED
-                    && reservation.startDateTime().isAfter(data.currentTime)
-                    && reservation.partySize > newCapacity) {
+                    && isReservedStillAwaitingUse(reservation, data.currentTime)
+                    && reservation.partySize.compareTo(newCapacity) > 0) {
                 impacted.add(reservation);
             }
         }
@@ -699,8 +698,7 @@ final class CliApp {
         List<Reservation> impacted = new ArrayList<>();
         for (Reservation reservation : data.sortedReservations()) {
             if (reservation.roomId.equals(roomId)
-                    && reservation.status == ReservationStatus.RESERVED
-                    && reservation.startDateTime().isAfter(data.currentTime)) {
+                    && isReservedStillAwaitingUse(reservation, data.currentTime)) {
                 impacted.add(reservation);
             }
         }
@@ -710,15 +708,19 @@ final class CliApp {
     private boolean hasFutureReservedInRoom(SystemData data, String roomId) {
         for (Reservation reservation : data.reservations.values()) {
             if (reservation.roomId.equals(roomId)
-                    && reservation.status == ReservationStatus.RESERVED
-                    && reservation.startDateTime().isAfter(data.currentTime)) {
+                    && isReservedStillAwaitingUse(reservation, data.currentTime)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean hasActiveReservationOverCapacity(SystemData data, String roomId, int newCapacity) {
+    private boolean isReservedStillAwaitingUse(Reservation reservation, LocalDateTime now) {
+        return reservation.status == ReservationStatus.RESERVED
+                && !now.isAfter(reservation.startDateTime().plusMinutes(10));
+    }
+
+    private boolean hasActiveReservationOverCapacity(SystemData data, String roomId, BigInteger newCapacity) {
         for (Reservation reservation : data.reservations.values()) {
             if (!reservation.roomId.equals(roomId)) {
                 continue;
@@ -726,7 +728,7 @@ final class CliApp {
             if (reservation.status != ReservationStatus.CHECKED_IN) {
                 continue;
             }
-            if (reservation.partySize > newCapacity) {
+            if (reservation.partySize.compareTo(newCapacity) > 0) {
                 return true;
             }
         }
@@ -744,7 +746,7 @@ final class CliApp {
         if (target.roomStatus != RoomStatus.OPEN) {
             return "대상 룸이 OPEN 상태가 아니어서 이동할 수 없습니다.";
         }
-        if (target.maxCapacity < reservation.partySize) {
+        if (target.maxCapacity.compareTo(reservation.partySize) < 0) {
             return "대상 룸의 수용 인원이 부족합니다.";
         }
         if (hasRoomOverlap(data, targetRoomId, reservation.startDateTime(), reservation.endDateTime(), reservation.reservationId)) {
@@ -877,7 +879,7 @@ final class CliApp {
     private int promptMenuChoice(Set<Integer> allowed) {
         while (true) {
             String input = promptLine("메뉴 선택: ");
-            if (!input.equals(input.trim())) {
+            if (hasOuterWhitespace(input)) {
                 System.out.println("오류: 메뉴 선택 앞뒤에 공백을 넣을 수 없습니다.");
                 continue;
             }
@@ -950,8 +952,11 @@ final class CliApp {
     private LocalDate promptDate(String prompt) {
         String dateText = promptStrictValue(prompt);
         try {
-            return LocalDate.parse(dateText, TimeFormats.DATE);
+            return TimeFormats.parseDate(dateText, "input", 0, "날짜");
         } catch (DateTimeParseException e) {
+            abortAction("오류: 날짜 형식이 올바르지 않습니다. 예: 2026-03-20");
+            return null;
+        } catch (AppDataException e) {
             abortAction("오류: 날짜 형식이 올바르지 않습니다. 예: 2026-03-20");
             return null;
         }
@@ -974,24 +979,27 @@ final class CliApp {
     private LocalDateTime promptDateTime(String prompt) {
         String text = promptStrictValue(prompt);
         try {
-            return LocalDateTime.parse(text, TimeFormats.DATE_TIME);
+            return TimeFormats.parseDateTime(text, "input", 0, "날짜/시각");
         } catch (DateTimeParseException e) {
+            abortAction("오류: 날짜/시각 형식이 올바르지 않습니다. 예: 2026-03-20 09:00");
+            return null;
+        } catch (AppDataException e) {
             abortAction("오류: 날짜/시각 형식이 올바르지 않습니다. 예: 2026-03-20 09:00");
             return null;
         }
     }
 
-    private int promptPositiveInt(String prompt) {
+    private BigInteger promptPositiveBigInteger(String prompt) {
         String text = promptStrictValue(prompt);
         try {
-            int value = Integer.parseInt(text);
-            if (value < 1) {
+            BigInteger value = new BigInteger(text);
+            if (value.compareTo(BigInteger.ONE) < 0) {
                 abortAction("오류: 1 이상의 정수를 입력해야 합니다.");
             }
             return value;
         } catch (NumberFormatException e) {
             abortAction("오류: 숫자를 입력해야 합니다.");
-            return -1;
+            return BigInteger.valueOf(-1);
         }
     }
 
@@ -1004,18 +1012,36 @@ final class CliApp {
     }
 
     private boolean hasForbiddenChars(String text) {
-        return text.indexOf('|') >= 0 || text.indexOf('\n') >= 0 || text.indexOf('\r') >= 0;
+        // Escape-like control strings are blocked as well so file-backed values
+        // and interactive input do not diverge on hidden/control-looking content.
+        return text.indexOf('|') >= 0
+                || text.indexOf('\n') >= 0
+                || text.indexOf('\r') >= 0
+                || text.contains("\\n")
+                || text.contains("\\r")
+                || text.contains("\\t");
     }
 
     private String promptStrictValue(String prompt) {
         String raw = promptLine(prompt);
-        if (!raw.equals(raw.trim())) {
+        if (hasOuterWhitespace(raw)) {
             abortAction("오류: 입력값 앞뒤에 공백을 넣을 수 없습니다.");
         }
         if (raw.isEmpty()) {
             abortAction("오류: 빈 값을 입력할 수 없습니다.");
         }
         return raw;
+    }
+
+    private boolean hasOuterWhitespace(String text) {
+        if (text.isEmpty()) {
+            return false;
+        }
+        return isSpaceLike(text.charAt(0)) || isSpaceLike(text.charAt(text.length() - 1));
+    }
+
+    private boolean isSpaceLike(char ch) {
+        return Character.isWhitespace(ch) || Character.isSpaceChar(ch);
     }
 
     private void abortAction(String message) {

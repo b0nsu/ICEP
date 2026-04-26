@@ -31,6 +31,13 @@ tasks.named('jar') {
     manifest {
         attributes('Main-Class': application.mainClass.get())
     }
+    doLast {
+        copy {
+            from archiveFile
+            into layout.projectDirectory
+            rename { 'study-room-cli.jar' }
+        }
+    }
 }
 
 tasks.named('run') {

@@ -1,6 +1,7 @@
 package ku.com;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +20,7 @@ final class TextDataStore {
     static final String RESERVATIONS_FILE = "reservations.txt";
     static final String SYSTEM_TIME_FILE = "system_time.txt";
 
-    private static final Pattern USER_ID_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
+    private static final Pattern USER_ID_PATTERN = Pattern.compile("^user[0-9]{3}$");
     private static final Pattern LOGIN_ID_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
     private static final Pattern USER_NAME_PATTERN = Pattern.compile("^[A-Za-z][A-Za-z0-9_]{3,19}$");
     private static final Pattern ROOM_ID_PATTERN = Pattern.compile("^R[0-9]{3}$");
@@ -56,11 +57,6 @@ final class TextDataStore {
 
     SystemData loadAll() throws AppDataException {
         ensureDataFiles();
-        verifyAccessible(usersPath, USERS_FILE);
-        verifyAccessible(roomsPath, ROOMS_FILE);
-        verifyAccessible(reservationsPath, RESERVATIONS_FILE);
-        verifyAccessible(systemTimePath, SYSTEM_TIME_FILE);
-
         LinkedHashMap<String, User> users = parseUsers();
         LinkedHashMap<String, Room> rooms = parseRooms();
         LinkedHashMap<String, Reservation> reservations = parseReservations();
@@ -120,14 +116,14 @@ final class TextDataStore {
             require("ROOM".equals(fields[0]), ROOMS_FILE, line.lineNumber, "레코드 접두어는 ROOM이어야 합니다.");
             String roomId = fields[1].trim();
             String roomName = fields[2].trim();
-            int maxCapacity = parseInt(fields[3], ROOMS_FILE, line.lineNumber, "maxCapacity");
+            BigInteger maxCapacity = parseBigInteger(fields[3], ROOMS_FILE, line.lineNumber, "maxCapacity");
             RoomStatus roomStatus = RoomStatus.fromFile(fields[4], ROOMS_FILE, line.lineNumber);
 
             require(ROOM_ID_PATTERN.matcher(roomId).matches(), ROOMS_FILE, line.lineNumber,
                     "roomId 형식이 올바르지 않습니다.");
             require(!roomName.isEmpty(), ROOMS_FILE, line.lineNumber, "roomName은 비어 있을 수 없습니다.");
             validateNoPipeOrNewline(roomName, ROOMS_FILE, line.lineNumber, "roomName");
-            require(maxCapacity >= 1, ROOMS_FILE, line.lineNumber, "maxCapacity는 1 이상이어야 합니다.");
+            require(maxCapacity.compareTo(BigInteger.ONE) >= 0, ROOMS_FILE, line.lineNumber, "maxCapacity는 1 이상이어야 합니다.");
 
             Room prev = rooms.put(roomId, new Room(roomId, roomName, maxCapacity, roomStatus, line.lineNumber));
             require(prev == null, ROOMS_FILE, line.lineNumber, "중복된 roomId가 존재합니다.");
@@ -147,7 +143,7 @@ final class TextDataStore {
             LocalDate date = TimeFormats.parseDate(fields[4], RESERVATIONS_FILE, line.lineNumber, "date");
             LocalTime startTime = TimeFormats.parseTime(fields[5], RESERVATIONS_FILE, line.lineNumber, "startTime");
             LocalTime endTime = TimeFormats.parseTime(fields[6], RESERVATIONS_FILE, line.lineNumber, "endTime");
-            int partySize = parseInt(fields[7], RESERVATIONS_FILE, line.lineNumber, "partySize");
+            BigInteger partySize = parseBigInteger(fields[7], RESERVATIONS_FILE, line.lineNumber, "partySize");
             ReservationStatus status = ReservationStatus.fromFile(fields[8], RESERVATIONS_FILE, line.lineNumber);
             LocalDateTime createdAt = TimeFormats.parseDateTime(fields[9], RESERVATIONS_FILE, line.lineNumber, "createdAt");
             String checkedInRaw = fields[10].trim();
@@ -158,7 +154,7 @@ final class TextDataStore {
                     "userId 형식이 올바르지 않습니다.");
             require(ROOM_ID_PATTERN.matcher(roomId).matches(), RESERVATIONS_FILE, line.lineNumber,
                     "roomId 형식이 올바르지 않습니다.");
-            require(partySize >= 1, RESERVATIONS_FILE, line.lineNumber, "partySize는 1 이상이어야 합니다.");
+            require(partySize.compareTo(BigInteger.ONE) >= 0, RESERVATIONS_FILE, line.lineNumber, "partySize는 1 이상이어야 합니다.");
             require(startTime.getMinute() == 0 && endTime.getMinute() == 0,
                     RESERVATIONS_FILE, line.lineNumber, "startTime/endTime은 1시간 단위여야 합니다.");
             require(startTime.isBefore(endTime), RESERVATIONS_FILE, line.lineNumber,
@@ -224,7 +220,7 @@ final class TextDataStore {
             require(room != null, RESERVATIONS_FILE, reservation.sourceLine,
                     "존재하지 않는 roomId를 참조합니다: " + reservation.roomId);
             if (reservation.activeForOverlap()) {
-                require(reservation.partySize <= room.maxCapacity, RESERVATIONS_FILE, reservation.sourceLine,
+                require(reservation.partySize.compareTo(room.maxCapacity) <= 0, RESERVATIONS_FILE, reservation.sourceLine,
                         "partySize가 해당 room의 maxCapacity를 초과합니다.");
             }
         }
@@ -262,18 +258,6 @@ final class TextDataStore {
         }
     }
 
-    private void verifyAccessible(Path path, String logicalName) throws AppDataException {
-        if (!Files.exists(path)) {
-            throw new AppDataException(logicalName, 0, "파일이 존재하지 않습니다.");
-        }
-        if (!Files.isReadable(path)) {
-            throw new AppDataException(logicalName, 0, "파일 읽기 권한이 없습니다.");
-        }
-        if (!Files.isWritable(path)) {
-            throw new AppDataException(logicalName, 0, "파일 쓰기 권한이 없습니다.");
-        }
-    }
-
     private List<LineRecord> readLogicalLines(Path path, String logicalName) throws AppDataException {
         try {
             List<String> rawLines = Files.readAllLines(path, StandardCharsets.UTF_8);
@@ -300,16 +284,23 @@ final class TextDataStore {
         return fields;
     }
 
-    private int parseInt(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
+    private BigInteger parseBigInteger(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
         try {
-            return Integer.parseInt(raw.trim());
+            return new BigInteger(raw.trim());
         } catch (NumberFormatException e) {
             throw new AppDataException(fileName, lineNumber, fieldName + " 값은 정수여야 합니다.");
         }
     }
 
     private void validateNoPipeOrNewline(String value, String fileName, int lineNumber, String fieldName) throws AppDataException {
-        if (value.indexOf('|') >= 0 || value.indexOf('\n') >= 0 || value.indexOf('\r') >= 0) {
+        // Treat escape-like control strings as invalid file content too so the
+        // persisted representation cannot smuggle control-looking sequences.
+        if (value.indexOf('|') >= 0
+                || value.indexOf('\n') >= 0
+                || value.indexOf('\r') >= 0
+                || value.contains("\\n")
+                || value.contains("\\r")
+                || value.contains("\\t")) {
             throw new AppDataException(fileName, lineNumber, fieldName + "에 사용할 수 없는 문자가 포함되어 있습니다.");
         }
     }
@@ -355,7 +346,7 @@ final class TextDataStore {
     }
 
     private String defaultUsers() {
-        return "USER|user001|user001|admin1234|admin|admin\n";
+        return "USER|user001|admin|admin1234|admin|admin\n";
     }
 
     private String defaultRooms() {
