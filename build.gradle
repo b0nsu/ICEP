@@ -27,7 +27,7 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.named('jar') {
     archiveFileName = 'study-room-cli.jar'
-    destinationDirectory = layout.buildDirectory.dir('.')
+    destinationDirectory = layout.projectDirectory
     manifest {
         attributes('Main-Class': application.mainClass.get())
     }
