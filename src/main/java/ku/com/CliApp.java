@@ -30,6 +30,12 @@ final class CliApp {
     private String loggedInUserId;
     private Role loggedInRole;
 
+    private record MemberStanding(int recentNoShowCount, LocalDateTime penaltyUntil, boolean excellent) {
+        boolean underPenalty(LocalDateTime now) {
+            return recentNoShowCount > 0 && penaltyUntil != null && now.isBefore(penaltyUntil);
+        }
+    }
+
     private static Path resolveProjectRoot() {
         try {
             Path codePath = Paths.get(CliApp.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toAbsolutePath().normalize();
@@ -190,6 +196,16 @@ final class CliApp {
         loggedInUserId = user.userId;
         loggedInRole = user.role;
         System.out.println("로그인 성공: " + user.userName + " (role: " + user.role.fileValue() + ")");
+        if (user.role == Role.MEMBER) {
+            MemberStanding standing = calculateMemberStanding(data, user.userId);
+            System.out.println("회원 상태: " + (standing.excellent ? "우수회원" : "일반회원"));
+            if (standing.underPenalty(data.currentTime)) {
+                System.out.println("패널티 상태: 패널티 대상");
+                System.out.println("패널티 해제 시각: " + TimeFormats.formatDateTime(standing.penaltyUntil));
+            } else {
+                System.out.println("패널티 상태: 없음");
+            }
+        }
     }
 
     private void handleLogout() {
@@ -292,6 +308,14 @@ final class CliApp {
         }
         if (hasUserOverlap(data, loggedInUserId, startAt, endAt, null)) {
             System.out.println("오류: 같은 시간대에 이미 다른 예약이 있습니다.");
+            return;
+        }
+
+        MemberStanding standing = calculateMemberStanding(data, loggedInUserId);
+        if (standing.underPenalty(data.currentTime)) {
+            System.out.println("오류: 노쇼 패널티로 "
+                    + TimeFormats.formatDateTime(standing.penaltyUntil)
+                    + " 이후 예약 신청이 가능합니다.");
             return;
         }
 
@@ -810,6 +834,44 @@ final class CliApp {
             }
         }
         return false;
+    }
+
+    private MemberStanding calculateMemberStanding(SystemData data, String userId) {
+        LocalDateTime now = data.currentTime;
+        int recentNoShowCount = 0;
+        LocalDateTime lastNoShowAt = null;
+        int recentCompletedCount = 0;
+
+        for (Reservation reservation : data.reservations.values()) {
+            if (!reservation.userId.equals(userId)) {
+                continue;
+            }
+            if (reservation.status == ReservationStatus.NO_SHOW) {
+                LocalDateTime noShowAt = reservation.startDateTime().plusMinutes(10);
+                if (isInRecentSevenDays(noShowAt, now)) {
+                    recentNoShowCount++;
+                    if (lastNoShowAt == null || noShowAt.isAfter(lastNoShowAt)) {
+                        lastNoShowAt = noShowAt;
+                    }
+                }
+            } else if (reservation.status == ReservationStatus.COMPLETED) {
+                LocalDateTime completedAt = reservation.endDateTime();
+                if (isInRecentSevenDays(completedAt, now)) {
+                    recentCompletedCount++;
+                }
+            }
+        }
+
+        LocalDateTime penaltyUntil = null;
+        if (lastNoShowAt != null) {
+            penaltyUntil = lastNoShowAt.plusDays(7);
+        }
+        boolean excellent = recentCompletedCount >= 2 && recentNoShowCount == 0;
+        return new MemberStanding(recentNoShowCount, penaltyUntil, excellent);
+    }
+
+    private boolean isInRecentSevenDays(LocalDateTime eventTime, LocalDateTime now) {
+        return eventTime.isAfter(now.minusDays(7)) && !eventTime.isAfter(now);
     }
 
     private String validateReservationWindow(LocalDate date, LocalTime start, LocalTime end) {

@@ -18,6 +18,12 @@ public class RegressionTest {
         testSignupRejectsUserIdUpperBound();
         testCreateReservationRejectsReservationIdUpperBound();
         testCreateReservationWritesExtensionCount();
+        testPenaltyBlocksReservationCreation();
+        testPenaltyBoundaryAllowsReservationCreation();
+        testRecentSevenDaysExcludesExactLowerBoundNoShow();
+        testRecentSevenDaysIncludesAfterLowerBoundNoShow();
+        testRecentSevenDaysExcludesExactLowerBoundCompleted();
+        testRecentSevenDaysIncludesAfterLowerBoundCompleted();
         testHistoricalCompletedReservationCanExceedCurrentCapacity();
         testSameRoomMoveRejected();
 
@@ -322,6 +328,139 @@ public class RegressionTest {
         assertContains(output, "예약이 완료되었습니다.");
         assertFileContains(root, "reservations.txt",
                 "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0");
+    }
+
+    private static void testPenaltyBlocksReservationCreation() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|10:00|11:00|2|NO_SHOW|2026-03-20 09:00|-|0\n",
+                "NOW|2026-03-20 11:30\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "3",
+                "2026-03-20",
+                "15:00",
+                "16:00",
+                "2",
+                "R102",
+                "0",
+                "0"));
+
+        assertContains(output, "패널티 상태: 패널티 대상");
+        assertContains(output, "패널티 해제 시각: 2026-03-27 10:10");
+        assertContains(output, "오류: 노쇼 패널티로 2026-03-27 10:10 이후 예약 신청이 가능합니다.");
+        assertFileNotContains(root, "reservations.txt", "rv0002");
+    }
+
+    private static void testPenaltyBoundaryAllowsReservationCreation() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|10:00|11:00|2|NO_SHOW|2026-03-20 09:00|-|0\n",
+                "NOW|2026-03-27 10:10\n");
+
+        runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "3",
+                "2026-03-27",
+                "15:00",
+                "16:00",
+                "2",
+                "R102",
+                "0",
+                "0"));
+
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0002|user011|R102|2026-03-27|15:00|16:00|2|RESERVED|2026-03-27 10:10|-|0");
+    }
+
+    private static void testRecentSevenDaysExcludesExactLowerBoundNoShow() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|10:00|11:00|2|NO_SHOW|2026-03-20 09:00|-|0\n",
+                "NOW|2026-03-27 10:10\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "0",
+                "0"));
+
+        assertContains(output, "패널티 상태: 없음");
+    }
+
+    private static void testRecentSevenDaysIncludesAfterLowerBoundNoShow() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|NO_SHOW|2026-03-20 09:00|-|0\n",
+                "NOW|2026-03-27 10:10\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "0",
+                "0"));
+
+        assertContains(output, "패널티 상태: 패널티 대상");
+        assertContains(output, "패널티 해제 시각: 2026-03-27 11:10");
+    }
+
+    private static void testRecentSevenDaysExcludesExactLowerBoundCompleted() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-20|09:00|10:00|2|COMPLETED|2026-03-20 08:00|2026-03-20 08:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-21|09:00|10:00|2|COMPLETED|2026-03-21 08:00|2026-03-21 08:55|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-27|09:00|11:00|2|CHECKED_IN|2026-03-27 08:00|2026-03-27 08:55|0\n",
+                "NOW|2026-03-27 10:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "0",
+                "0"));
+
+        assertContains(output, "회원 상태: 일반회원");
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0003|user011|R101|2026-03-27|09:00|11:00|2|CHECKED_IN|2026-03-27 08:00|2026-03-27 08:55|0");
+    }
+
+    private static void testRecentSevenDaysIncludesAfterLowerBoundCompleted() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-20|10:00|11:00|2|COMPLETED|2026-03-20 08:00|2026-03-20 09:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-21|09:00|10:00|2|COMPLETED|2026-03-21 08:00|2026-03-21 08:55|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-27|09:00|11:00|2|CHECKED_IN|2026-03-27 08:00|2026-03-27 08:55|0\n",
+                "NOW|2026-03-27 10:35\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "0",
+                "0"));
+
+        assertContains(output, "회원 상태: 우수회원");
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0003|user011|R101|2026-03-27|09:00|11:00|2|CHECKED_IN|2026-03-27 08:00|2026-03-27 08:55|0");
     }
 
     private static void testHistoricalCompletedReservationCanExceedCurrentCapacity() throws Exception {
