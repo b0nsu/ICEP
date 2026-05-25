@@ -109,11 +109,12 @@ final class Reservation {
     String roomId;
     final LocalDate date;
     final LocalTime startTime;
-    final LocalTime endTime;
+    LocalTime endTime;
     final BigInteger partySize;
     ReservationStatus status;
     final LocalDateTime createdAt;
     LocalDateTime checkedInAt;
+    int extensionCount;
     final int sourceLine;
 
     Reservation(String reservationId,
@@ -126,6 +127,7 @@ final class Reservation {
                 ReservationStatus status,
                 LocalDateTime createdAt,
                 LocalDateTime checkedInAt,
+                int extensionCount,
                 int sourceLine) {
         this.reservationId = reservationId;
         this.userId = userId;
@@ -137,6 +139,7 @@ final class Reservation {
         this.status = status;
         this.createdAt = createdAt;
         this.checkedInAt = checkedInAt;
+        this.extensionCount = extensionCount;
         this.sourceLine = sourceLine;
     }
 
@@ -172,6 +175,7 @@ final class Reservation {
                 status,
                 createdAt,
                 checkedInAt,
+                extensionCount,
                 sourceLine);
     }
 
@@ -187,7 +191,8 @@ final class Reservation {
                 String.valueOf(partySize),
                 status.name(),
                 TimeFormats.formatDateTime(createdAt),
-                checkedInAtText());
+                checkedInAtText(),
+                String.valueOf(extensionCount));
     }
 }
 
@@ -218,6 +223,9 @@ final class SystemData {
             } catch (NumberFormatException ignored) {
             }
         }
+        if (max >= 9999) {
+            return null;
+        }
         return String.format("rv%04d", max + 1);
     }
 
@@ -231,6 +239,9 @@ final class SystemData {
                 max = Math.max(max, Integer.parseInt(id.substring(4)));
             } catch (NumberFormatException ignored) {
             }
+        }
+        if (max >= 999) {
+            return null;
         }
         return String.format("user%03d", max + 1);
     }

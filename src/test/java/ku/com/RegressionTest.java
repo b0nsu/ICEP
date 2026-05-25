@@ -15,6 +15,9 @@ public class RegressionTest {
         testStartupAutoNoShowTransition();
         testStartupAutoCompletedTransition();
         testNextReservationId();
+        testSignupRejectsUserIdUpperBound();
+        testCreateReservationRejectsReservationIdUpperBound();
+        testCreateReservationWritesExtensionCount();
         testHistoricalCompletedReservationCanExceedCurrentCapacity();
         testSameRoomMoveRejected();
 
@@ -43,7 +46,10 @@ public class RegressionTest {
         testRoomRejectsNonNumericMaxCapacity();
         testDuplicateSystemTimeStopsStartup();
         testInvalidSystemTimeFormatStopsStartup();
+        testReservationRejectsMissingExtensionCount();
         testInvalidReservationIdSyntaxStopsStartup();
+        testInvalidUserIdZeroStopsStartup();
+        testInvalidReservationIdZeroStopsStartup();
         testInvalidReservationUserIdSyntaxStopsStartup();
         testInvalidReservationRoomIdSyntaxStopsStartup();
         testDuplicateReservationIdStopsStartup();
@@ -55,7 +61,10 @@ public class RegressionTest {
         testReservationRejectsStartAfterEndInData();
         testReservationRejectsInvalidDurationInData();
         testInvalidCreatedAtFormatStopsStartup();
+        testReservationRejectsCreatedAtAfterStart();
         testInvalidCheckedInAtFormatStopsStartup();
+        testReservationRejectsCheckedInAtOutsideWindow();
+        testReservationRejectsExtensionCountOverLimit();
         testPasswordRejectsEscapedNewlineStopsStartup();
         testReservationRejectsMissingUserReference();
         testReservationRejectsMissingRoomReference();
@@ -190,7 +199,7 @@ public class RegressionTest {
         writeData(root,
                 users("user011", "pw1234", "bonsu"),
                 "ROOM|R101|A룸|4|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-19 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-19 09:00|-|0\n",
                 "NOW|2026-03-20 11:11\n");
 
         TextDataStore store = new TextDataStore(root);
@@ -209,13 +218,13 @@ public class RegressionTest {
         writeData(root,
                 users("user011", "pw1234", "bonsu"),
                 "ROOM|R101|A룸|4|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-19 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-19 09:00|-|0\n",
                 "NOW|2026-03-20 11:11\n");
 
         String output = runCli(root, lines("0"));
 
         assertContains(output, "프로그램을 종료합니다.");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|NO_SHOW|2026-03-19 09:00|-");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|NO_SHOW|2026-03-19 09:00|-|0");
     }
 
     private static void testStartupAutoCompletedTransition() throws Exception {
@@ -223,13 +232,13 @@ public class RegressionTest {
         writeData(root,
                 users("user011", "pw1234", "bonsu"),
                 "ROOM|R101|A룸|4|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|2|CHECKED_IN|2026-03-20 08:30|2026-03-20 08:55\n",
+                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|2|CHECKED_IN|2026-03-20 08:30|2026-03-20 08:55|0\n",
                 "NOW|2026-03-20 10:00\n");
 
         String output = runCli(root, lines("0"));
 
         assertContains(output, "프로그램을 종료합니다.");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|2|COMPLETED|2026-03-20 08:30|2026-03-20 08:55");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|2|COMPLETED|2026-03-20 08:30|2026-03-20 08:55|0");
     }
 
     private static void testNextReservationId() throws Exception {
@@ -237,8 +246,8 @@ public class RegressionTest {
         writeData(root,
                 users("user011", "pw1234", "bonsu"),
                 "ROOM|R101|A룸|4|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-19 09:00|-\n"
-                        + "RESV|rv0003|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-19 10:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-19 09:00|-|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-19 10:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         SystemData dataSet = new TextDataStore(root).loadAll();
@@ -248,12 +257,79 @@ public class RegressionTest {
         }
     }
 
+    private static void testSignupRejectsUserIdUpperBound() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                "USER|user001|admin|admin1234|admin|admin\n"
+                        + "USER|user999|user999|pw1234|lastuser|member\n",
+                baseRooms(),
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "1",
+                "newuser",
+                "pass1234",
+                "newuser",
+                "0"));
+
+        assertContains(output, "오류: 더 이상 회원을 추가할 수 없습니다.");
+        assertFileNotContains(root, "users.txt", "newuser");
+    }
+
+    private static void testCreateReservationRejectsReservationIdUpperBound() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv9999|user022|R101|2026-03-20|10:00|11:00|2|RESERVED|2026-03-20 09:00|-|0\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "3",
+                "2026-03-20",
+                "15:00",
+                "16:00",
+                "2",
+                "R102",
+                "0",
+                "0"));
+
+        assertContains(output, "오류: 더 이상 예약을 추가할 수 없습니다.");
+        assertFileNotContains(root, "reservations.txt", "rv10000");
+    }
+
+    private static void testCreateReservationWritesExtensionCount() throws Exception {
+        Path root = createCliRoot();
+        writeData(root, baseUsers(), baseRooms(), "", "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "3",
+                "2026-03-20",
+                "13:00",
+                "14:00",
+                "2",
+                "R101",
+                "0",
+                "0"));
+
+        assertContains(output, "예약이 완료되었습니다.");
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0");
+    }
+
     private static void testHistoricalCompletedReservationCanExceedCurrentCapacity() throws Exception {
         Path root = Files.createTempDirectory("study-room-capacity-test-");
         writeData(root,
                 users("user011", "pw1234", "bonsu"),
                 "ROOM|R101|A룸|4|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|6|COMPLETED|2026-03-19 09:00|2026-03-20 10:55\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|6|COMPLETED|2026-03-19 09:00|2026-03-20 10:55|0\n",
                 "NOW|2026-03-20 13:00\n");
 
         SystemData dataSet = new TextDataStore(root).loadAll();
@@ -268,7 +344,7 @@ public class RegressionTest {
                 users("user011", "pw1234", "bonsu"),
                 "ROOM|R101|A룸|4|OPEN\n"
                         + "ROOM|R102|B룸|6|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         SystemData dataSet = new TextDataStore(root).loadAll();
@@ -572,16 +648,53 @@ public class RegressionTest {
         assertContains(output, "[파일 오류] system_time.txt 1행: NOW 형식이 올바르지 않습니다.");
     }
 
+    private static void testReservationRejectsMissingExtensionCount() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: 필드 개수가 올바르지 않습니다.");
+    }
+
     private static void testInvalidReservationIdSyntaxStopsStartup() throws Exception {
         Path root = createCliRoot();
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|reservation1|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|reservation1|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
         assertContains(output, "[파일 오류] reservations.txt 1행: reservationId 형식이 올바르지 않습니다.");
+    }
+
+    private static void testInvalidUserIdZeroStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                "USER|user001|admin|admin1234|admin|admin\n"
+                        + "USER|user000|user000|pw1234|zeroUser|member\n",
+                baseRooms(),
+                "",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] users.txt 2행: userId 숫자부는 001 이상이어야 합니다.");
+    }
+
+    private static void testInvalidReservationIdZeroStopsStartup() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0000|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: reservationId 숫자부는 0001 이상이어야 합니다.");
     }
 
     private static void testInvalidReservationUserIdSyntaxStopsStartup() throws Exception {
@@ -589,7 +702,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user 011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user 011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -601,7 +714,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R1 01|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R1 01|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -613,8 +726,8 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n"
-                        + "RESV|rv0001|user022|R102|2026-03-20|15:00|16:00|2|RESERVED|2026-03-20 09:10|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0\n"
+                        + "RESV|rv0001|user022|R102|2026-03-20|15:00|16:00|2|RESERVED|2026-03-20 09:10|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -626,7 +739,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|INVALID|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|INVALID|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -638,7 +751,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-02-30|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-02-30|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -650,7 +763,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13-00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13-00|14:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -662,7 +775,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|14-00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14-00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -674,7 +787,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|0|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|0|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -686,7 +799,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|15:00|13:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|15:00|13:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -698,7 +811,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|18:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|18:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -710,11 +823,23 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026/03/20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026/03/20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
         assertContains(output, "[파일 오류] reservations.txt 1행: createdAt 형식이 올바르지 않습니다.");
+    }
+
+    private static void testReservationRejectsCreatedAtAfterStart() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 13:01|-|0\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: createdAt은 예약 시작 일시보다 늦을 수 없습니다.");
     }
 
     private static void testInvalidCheckedInAtFormatStopsStartup() throws Exception {
@@ -722,11 +847,35 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|CHECKED_IN|2026-03-20 09:00|2026/03/20 12:55\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|CHECKED_IN|2026-03-20 09:00|2026/03/20 12:55|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
         assertContains(output, "[파일 오류] reservations.txt 1행: checkedInAt 형식이 올바르지 않습니다.");
+    }
+
+    private static void testReservationRejectsCheckedInAtOutsideWindow() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:49|0\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: checkedInAt은 체크인 가능 구간 안에 있어야 합니다.");
+    }
+
+    private static void testReservationRejectsExtensionCountOverLimit() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|17:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|4\n",
+                "NOW|2026-03-20 09:00\n");
+
+        String output = runCli(root, "");
+        assertContains(output, "[파일 오류] reservations.txt 1행: extensionCount는 3을 초과할 수 없습니다.");
     }
 
     private static void testPasswordRejectsEscapedNewlineStopsStartup() throws Exception {
@@ -746,7 +895,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user999|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user999|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -758,7 +907,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R999|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R999|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -770,7 +919,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|CHECKED_IN|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|CHECKED_IN|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -782,7 +931,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|2026-03-20 12:55\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|2026-03-20 12:55|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -794,7 +943,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 "ROOM|R101|A룸|4|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|5|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|14:00|5|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -806,8 +955,8 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n"
-                        + "RESV|rv0002|user022|R101|2026-03-20|14:00|16:00|2|RESERVED|2026-03-20 09:10|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-|0\n"
+                        + "RESV|rv0002|user022|R101|2026-03-20|14:00|16:00|2|RESERVED|2026-03-20 09:10|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -819,8 +968,8 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n"
-                        + "RESV|rv0002|user011|R102|2026-03-20|14:00|16:00|2|RESERVED|2026-03-20 09:10|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-|0\n"
+                        + "RESV|rv0002|user011|R102|2026-03-20|14:00|16:00|2|RESERVED|2026-03-20 09:10|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -1626,7 +1775,7 @@ public class RegressionTest {
                 "ROOM|R101|A룸|4|OPEN\n"
                         + "ROOM|R102|B룸|6|CLOSED\n"
                         + "ROOM|R103|C룸|2|OPEN\n",
-                "RESV|rv0001|user022|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user022|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String input = lines(
@@ -1654,7 +1803,7 @@ public class RegressionTest {
                 "ROOM|R101|A룸|4|OPEN\n"
                         + "ROOM|R102|B룸|6|OPEN\n"
                         + "ROOM|R103|C룸|8|OPEN\n",
-                "RESV|rv0001|user022|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user022|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, lines(
@@ -1814,7 +1963,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String input = lines(
@@ -1853,7 +2002,7 @@ public class RegressionTest {
 
         assertContains(output, "예약이 완료되었습니다.");
         assertContains(output, "예약번호: rv0001");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-|0");
     }
 
     private static void testCreateReservationAllowsOneHourBoundary() throws Exception {
@@ -1874,7 +2023,7 @@ public class RegressionTest {
                 "0"));
 
         assertContains(output, "예약이 완료되었습니다.");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-20|13:00|14:00|1|RESERVED|2026-03-20 09:00|-");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-20|13:00|14:00|1|RESERVED|2026-03-20 09:00|-|0");
     }
 
     private static void testCreateReservationAllowsFourHourBoundary() throws Exception {
@@ -1896,7 +2045,7 @@ public class RegressionTest {
 
         assertContains(output, "예약이 완료되었습니다.");
         assertContains(output, "예약번호: rv0001");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-20|13:00|17:00|2|RESERVED|2026-03-20 09:00|-");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-20|13:00|17:00|2|RESERVED|2026-03-20 09:00|-|0");
     }
 
     private static void testCreateReservationRejectsInvalidDate() throws Exception {
@@ -2092,7 +2241,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user022|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user022|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String input = lines(
@@ -2117,7 +2266,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String input = lines(
@@ -2142,7 +2291,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user022|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user022|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, lines(
@@ -2159,7 +2308,7 @@ public class RegressionTest {
                 "0"));
 
         assertContains(output, "예약이 완료되었습니다.");
-        assertFileContains(root, "reservations.txt", "RESV|rv0002|user011|R101|2026-03-20|15:00|16:00|2|RESERVED|2026-03-20 09:00|-");
+        assertFileContains(root, "reservations.txt", "RESV|rv0002|user011|R101|2026-03-20|15:00|16:00|2|RESERVED|2026-03-20 09:00|-|0");
     }
 
     private static void testCreateReservationAllowsAdjacentUserWindow() throws Exception {
@@ -2167,7 +2316,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, lines(
@@ -2184,7 +2333,7 @@ public class RegressionTest {
                 "0"));
 
         assertContains(output, "예약이 완료되었습니다.");
-        assertFileContains(root, "reservations.txt", "RESV|rv0002|user011|R102|2026-03-20|15:00|16:00|2|RESERVED|2026-03-20 09:00|-");
+        assertFileContains(root, "reservations.txt", "RESV|rv0002|user011|R102|2026-03-20|15:00|16:00|2|RESERVED|2026-03-20 09:00|-|0");
     }
 
     private static void testCancelDeletesReservation() throws Exception {
@@ -2192,7 +2341,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String input = lines(
@@ -2214,7 +2363,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user022|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user022|R101|2026-03-20|13:00|15:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, lines(
@@ -2250,7 +2399,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 11:00\n");
 
         String input = lines(
@@ -2283,9 +2432,9 @@ public class RegressionTest {
         writeData(sortedRoot,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0003|user011|R103|2026-03-21|09:00|10:00|2|RESERVED|2026-03-20 09:00|-\n"
-                        + "RESV|rv0001|user011|R102|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n"
-                        + "RESV|rv0002|user022|R101|2026-03-20|10:00|11:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0003|user011|R103|2026-03-21|09:00|10:00|2|RESERVED|2026-03-20 09:00|-|0\n"
+                        + "RESV|rv0001|user011|R102|2026-03-20|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0\n"
+                        + "RESV|rv0002|user022|R101|2026-03-20|10:00|11:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
         String sortedOutput = runCli(sortedRoot, lines(
                 "2",
@@ -2306,7 +2455,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 10:49\n");
 
         String input = lines(
@@ -2327,7 +2476,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 10:50\n");
 
         String output = runCli(root, lines(
@@ -2340,7 +2489,7 @@ public class RegressionTest {
                 "0"));
 
         assertContains(output, "체크인이 완료되었습니다.");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 10:50");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 10:50|0");
     }
 
     private static void testCheckInBoundarySuccess() throws Exception {
@@ -2348,7 +2497,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 11:10\n");
 
         String input = lines(
@@ -2362,7 +2511,7 @@ public class RegressionTest {
         String output = runCli(root, input);
 
         assertContains(output, "체크인이 완료되었습니다.");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 11:10");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 11:10|0");
     }
 
     private static void testCheckInAtStartTimeSuccess() throws Exception {
@@ -2370,7 +2519,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 11:00\n");
 
         String output = runCli(root, lines(
@@ -2383,7 +2532,7 @@ public class RegressionTest {
                 "0"));
 
         assertContains(output, "체크인이 완료되었습니다.");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 11:00");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 11:00|0");
     }
 
     private static void testCheckInRejectsAlreadyCheckedInReservation() throws Exception {
@@ -2391,7 +2540,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|15:00|17:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 14:55\n",
+                "RESV|rv0001|user011|R101|2026-03-20|15:00|17:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 14:55|0\n",
                 "NOW|2026-03-20 15:00\n");
 
         String output = runCli(root, lines(
@@ -2404,7 +2553,7 @@ public class RegressionTest {
                 "0"));
 
         assertContains(output, "오류: 체크인 가능한 상태의 예약이 아닙니다.");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|15:00|17:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 14:55");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|15:00|17:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 14:55|0");
     }
 
     private static void testCheckInRejectsOtherUsersReservation() throws Exception {
@@ -2412,7 +2561,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user022|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user022|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 10:55\n");
 
         String output = runCli(root, lines(
@@ -2448,7 +2597,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 11:11\n");
 
         String output = runCli(root, lines(
@@ -2461,7 +2610,7 @@ public class RegressionTest {
                 "0"));
 
         assertContains(output, "오류: 체크인 가능한 상태의 예약이 아닙니다.");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|NO_SHOW|2026-03-20 09:00|-");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|NO_SHOW|2026-03-20 09:00|-|0");
     }
 
     private static void testCheckInClosedRoomRejected() throws Exception {
@@ -2470,7 +2619,7 @@ public class RegressionTest {
                 baseUsers(),
                 "ROOM|R101|A룸|4|CLOSED\n"
                         + "ROOM|R102|B룸|6|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 10:55\n");
 
         String input = lines(
@@ -2491,8 +2640,8 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n"
-                        + "RESV|rv0002|user022|R102|2026-03-20|09:00|10:00|2|CHECKED_IN|2026-03-20 08:30|2026-03-20 08:55\n",
+                "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n"
+                        + "RESV|rv0002|user022|R102|2026-03-20|09:00|10:00|2|CHECKED_IN|2026-03-20 08:30|2026-03-20 08:55|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String input = lines(
@@ -2511,8 +2660,8 @@ public class RegressionTest {
         assertContains(output, "현재 시각이 변경되었습니다.");
         assertContains(output, "RESERVED -> NO_SHOW : 1건");
         assertContains(output, "CHECKED_IN -> COMPLETED : 1건");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|NO_SHOW|2026-03-20 09:00|-");
-        assertFileContains(root, "reservations.txt", "RESV|rv0002|user022|R102|2026-03-20|09:00|10:00|2|COMPLETED|2026-03-20 08:30|2026-03-20 08:55");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-20|11:00|12:00|2|NO_SHOW|2026-03-20 09:00|-|0");
+        assertFileContains(root, "reservations.txt", "RESV|rv0002|user022|R102|2026-03-20|09:00|10:00|2|COMPLETED|2026-03-20 08:30|2026-03-20 08:55|0");
     }
 
     private static void testAllReservationsEmpty() throws Exception {
@@ -2536,8 +2685,8 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n"
-                        + "RESV|rv0002|user022|R102|2026-03-20|13:00|14:00|3|CHECKED_IN|2026-03-20 09:30|2026-03-20 12:55\n",
+                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n"
+                        + "RESV|rv0002|user022|R102|2026-03-20|13:00|14:00|3|CHECKED_IN|2026-03-20 09:30|2026-03-20 12:55|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, lines(
@@ -2611,7 +2760,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String input = lines(
@@ -2632,7 +2781,7 @@ public class RegressionTest {
         assertContains(output, "변경 전 예약 레코드:");
         assertContains(output, "변경 후 예약 레코드:");
         assertContains(output, "예약 조정이 완료되었습니다.");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0");
     }
 
     private static void testManualMoveRejectsClosedRoom() throws Exception {
@@ -2641,7 +2790,7 @@ public class RegressionTest {
                 baseUsers(),
                 "ROOM|R101|A룸|4|OPEN\n"
                         + "ROOM|R102|B룸|6|CLOSED\n",
-                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, lines(
@@ -2663,7 +2812,7 @@ public class RegressionTest {
                 baseUsers(),
                 "ROOM|R101|A룸|6|OPEN\n"
                         + "ROOM|R102|B룸|1|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, lines(
@@ -2684,8 +2833,8 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n"
-                        + "RESV|rv0002|user022|R102|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:30|-\n",
+                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n"
+                        + "RESV|rv0002|user022|R102|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:30|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, lines(
@@ -2724,7 +2873,7 @@ public class RegressionTest {
                 baseUsers(),
                 "ROOM|R101|A룸|6|OPEN\n"
                         + "ROOM|R102|B룸|6|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-19|11:00|12:00|6|COMPLETED|2026-03-18 09:00|2026-03-19 10:55\n",
+                "RESV|rv0001|user011|R101|2026-03-19|11:00|12:00|6|COMPLETED|2026-03-18 09:00|2026-03-19 10:55|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, lines(
@@ -2751,7 +2900,7 @@ public class RegressionTest {
                 baseUsers(),
                 "ROOM|R101|A룸|6|OPEN\n"
                         + "ROOM|R102|B룸|6|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|5|RESERVED|2026-03-20 08:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|5|RESERVED|2026-03-20 08:00|-|0\n",
                 "NOW|2026-03-20 09:05\n");
 
         String output = runCli(root, lines(
@@ -2780,7 +2929,7 @@ public class RegressionTest {
                 baseUsers(),
                 "ROOM|R101|A룸|6|OPEN\n"
                         + "ROOM|R102|B룸|6|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|5|CHECKED_IN|2026-03-20 08:00|2026-03-20 08:55\n",
+                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|5|CHECKED_IN|2026-03-20 08:00|2026-03-20 08:55|0\n",
                 "NOW|2026-03-20 09:05\n");
 
         String output = runCli(root, lines(
@@ -2805,7 +2954,7 @@ public class RegressionTest {
                 baseUsers(),
                 "ROOM|R101|A룸|6|OPEN\n"
                         + "ROOM|R102|B룸|6|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|6|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|6|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, lines(
@@ -2834,7 +2983,7 @@ public class RegressionTest {
         assertContains(output, "변경 후 ROOM 레코드:");
         assertContains(output, "룸 최대 수용 인원이 변경되었습니다.");
         assertFileContains(root, "rooms.txt", "ROOM|R101|A룸|4|OPEN");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-21|11:00|12:00|6|RESERVED|2026-03-20 09:00|-");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R102|2026-03-21|11:00|12:00|6|RESERVED|2026-03-20 09:00|-|0");
     }
 
     private static void testCapacityChangeRollbackRestoresState() throws Exception {
@@ -2843,7 +2992,7 @@ public class RegressionTest {
                 baseUsers(),
                 "ROOM|R101|A룸|6|OPEN\n"
                         + "ROOM|R102|B룸|6|OPEN\n",
-                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|6|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|6|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, lines(
@@ -2861,7 +3010,7 @@ public class RegressionTest {
 
         assertContains(output, "룸 컨디션 변경을 취소하여 원상복구했습니다.");
         assertFileContains(root, "rooms.txt", "ROOM|R101|A룸|6|OPEN");
-        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|6|RESERVED|2026-03-20 09:00|-");
+        assertFileContains(root, "reservations.txt", "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|6|RESERVED|2026-03-20 09:00|-|0");
     }
 
     private static void testCloseRoomWithCheckedInReservationRejected() throws Exception {
@@ -2869,7 +3018,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|2|CHECKED_IN|2026-03-20 08:00|2026-03-20 08:55\n",
+                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|2|CHECKED_IN|2026-03-20 08:00|2026-03-20 08:55|0\n",
                 "NOW|2026-03-20 09:30\n");
 
         String output = runCli(root, lines(
@@ -2892,7 +3041,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|2|RESERVED|2026-03-20 08:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-20|09:00|10:00|2|RESERVED|2026-03-20 08:00|-|0\n",
                 "NOW|2026-03-20 09:05\n");
 
         String output = runCli(root, lines(
@@ -2918,7 +3067,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|2026-03-21|11:00|12:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, lines(
@@ -2972,7 +3121,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|0000-01-01|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|0000-01-01|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");
@@ -2984,7 +3133,7 @@ public class RegressionTest {
         writeData(root,
                 baseUsers(),
                 baseRooms(),
-                "RESV|rv0001|user011|R101|-0001-01-01|13:00|14:00|2|RESERVED|2026-03-20 09:00|-\n",
+                "RESV|rv0001|user011|R101|-0001-01-01|13:00|14:00|2|RESERVED|2026-03-20 09:00|-|0\n",
                 "NOW|2026-03-20 09:00\n");
 
         String output = runCli(root, "");

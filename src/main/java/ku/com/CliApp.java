@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -24,8 +24,7 @@ final class CliApp {
     private static final Pattern ROOM_ID_PATTERN = Pattern.compile("^R[0-9]{3}$");
     private static final Pattern RESERVATION_ID_PATTERN = Pattern.compile("^rv[0-9]{4}$");
 
-    private final Scanner scanner = new Scanner(System.in,
-            Charset.forName(System.getProperty("native.encoding", "UTF-8")));
+    private final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
     private final TextDataStore store = new TextDataStore(resolveProjectRoot());
 
     private String loggedInUserId;
@@ -163,6 +162,10 @@ final class CliApp {
             return;
         }
         String userId = data.nextUserId();
+        if (userId == null) {
+            System.out.println("오류: 더 이상 회원을 추가할 수 없습니다.");
+            return;
+        }
 
         data.users.put(userId, new User(userId, loginId, password, userName, Role.MEMBER, 0));
         store.saveAll(data);
@@ -293,6 +296,10 @@ final class CliApp {
         }
 
         String reservationId = data.nextReservationId();
+        if (reservationId == null) {
+            System.out.println("오류: 더 이상 예약을 추가할 수 없습니다.");
+            return;
+        }
         Reservation reservation = new Reservation(
                 reservationId,
                 loggedInUserId,
@@ -304,6 +311,7 @@ final class CliApp {
                 ReservationStatus.RESERVED,
                 data.currentTime,
                 null,
+                0,
                 0);
         data.reservations.put(reservationId, reservation);
         store.saveAll(data);
@@ -361,7 +369,7 @@ final class CliApp {
         for (Reservation reservation : mine) {
             Room room = data.rooms.get(reservation.roomId);
             String roomName = room == null ? "-" : room.roomName;
-            System.out.printf("%-8s %-6s %-10s %-10s %-5s %-5s %-4d %-12s%n",
+            System.out.printf("%-8s %-6s %-10s %-10s %-5s %-5s %-4d %-4d %-12s%n",
                     reservation.reservationId,
                     reservation.roomId,
                     cut(roomName, 10),
@@ -369,6 +377,7 @@ final class CliApp {
                     TimeFormats.formatTime(reservation.startTime),
                     TimeFormats.formatTime(reservation.endTime),
                     reservation.partySize,
+                    reservation.extensionCount,
                     reservation.status.name());
         }
         System.out.println("조회가 끝났습니다.");
@@ -450,12 +459,12 @@ final class CliApp {
             return;
         }
 
-        System.out.printf("%-8s %-10s %-10s %-6s %-10s %-5s %-5s %-4s %-12s %-16s%n",
-                "resvId", "userId", "userName", "room", "date", "start", "end", "인원", "status", "checkedInAt");
+        System.out.printf("%-8s %-10s %-10s %-6s %-10s %-5s %-5s %-4s %-4s %-12s %-16s%n",
+                "resvId", "userId", "userName", "room", "date", "start", "end", "인원", "연장", "status", "checkedInAt");
         for (Reservation reservation : data.sortedReservations()) {
             User user = data.users.get(reservation.userId);
             String userName = user == null ? reservation.userId : user.userName;
-            System.out.printf("%-8s %-10s %-10s %-6s %-10s %-5s %-5s %-4d %-12s %-16s%n",
+            System.out.printf("%-8s %-10s %-10s %-6s %-10s %-5s %-5s %-4d %-4d %-12s %-16s%n",
                     reservation.reservationId,
                     reservation.userId,
                     cut(userName, 10),
@@ -464,6 +473,7 @@ final class CliApp {
                     TimeFormats.formatTime(reservation.startTime),
                     TimeFormats.formatTime(reservation.endTime),
                     reservation.partySize,
+                    reservation.extensionCount,
                     reservation.status.name(),
                     reservation.checkedInAtText());
         }
@@ -840,8 +850,8 @@ final class CliApp {
     }
 
     private void printMyReservationHeader() {
-        System.out.printf("%-8s %-6s %-10s %-10s %-5s %-5s %-4s %-12s%n",
-                "resvId", "room", "roomName", "date", "start", "end", "인원", "status");
+        System.out.printf("%-8s %-6s %-10s %-10s %-5s %-5s %-4s %-4s %-12s%n",
+                "resvId", "room", "roomName", "date", "start", "end", "인원", "연장", "status");
     }
 
     private String cut(String value, int width) {

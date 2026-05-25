@@ -89,6 +89,8 @@ final class TextDataStore {
 
             require(USER_ID_PATTERN.matcher(userId).matches(), USERS_FILE, line.lineNumber,
                     "userId 형식이 올바르지 않습니다.");
+            require(Integer.parseInt(userId.substring(4)) >= 1, USERS_FILE, line.lineNumber,
+                    "userId 숫자부는 001 이상이어야 합니다.");
             require(LOGIN_ID_PATTERN.matcher(loginId).matches(), USERS_FILE, line.lineNumber,
                     "loginId 형식이 올바르지 않습니다.");
             require(password.length() >= 4 && password.length() <= 20, USERS_FILE, line.lineNumber,
@@ -135,7 +137,7 @@ final class TextDataStore {
         List<LineRecord> lines = readLogicalLines(reservationsPath, RESERVATIONS_FILE);
         LinkedHashMap<String, Reservation> reservations = new LinkedHashMap<>();
         for (LineRecord line : lines) {
-            String[] fields = splitFields(line, RESERVATIONS_FILE, 11);
+            String[] fields = splitFields(line, RESERVATIONS_FILE, 12);
             require("RESV".equals(fields[0]), RESERVATIONS_FILE, line.lineNumber, "레코드 접두어는 RESV여야 합니다.");
             String reservationId = fields[1].trim();
             String userId = fields[2].trim();
@@ -147,11 +149,16 @@ final class TextDataStore {
             ReservationStatus status = ReservationStatus.fromFile(fields[8], RESERVATIONS_FILE, line.lineNumber);
             LocalDateTime createdAt = TimeFormats.parseDateTime(fields[9], RESERVATIONS_FILE, line.lineNumber, "createdAt");
             String checkedInRaw = fields[10].trim();
+            int extensionCount = parseNonNegativeInt(fields[11], RESERVATIONS_FILE, line.lineNumber, "extensionCount");
 
             require(RESERVATION_ID_PATTERN.matcher(reservationId).matches(), RESERVATIONS_FILE, line.lineNumber,
                     "reservationId 형식이 올바르지 않습니다.");
+            require(Integer.parseInt(reservationId.substring(2)) >= 1, RESERVATIONS_FILE, line.lineNumber,
+                    "reservationId 숫자부는 0001 이상이어야 합니다.");
             require(USER_ID_PATTERN.matcher(userId).matches(), RESERVATIONS_FILE, line.lineNumber,
                     "userId 형식이 올바르지 않습니다.");
+            require(Integer.parseInt(userId.substring(4)) >= 1, RESERVATIONS_FILE, line.lineNumber,
+                    "userId 숫자부는 001 이상이어야 합니다.");
             require(ROOM_ID_PATTERN.matcher(roomId).matches(), RESERVATIONS_FILE, line.lineNumber,
                     "roomId 형식이 올바르지 않습니다.");
             require(partySize.compareTo(BigInteger.ONE) >= 0, RESERVATIONS_FILE, line.lineNumber, "partySize는 1 이상이어야 합니다.");
@@ -161,14 +168,32 @@ final class TextDataStore {
                     "startTime은 endTime보다 빨라야 합니다.");
 
             long minutes = Duration.between(LocalDateTime.of(date, startTime), LocalDateTime.of(date, endTime)).toMinutes();
-            require(minutes == 60 || minutes == 120 || minutes == 180 || minutes == 240,
+            require(minutes == 60 || minutes == 120 || minutes == 180 || minutes == 240 || minutes == 300,
+                    RESERVATIONS_FILE, line.lineNumber, "예약 길이는 1시간 이상 5시간 이하이고 1시간 단위여야 합니다.");
+            require(extensionCount > 0 || minutes <= 240,
                     RESERVATIONS_FILE, line.lineNumber, "예약 길이는 1시간, 2시간, 3시간, 4시간 중 하나여야 합니다.");
+            require(extensionCount == 0
+                            || status == ReservationStatus.CHECKED_IN
+                            || status == ReservationStatus.COMPLETED,
+                    RESERVATIONS_FILE, line.lineNumber,
+                    "extensionCount가 1 이상인 예약은 CHECKED_IN 또는 COMPLETED 상태여야 합니다.");
+            require((status != ReservationStatus.RESERVED && status != ReservationStatus.NO_SHOW) || extensionCount == 0,
+                    RESERVATIONS_FILE, line.lineNumber, "RESERVED/NO_SHOW 상태 예약의 extensionCount는 0이어야 합니다.");
+            require(extensionCount <= 3, RESERVATIONS_FILE, line.lineNumber,
+                    "extensionCount는 3을 초과할 수 없습니다.");
+            require(!createdAt.isAfter(LocalDateTime.of(date, startTime)), RESERVATIONS_FILE, line.lineNumber,
+                    "createdAt은 예약 시작 일시보다 늦을 수 없습니다.");
 
             LocalDateTime checkedInAt = null;
             if (status == ReservationStatus.CHECKED_IN || status == ReservationStatus.COMPLETED) {
                 require(!"-".equals(checkedInRaw), RESERVATIONS_FILE, line.lineNumber,
                         "CHECKED_IN/COMPLETED 상태는 checkedInAt 값이 필요합니다.");
                 checkedInAt = TimeFormats.parseDateTime(checkedInRaw, RESERVATIONS_FILE, line.lineNumber, "checkedInAt");
+                LocalDateTime checkInOpen = LocalDateTime.of(date, startTime).minusMinutes(10);
+                LocalDateTime checkInClose = LocalDateTime.of(date, startTime).plusMinutes(10);
+                require(!checkedInAt.isBefore(checkInOpen) && !checkedInAt.isAfter(checkInClose),
+                        RESERVATIONS_FILE, line.lineNumber,
+                        "checkedInAt은 체크인 가능 구간 안에 있어야 합니다.");
             } else {
                 require("-".equals(checkedInRaw), RESERVATIONS_FILE, line.lineNumber,
                         "RESERVED/NO_SHOW 상태는 checkedInAt이 '-' 이어야 합니다.");
@@ -185,6 +210,7 @@ final class TextDataStore {
                     status,
                     createdAt,
                     checkedInAt,
+                    extensionCount,
                     line.lineNumber));
             require(prev == null, RESERVATIONS_FILE, line.lineNumber, "중복된 reservationId가 존재합니다.");
         }
@@ -223,6 +249,13 @@ final class TextDataStore {
                 require(reservation.partySize.compareTo(room.maxCapacity) <= 0, RESERVATIONS_FILE, reservation.sourceLine,
                         "partySize가 해당 room의 maxCapacity를 초과합니다.");
             }
+            long minutes = Duration.between(reservation.startDateTime(), reservation.endDateTime()).toMinutes();
+            require(minutes <= 300, RESERVATIONS_FILE, reservation.sourceLine,
+                    "예약 길이는 5시간을 초과할 수 없습니다.");
+            require(reservation.extensionCount <= 3, RESERVATIONS_FILE, reservation.sourceLine,
+                    "extensionCount는 3을 초과할 수 없습니다.");
+            require(reservation.extensionCount > 0 || minutes <= 240, RESERVATIONS_FILE, reservation.sourceLine,
+                    "연장되지 않은 예약은 4시간을 초과할 수 없습니다.");
         }
 
         for (int i = 0; i < reservations.size(); i++) {
@@ -289,6 +322,18 @@ final class TextDataStore {
             return new BigInteger(raw.trim());
         } catch (NumberFormatException e) {
             throw new AppDataException(fileName, lineNumber, fieldName + " 값은 정수여야 합니다.");
+        }
+    }
+
+    private int parseNonNegativeInt(String raw, String fileName, int lineNumber, String fieldName) throws AppDataException {
+        try {
+            int value = Integer.parseInt(raw.trim());
+            if (value < 0) {
+                throw new NumberFormatException();
+            }
+            return value;
+        } catch (NumberFormatException e) {
+            throw new AppDataException(fileName, lineNumber, fieldName + " 값은 0 이상의 정수여야 합니다.");
         }
     }
 
