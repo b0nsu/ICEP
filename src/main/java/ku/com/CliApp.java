@@ -152,7 +152,7 @@ final class CliApp {
     }
 
     private void handleSignup() throws AppDataException {
-        SystemData data = store.loadAll();
+        SystemData data = loadAndSync();
         System.out.println("[회원가입]");
         String loginId = promptLoginId("로그인 ID 입력: ");
         String password = promptPassword();
