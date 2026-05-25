@@ -24,6 +24,20 @@ public class RegressionTest {
         testRecentSevenDaysIncludesAfterLowerBoundNoShow();
         testRecentSevenDaysExcludesExactLowerBoundCompleted();
         testRecentSevenDaysIncludesAfterLowerBoundCompleted();
+        testExcellentMemberCanExtendCheckedInReservation();
+        testRegularMemberCannotExtendReservation();
+        testRecentNoShowDisqualifiesExcellentExtension();
+        testOldCompletedReservationsDoNotGrantExcellentExtension();
+        testPenaltyMemberExtendFailsBeforeReservationPrompt();
+        testExtendReservationRejectsRoomOverlap();
+        testExtendReservationRejectsUserOverlap();
+        testExtendReservationRejectsClosedRoom();
+        testExtendReservationAllowsExactlyThirtyMinutesBeforeEnd();
+        testExtendReservationRejectsBeforeThirtyMinuteWindow();
+        testExtendReservationRejectsMaxExtensionCount();
+        testExtendReservationRejectsTotalDurationOverFiveHours();
+        testExtendReservationRejectsCrossDateEnd();
+        testExtendedReservationCompletesAtExtendedEnd();
         testHistoricalCompletedReservationCanExceedCurrentCapacity();
         testSameRoomMoveRejected();
 
@@ -428,10 +442,13 @@ public class RegressionTest {
                 "2",
                 "user011",
                 "pw1234",
+                "7",
                 "0",
                 "0"));
 
         assertContains(output, "회원 상태: 일반회원");
+        assertContains(output, "오류: 예약 연장은 우수회원만 신청할 수 있습니다.");
+        assertNotContains(output, "연장할 예약번호 입력");
         assertFileContains(root, "reservations.txt",
                 "RESV|rv0003|user011|R101|2026-03-27|09:00|11:00|2|CHECKED_IN|2026-03-27 08:00|2026-03-27 08:55|0");
     }
@@ -446,16 +463,353 @@ public class RegressionTest {
                         + "RESV|rv0003|user011|R101|2026-03-27|09:00|11:00|2|CHECKED_IN|2026-03-27 08:00|2026-03-27 08:55|0\n",
                 "NOW|2026-03-27 10:35\n");
 
+        runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "rv0003",
+                "0",
+                "0"));
+
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0003|user011|R101|2026-03-27|09:00|12:00|2|CHECKED_IN|2026-03-27 08:00|2026-03-27 08:55|1");
+    }
+
+    private static void testExcellentMemberCanExtendCheckedInReservation() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-18|09:00|10:00|2|COMPLETED|2026-03-18 08:00|2026-03-18 08:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-19|09:00|10:00|2|COMPLETED|2026-03-19 08:00|2026-03-19 08:55|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0\n",
+                "NOW|2026-03-20 14:35\n");
+
         String output = runCli(root, lines(
                 "2",
                 "user011",
                 "pw1234",
+                "7",
+                "rv0003",
                 "0",
                 "0"));
 
         assertContains(output, "회원 상태: 우수회원");
+        assertContains(output, "예약 시간이 1시간 연장되었습니다.");
         assertFileContains(root, "reservations.txt",
-                "RESV|rv0003|user011|R101|2026-03-27|09:00|11:00|2|CHECKED_IN|2026-03-27 08:00|2026-03-27 08:55|0");
+                "RESV|rv0003|user011|R101|2026-03-20|13:00|16:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|1");
+    }
+
+    private static void testRegularMemberCannotExtendReservation() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0\n",
+                "NOW|2026-03-20 14:35\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "0",
+                "0"));
+
+        assertContains(output, "회원 상태: 일반회원");
+        assertContains(output, "오류: 예약 연장은 우수회원만 신청할 수 있습니다.");
+        assertNotContains(output, "연장할 예약번호 입력");
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0");
+    }
+
+    private static void testRecentNoShowDisqualifiesExcellentExtension() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-18|09:00|10:00|2|COMPLETED|2026-03-18 08:00|2026-03-18 08:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-19|09:00|10:00|2|COMPLETED|2026-03-19 08:00|2026-03-19 08:55|0\n"
+                        + "RESV|rv0003|user011|R102|2026-03-20|10:00|11:00|2|NO_SHOW|2026-03-20 08:00|-|0\n"
+                        + "RESV|rv0004|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0\n",
+                "NOW|2026-03-20 14:35\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "0",
+                "0"));
+
+        assertContains(output, "오류: 예약 연장은 우수회원만 신청할 수 있습니다.");
+        assertNotContains(output, "연장할 예약번호 입력");
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0004|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0");
+    }
+
+    private static void testOldCompletedReservationsDoNotGrantExcellentExtension() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-13|11:00|12:00|2|COMPLETED|2026-03-13 08:00|2026-03-13 10:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-13|13:00|14:00|2|COMPLETED|2026-03-13 08:00|2026-03-13 12:55|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0\n",
+                "NOW|2026-03-20 14:35\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "0",
+                "0"));
+
+        assertContains(output, "오류: 예약 연장은 우수회원만 신청할 수 있습니다.");
+        assertNotContains(output, "연장할 예약번호 입력");
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0");
+    }
+
+    private static void testPenaltyMemberExtendFailsBeforeReservationPrompt() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-18|09:00|10:00|2|COMPLETED|2026-03-18 08:00|2026-03-18 08:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-19|09:00|10:00|2|COMPLETED|2026-03-19 08:00|2026-03-19 08:55|0\n"
+                        + "RESV|rv0003|user011|R102|2026-03-20|10:00|11:00|2|NO_SHOW|2026-03-20 08:00|-|0\n"
+                        + "RESV|rv0004|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0\n",
+                "NOW|2026-03-20 14:35\n");
+
+        String output = runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "0",
+                "0"));
+
+        assertContains(output, "패널티 상태: 패널티 대상");
+        assertContains(output, "오류: 예약 연장은 우수회원만 신청할 수 있습니다.");
+        assertNotContains(output, "연장할 예약번호 입력");
+    }
+
+    private static void testExtendReservationRejectsRoomOverlap() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-18|09:00|10:00|2|COMPLETED|2026-03-18 08:00|2026-03-18 08:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-19|09:00|10:00|2|COMPLETED|2026-03-19 08:00|2026-03-19 08:55|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0\n"
+                        + "RESV|rv0004|user022|R101|2026-03-20|15:30|16:30|2|RESERVED|2026-03-20 09:00|-|0\n",
+                "NOW|2026-03-20 14:35\n");
+
+        runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "rv0003",
+                "0",
+                "0"));
+
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0");
+    }
+
+    private static void testExtendReservationRejectsUserOverlap() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-18|09:00|10:00|2|COMPLETED|2026-03-18 08:00|2026-03-18 08:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-19|09:00|10:00|2|COMPLETED|2026-03-19 08:00|2026-03-19 08:55|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0\n"
+                        + "RESV|rv0004|user011|R102|2026-03-20|15:30|16:30|2|RESERVED|2026-03-20 09:00|-|0\n",
+                "NOW|2026-03-20 14:35\n");
+
+        runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "rv0003",
+                "0",
+                "0"));
+
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0");
+    }
+
+    private static void testExtendReservationRejectsClosedRoom() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                "ROOM|R101|A룸|4|CLOSED\n"
+                        + "ROOM|R102|B룸|6|OPEN\n"
+                        + "ROOM|R103|C룸|8|OPEN\n",
+                "RESV|rv0001|user011|R102|2026-03-18|09:00|10:00|2|COMPLETED|2026-03-18 08:00|2026-03-18 08:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-19|09:00|10:00|2|COMPLETED|2026-03-19 08:00|2026-03-19 08:55|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0\n",
+                "NOW|2026-03-20 14:35\n");
+
+        runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "rv0003",
+                "0",
+                "0"));
+
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0");
+    }
+
+    private static void testExtendReservationAllowsExactlyThirtyMinutesBeforeEnd() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-18|09:00|10:00|2|COMPLETED|2026-03-18 08:00|2026-03-18 08:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-19|09:00|10:00|2|COMPLETED|2026-03-19 08:00|2026-03-19 08:55|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0\n",
+                "NOW|2026-03-20 14:30\n");
+
+        runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "rv0003",
+                "0",
+                "0"));
+
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0003|user011|R101|2026-03-20|13:00|16:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|1");
+    }
+
+    private static void testExtendReservationRejectsBeforeThirtyMinuteWindow() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-18|09:00|10:00|2|COMPLETED|2026-03-18 08:00|2026-03-18 08:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-19|09:00|10:00|2|COMPLETED|2026-03-19 08:00|2026-03-19 08:55|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0\n",
+                "NOW|2026-03-20 14:29\n");
+
+        runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "rv0003",
+                "0",
+                "0"));
+
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0");
+    }
+
+    private static void testExtendReservationRejectsMaxExtensionCount() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-18|09:00|10:00|2|COMPLETED|2026-03-18 08:00|2026-03-18 08:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-19|09:00|10:00|2|COMPLETED|2026-03-19 08:00|2026-03-19 08:55|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|3\n",
+                "NOW|2026-03-20 14:35\n");
+
+        runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "rv0003",
+                "0",
+                "0"));
+
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|3");
+    }
+
+    private static void testExtendReservationRejectsTotalDurationOverFiveHours() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-18|09:00|10:00|2|COMPLETED|2026-03-18 08:00|2026-03-18 08:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-19|09:00|10:00|2|COMPLETED|2026-03-19 08:00|2026-03-19 08:55|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-20|10:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 09:55|1\n",
+                "NOW|2026-03-20 14:35\n");
+
+        runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "rv0003",
+                "0",
+                "0"));
+
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0003|user011|R101|2026-03-20|10:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 09:55|1");
+    }
+
+    private static void testExtendReservationRejectsCrossDateEnd() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R102|2026-03-18|09:00|10:00|2|COMPLETED|2026-03-18 08:00|2026-03-18 08:55|0\n"
+                        + "RESV|rv0002|user011|R103|2026-03-19|09:00|10:00|2|COMPLETED|2026-03-19 08:00|2026-03-19 08:55|0\n"
+                        + "RESV|rv0003|user011|R101|2026-03-20|20:00|23:00|2|CHECKED_IN|2026-03-20 19:00|2026-03-20 19:55|0\n",
+                "NOW|2026-03-20 22:35\n");
+
+        runCli(root, lines(
+                "2",
+                "user011",
+                "pw1234",
+                "7",
+                "rv0003",
+                "0",
+                "0"));
+
+        assertFileContains(root, "reservations.txt",
+                "RESV|rv0003|user011|R101|2026-03-20|20:00|23:00|2|CHECKED_IN|2026-03-20 19:00|2026-03-20 19:55|0");
+    }
+
+    private static void testExtendedReservationCompletesAtExtendedEnd() throws Exception {
+        Path root = createCliRoot();
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|16:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|1\n",
+                "NOW|2026-03-20 15:30\n");
+
+        SystemData beforeEnd = new TextDataStore(root).loadAll();
+        AutoStateUpdater.apply(beforeEnd);
+        if (beforeEnd.reservations.get("rv0001").status != ReservationStatus.CHECKED_IN) {
+            throw new AssertionError("Extended reservation completed before extended end time.");
+        }
+
+        writeData(root,
+                baseUsers(),
+                baseRooms(),
+                "RESV|rv0001|user011|R101|2026-03-20|13:00|16:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|1\n",
+                "NOW|2026-03-20 16:00\n");
+
+        SystemData atEnd = new TextDataStore(root).loadAll();
+        AutoStateUpdater.apply(atEnd);
+        if (atEnd.reservations.get("rv0001").status != ReservationStatus.COMPLETED) {
+            throw new AssertionError("Extended reservation was not completed at extended end time.");
+        }
     }
 
     private static void testHistoricalCompletedReservationCanExceedCurrentCapacity() throws Exception {
