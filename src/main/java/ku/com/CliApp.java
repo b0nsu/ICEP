@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -24,12 +24,17 @@ final class CliApp {
     private static final Pattern ROOM_ID_PATTERN = Pattern.compile("^R[0-9]{3}$");
     private static final Pattern RESERVATION_ID_PATTERN = Pattern.compile("^rv[0-9]{4}$");
 
-    private final Scanner scanner = new Scanner(System.in,
-            Charset.forName(System.getProperty("native.encoding", "UTF-8")));
+    private final Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
     private final TextDataStore store = new TextDataStore(resolveProjectRoot());
 
     private String loggedInUserId;
     private Role loggedInRole;
+
+    private record MemberStanding(int recentNoShowCount, LocalDateTime penaltyUntil, boolean excellent) {
+        boolean underPenalty(LocalDateTime now) {
+            return recentNoShowCount > 0 && penaltyUntil != null && now.isBefore(penaltyUntil);
+        }
+    }
 
     private static Path resolveProjectRoot() {
         try {
@@ -109,9 +114,10 @@ final class CliApp {
         System.out.println("4. 예약 취소");
         System.out.println("5. 나의 예약 조회");
         System.out.println("6. 체크인");
+        System.out.println("7. 예약 연장(우수회원 전용)");
         System.out.println("0. 로그아웃");
 
-        int menu = promptMenuChoice(Set.of(0, 1, 2, 3, 4, 5, 6));
+        int menu = promptMenuChoice(Set.of(0, 1, 2, 3, 4, 5, 6, 7));
         try {
             switch (menu) {
                 case 1 -> handleChangeCurrentTime();
@@ -120,6 +126,7 @@ final class CliApp {
                 case 4 -> handleCancelReservation();
                 case 5 -> handleMyReservations();
                 case 6 -> handleCheckIn();
+                case 7 -> handleExtendReservation();
                 case 0 -> handleLogout();
                 default -> throw new IllegalStateException();
             }
@@ -163,6 +170,10 @@ final class CliApp {
             return;
         }
         String userId = data.nextUserId();
+        if (userId == null) {
+            System.out.println("오류: 더 이상 회원을 추가할 수 없습니다.");
+            return;
+        }
 
         data.users.put(userId, new User(userId, loginId, password, userName, Role.MEMBER, 0));
         store.saveAll(data);
@@ -187,6 +198,16 @@ final class CliApp {
         loggedInUserId = user.userId;
         loggedInRole = user.role;
         System.out.println("로그인 성공: " + user.userName + " (role: " + user.role.fileValue() + ")");
+        if (user.role == Role.MEMBER) {
+            MemberStanding standing = calculateMemberStanding(data, user.userId);
+            System.out.println("회원 상태: " + (standing.excellent ? "우수회원" : "일반회원"));
+            if (standing.underPenalty(data.currentTime)) {
+                System.out.println("패널티 상태: 패널티 대상");
+                System.out.println("패널티 해제 시각: " + TimeFormats.formatDateTime(standing.penaltyUntil));
+            } else {
+                System.out.println("패널티 상태: 없음");
+            }
+        }
     }
 
     private void handleLogout() {
@@ -292,7 +313,19 @@ final class CliApp {
             return;
         }
 
+        MemberStanding standing = calculateMemberStanding(data, loggedInUserId);
+        if (standing.underPenalty(data.currentTime)) {
+            System.out.println("오류: 노쇼 패널티로 "
+                    + TimeFormats.formatDateTime(standing.penaltyUntil)
+                    + " 이후 예약 신청이 가능합니다.");
+            return;
+        }
+
         String reservationId = data.nextReservationId();
+        if (reservationId == null) {
+            System.out.println("오류: 더 이상 예약을 추가할 수 없습니다.");
+            return;
+        }
         Reservation reservation = new Reservation(
                 reservationId,
                 loggedInUserId,
@@ -304,6 +337,7 @@ final class CliApp {
                 ReservationStatus.RESERVED,
                 data.currentTime,
                 null,
+                0,
                 0);
         data.reservations.put(reservationId, reservation);
         store.saveAll(data);
@@ -361,7 +395,7 @@ final class CliApp {
         for (Reservation reservation : mine) {
             Room room = data.rooms.get(reservation.roomId);
             String roomName = room == null ? "-" : room.roomName;
-            System.out.printf("%-8s %-6s %-10s %-10s %-5s %-5s %-4d %-12s%n",
+            System.out.printf("%-8s %-6s %-10s %-10s %-5s %-5s %-4d %-4d %-12s%n",
                     reservation.reservationId,
                     reservation.roomId,
                     cut(roomName, 10),
@@ -369,6 +403,7 @@ final class CliApp {
                     TimeFormats.formatTime(reservation.startTime),
                     TimeFormats.formatTime(reservation.endTime),
                     reservation.partySize,
+                    reservation.extensionCount,
                     reservation.status.name());
         }
         System.out.println("조회가 끝났습니다.");
@@ -419,6 +454,88 @@ final class CliApp {
         System.out.println("체크인이 완료되었습니다.");
     }
 
+    private void handleExtendReservation() throws AppDataException {
+        requireRole(Role.MEMBER);
+        SystemData data = loadAndSync();
+        MemberStanding standing = calculateMemberStanding(data, loggedInUserId);
+        if (!standing.excellent) {
+            System.out.println("오류: 예약 연장은 우수회원만 신청할 수 있습니다.");
+            return;
+        }
+
+        System.out.println("[예약 연장]");
+        System.out.println("현재 가상 시각: " + TimeFormats.formatDateTime(data.currentTime));
+        String reservationId = promptReservationId("연장할 예약번호 입력: ");
+
+        Reservation reservation = data.reservations.get(reservationId);
+        if (reservation == null) {
+            System.out.println("오류: 존재하지 않는 예약번호입니다.");
+            return;
+        }
+        if (!reservation.userId.equals(loggedInUserId)) {
+            System.out.println("오류: 본인의 예약만 연장할 수 있습니다.");
+            return;
+        }
+
+        if (standing.underPenalty(data.currentTime)) {
+            System.out.println("오류: 노쇼 패널티로 "
+                    + TimeFormats.formatDateTime(standing.penaltyUntil)
+                    + " 이후 예약 연장이 가능합니다.");
+            return;
+        }
+        if (reservation.status != ReservationStatus.CHECKED_IN) {
+            System.out.println("오류: CHECKED_IN 상태의 예약만 연장할 수 있습니다.");
+            return;
+        }
+
+        Room room = data.rooms.get(reservation.roomId);
+        if (room == null || room.roomStatus != RoomStatus.OPEN) {
+            System.out.println("오류: 대상 룸이 OPEN 상태가 아니어서 연장할 수 없습니다.");
+            return;
+        }
+
+        LocalDateTime now = data.currentTime;
+        LocalDateTime oldEnd = reservation.endDateTime();
+        if (now.isBefore(oldEnd.minusMinutes(30))) {
+            System.out.println("오류: 예약 종료 30분 전부터 연장할 수 있습니다.");
+            return;
+        }
+        if (!now.isBefore(oldEnd)) {
+            System.out.println("오류: 예약 종료 시각 이후에는 연장할 수 없습니다.");
+            return;
+        }
+        if (reservation.extensionCount >= 3) {
+            System.out.println("오류: 예약당 최대 3회까지만 연장할 수 있습니다.");
+            return;
+        }
+
+        LocalDateTime newEnd = oldEnd.plusHours(1);
+        if (!newEnd.toLocalDate().equals(reservation.date)) {
+            System.out.println("오류: 예약 연장은 같은 날짜 안에서만 가능합니다.");
+            return;
+        }
+        long totalMinutes = Duration.between(reservation.startDateTime(), newEnd).toMinutes();
+        if (totalMinutes > 300) {
+            System.out.println("오류: 연장 후 총 이용 시간은 5시간을 넘을 수 없습니다.");
+            return;
+        }
+        if (hasRoomOverlap(data, reservation.roomId, oldEnd, newEnd, reservation.reservationId)) {
+            System.out.println("오류: 같은 룸의 다음 예약과 충돌하여 연장할 수 없습니다.");
+            return;
+        }
+        if (hasUserOverlap(data, loggedInUserId, oldEnd, newEnd, reservation.reservationId)) {
+            System.out.println("오류: 같은 회원의 다른 예약과 충돌하여 연장할 수 없습니다.");
+            return;
+        }
+
+        String beforeRecord = reservation.toRecord();
+        reservation.endTime = newEnd.toLocalTime();
+        reservation.extensionCount++;
+        store.saveAll(data);
+        printRecordChange("RESV", beforeRecord, reservation.toRecord());
+        System.out.println("예약 시간이 1시간 연장되었습니다.");
+    }
+
     private void handleChangeCurrentTime() throws AppDataException {
         requireLoggedIn();
         SystemData data = loadAndSync();
@@ -450,12 +567,12 @@ final class CliApp {
             return;
         }
 
-        System.out.printf("%-8s %-10s %-10s %-6s %-10s %-5s %-5s %-4s %-12s %-16s%n",
-                "resvId", "userId", "userName", "room", "date", "start", "end", "인원", "status", "checkedInAt");
+        System.out.printf("%-8s %-10s %-10s %-6s %-10s %-5s %-5s %-4s %-4s %-12s %-16s%n",
+                "resvId", "userId", "userName", "room", "date", "start", "end", "인원", "연장", "status", "checkedInAt");
         for (Reservation reservation : data.sortedReservations()) {
             User user = data.users.get(reservation.userId);
             String userName = user == null ? reservation.userId : user.userName;
-            System.out.printf("%-8s %-10s %-10s %-6s %-10s %-5s %-5s %-4d %-12s %-16s%n",
+            System.out.printf("%-8s %-10s %-10s %-6s %-10s %-5s %-5s %-4d %-4d %-12s %-16s%n",
                     reservation.reservationId,
                     reservation.userId,
                     cut(userName, 10),
@@ -464,6 +581,7 @@ final class CliApp {
                     TimeFormats.formatTime(reservation.startTime),
                     TimeFormats.formatTime(reservation.endTime),
                     reservation.partySize,
+                    reservation.extensionCount,
                     reservation.status.name(),
                     reservation.checkedInAtText());
         }
@@ -802,6 +920,44 @@ final class CliApp {
         return false;
     }
 
+    private MemberStanding calculateMemberStanding(SystemData data, String userId) {
+        LocalDateTime now = data.currentTime;
+        int recentNoShowCount = 0;
+        LocalDateTime lastNoShowAt = null;
+        int recentCompletedCount = 0;
+
+        for (Reservation reservation : data.reservations.values()) {
+            if (!reservation.userId.equals(userId)) {
+                continue;
+            }
+            if (reservation.status == ReservationStatus.NO_SHOW) {
+                LocalDateTime noShowAt = reservation.startDateTime().plusMinutes(10);
+                if (isInRecentSevenDays(noShowAt, now)) {
+                    recentNoShowCount++;
+                    if (lastNoShowAt == null || noShowAt.isAfter(lastNoShowAt)) {
+                        lastNoShowAt = noShowAt;
+                    }
+                }
+            } else if (reservation.status == ReservationStatus.COMPLETED) {
+                LocalDateTime completedAt = reservation.endDateTime();
+                if (isInRecentSevenDays(completedAt, now)) {
+                    recentCompletedCount++;
+                }
+            }
+        }
+
+        LocalDateTime penaltyUntil = null;
+        if (lastNoShowAt != null) {
+            penaltyUntil = lastNoShowAt.plusDays(7);
+        }
+        boolean excellent = recentCompletedCount >= 2 && recentNoShowCount == 0;
+        return new MemberStanding(recentNoShowCount, penaltyUntil, excellent);
+    }
+
+    private boolean isInRecentSevenDays(LocalDateTime eventTime, LocalDateTime now) {
+        return eventTime.isAfter(now.minusDays(7)) && !eventTime.isAfter(now);
+    }
+
     private String validateReservationWindow(LocalDate date, LocalTime start, LocalTime end) {
         if (start.getMinute() != 0 || end.getMinute() != 0) {
             return "예약 시각은 1시간 단위여야 합니다.";
@@ -840,8 +996,8 @@ final class CliApp {
     }
 
     private void printMyReservationHeader() {
-        System.out.printf("%-8s %-6s %-10s %-10s %-5s %-5s %-4s %-12s%n",
-                "resvId", "room", "roomName", "date", "start", "end", "인원", "status");
+        System.out.printf("%-8s %-6s %-10s %-10s %-5s %-5s %-4s %-4s %-12s%n",
+                "resvId", "room", "roomName", "date", "start", "end", "인원", "연장", "status");
     }
 
     private String cut(String value, int width) {
