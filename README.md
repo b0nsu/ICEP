@@ -45,7 +45,7 @@ macOS / Linux:
 
 - `users.txt`: `USER|userId|loginId|password|userName|role`
 - `rooms.txt`: `ROOM|roomId|roomName|maxCapacity|roomStatus`
-- `reservations.txt`: `RESV|reservationId|userId|roomId|date|startTime|endTime|partySize|status|createdAt|checkedInAt`
+- `reservations.txt`: `RESV|reservationId|userId|roomId|date|startTime|endTime|partySize|status|createdAt|checkedInAt|extensionCount`
 - `system_time.txt`: `NOW|yyyy-MM-dd HH:mm`
 
 공통 규칙:
