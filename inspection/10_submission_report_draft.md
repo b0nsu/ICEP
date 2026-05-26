@@ -1,24 +1,45 @@
-# 1차 검사보고서 초안
+# 2차 최종안 반영 검사보고서 초안
 
 ## 1. 개요
 
-본 문서는 스터디룸 예약 관리 CLI 프로그램의 1차 검사 결과를 정리한 보고서이다.  
+본 문서는 스터디룸 예약 관리 CLI 프로그램의 1차 검사 커버리지 위에 2차 최종안 변경사항을 반영한 검사 결과를 정리한 보고서이다.
 보고서 구성은 기획서 절 번호를 그대로 따라가며, 실제 검사는 [RegressionTest.java](/Users/bonsu/IdeaProjects/untitled/src/test/java/ku/com/RegressionTest.java)의 회귀 테스트와 수동 재현 결과를 근거로 정리하였다.
 
 검사 기준 문서:
+- `C:\Users\bonsu\Documents\카카오톡 받은 파일\C07_2차기획서원판_스터디룸예약관리CLI_최종제출안_최근7일반열린구간반영-1.pdf`
 - `/Users/bonsu/Downloads/전기프-06-검사 (2).pdf`
 - `/Users/bonsu/Downloads/전기프데이터파일검사초안.pdf`
 - `/Users/bonsu/Downloads/전기프_C07_1차기획서_수정2판_통합_컴파일세트_표45위치수정.tex`
 
 검사 실행 명령:
 ```bash
-sh gradlew test regressionTest
+cmd /c gradlew.bat clean check --no-daemon
 ```
 
 최종 실행 결과:
-- 전체 `169`개 테스트케이스 통과
+- 전체 `198`개 테스트케이스 통과
 - `Regression tests passed.`
 - `BUILD SUCCESSFUL`
+
+---
+
+## 2차 최종안으로 수정된 1차 커버리지 범위
+
+1차 검사 축은 유지하되 다음 항목은 2차 최종안 기준으로 입력 데이터와 기대 결과를 수정하였다.
+
+- `reservations.txt`의 RESV 레코드는 `extensionCount`를 포함한 12필드로 검사한다.
+- 기존 RESV 기대값은 기본적으로 마지막 필드 `|0`을 추가해 비교한다.
+- `extensionCount`는 0 이상 3 이하이며, RESERVED/NO_SHOW 상태에서는 0이어야 한다.
+- `user999`, `rv9999` 상한 도달 시 신규 생성 거부를 검사한다.
+- `user000`, `rv0000` 데이터는 시작 단계에서 거부한다.
+- 최근 7일 판정은 `now - 7days < eventTime <= now` 반열린 구간으로 검사한다.
+- 패널티 해제 시각은 마지막 노쇼 발생 시각 + 7일로 검사한다.
+- 우수회원은 최근 7일 반열린 구간의 COMPLETED 2건 이상, 같은 구간 NO_SHOW 0건으로 검사한다.
+- 일반회원/패널티 회원의 예약 연장은 예약번호 입력 전에 우수회원 오류로 거부되는지 검사한다.
+- 예약 연장은 30분 전 경계, 최대 3회, 총 5시간, 날짜 넘김, 룸/사용자 충돌, CLOSED 룸 거부를 검사한다.
+- 연장된 CHECKED_IN 예약은 갱신된 endTime 기준으로 COMPLETED 되는지 검사한다.
+
+추가/수정된 2차 최종안 TC는 `TC170`부터 `TC198`까지이며, 상세 목록은 `inspection/test-case-results-spec-aligned.md`에 반영하였다.
 
 ---
 

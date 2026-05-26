@@ -114,9 +114,10 @@ final class CliApp {
         System.out.println("4. 예약 취소");
         System.out.println("5. 나의 예약 조회");
         System.out.println("6. 체크인");
+        System.out.println("7. 예약 연장(우수회원 전용)");
         System.out.println("0. 로그아웃");
 
-        int menu = promptMenuChoice(Set.of(0, 1, 2, 3, 4, 5, 6));
+        int menu = promptMenuChoice(Set.of(0, 1, 2, 3, 4, 5, 6, 7));
         try {
             switch (menu) {
                 case 1 -> handleChangeCurrentTime();
@@ -125,6 +126,7 @@ final class CliApp {
                 case 4 -> handleCancelReservation();
                 case 5 -> handleMyReservations();
                 case 6 -> handleCheckIn();
+                case 7 -> handleExtendReservation();
                 case 0 -> handleLogout();
                 default -> throw new IllegalStateException();
             }
@@ -450,6 +452,88 @@ final class CliApp {
         reservation.checkedInAt = now;
         store.saveAll(data);
         System.out.println("체크인이 완료되었습니다.");
+    }
+
+    private void handleExtendReservation() throws AppDataException {
+        requireRole(Role.MEMBER);
+        SystemData data = loadAndSync();
+        MemberStanding standing = calculateMemberStanding(data, loggedInUserId);
+        if (!standing.excellent) {
+            System.out.println("오류: 예약 연장은 우수회원만 신청할 수 있습니다.");
+            return;
+        }
+
+        System.out.println("[예약 연장]");
+        System.out.println("현재 가상 시각: " + TimeFormats.formatDateTime(data.currentTime));
+        String reservationId = promptReservationId("연장할 예약번호 입력: ");
+
+        Reservation reservation = data.reservations.get(reservationId);
+        if (reservation == null) {
+            System.out.println("오류: 존재하지 않는 예약번호입니다.");
+            return;
+        }
+        if (!reservation.userId.equals(loggedInUserId)) {
+            System.out.println("오류: 본인의 예약만 연장할 수 있습니다.");
+            return;
+        }
+
+        if (standing.underPenalty(data.currentTime)) {
+            System.out.println("오류: 노쇼 패널티로 "
+                    + TimeFormats.formatDateTime(standing.penaltyUntil)
+                    + " 이후 예약 연장이 가능합니다.");
+            return;
+        }
+        if (reservation.status != ReservationStatus.CHECKED_IN) {
+            System.out.println("오류: CHECKED_IN 상태의 예약만 연장할 수 있습니다.");
+            return;
+        }
+
+        LocalDateTime now = data.currentTime;
+        LocalDateTime oldEnd = reservation.endDateTime();
+        if (now.isBefore(oldEnd.minusMinutes(30))) {
+            System.out.println("오류: 예약 종료 30분 전부터 연장할 수 있습니다.");
+            return;
+        }
+        if (!now.isBefore(oldEnd)) {
+            System.out.println("오류: 예약 종료 시각 이후에는 연장할 수 없습니다.");
+            return;
+        }
+        if (reservation.extensionCount >= 3) {
+            System.out.println("오류: 예약당 최대 3회까지만 연장할 수 있습니다.");
+            return;
+        }
+
+        LocalDateTime newEnd = oldEnd.plusHours(1);
+        long totalMinutes = Duration.between(reservation.startDateTime(), newEnd).toMinutes();
+        if (totalMinutes > 300) {
+            System.out.println("오류: 연장 후 총 이용 시간은 5시간을 넘을 수 없습니다.");
+            return;
+        }
+        if (!newEnd.toLocalDate().equals(reservation.date)) {
+            System.out.println("오류: 예약 연장은 같은 날짜 안에서만 가능합니다.");
+            return;
+        }
+
+        Room room = data.rooms.get(reservation.roomId);
+        if (room == null || room.roomStatus != RoomStatus.OPEN) {
+            System.out.println("오류: 대상 룸이 OPEN 상태가 아니어서 연장할 수 없습니다.");
+            return;
+        }
+        if (hasRoomOverlap(data, reservation.roomId, oldEnd, newEnd, reservation.reservationId)) {
+            System.out.println("오류: 같은 룸의 다음 예약과 충돌하여 연장할 수 없습니다.");
+            return;
+        }
+        if (hasUserOverlap(data, loggedInUserId, oldEnd, newEnd, reservation.reservationId)) {
+            System.out.println("오류: 같은 회원의 다른 예약과 충돌하여 연장할 수 없습니다.");
+            return;
+        }
+
+        String beforeRecord = reservation.toRecord();
+        reservation.endTime = newEnd.toLocalTime();
+        reservation.extensionCount++;
+        store.saveAll(data);
+        printRecordChange("RESV", beforeRecord, reservation.toRecord());
+        System.out.println("예약 시간이 1시간 연장되었습니다.");
     }
 
     private void handleChangeCurrentTime() throws AppDataException {
