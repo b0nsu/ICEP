@@ -488,12 +488,6 @@ final class CliApp {
             return;
         }
 
-        Room room = data.rooms.get(reservation.roomId);
-        if (room == null || room.roomStatus != RoomStatus.OPEN) {
-            System.out.println("오류: 대상 룸이 OPEN 상태가 아니어서 연장할 수 없습니다.");
-            return;
-        }
-
         LocalDateTime now = data.currentTime;
         LocalDateTime oldEnd = reservation.endDateTime();
         if (now.isBefore(oldEnd.minusMinutes(30))) {
@@ -510,13 +504,19 @@ final class CliApp {
         }
 
         LocalDateTime newEnd = oldEnd.plusHours(1);
+        long totalMinutes = Duration.between(reservation.startDateTime(), newEnd).toMinutes();
+        if (totalMinutes > 300) {
+            System.out.println("오류: 연장 후 총 이용 시간은 5시간을 넘을 수 없습니다.");
+            return;
+        }
         if (!newEnd.toLocalDate().equals(reservation.date)) {
             System.out.println("오류: 예약 연장은 같은 날짜 안에서만 가능합니다.");
             return;
         }
-        long totalMinutes = Duration.between(reservation.startDateTime(), newEnd).toMinutes();
-        if (totalMinutes > 300) {
-            System.out.println("오류: 연장 후 총 이용 시간은 5시간을 넘을 수 없습니다.");
+
+        Room room = data.rooms.get(reservation.roomId);
+        if (room == null || room.roomStatus != RoomStatus.OPEN) {
+            System.out.println("오류: 대상 룸이 OPEN 상태가 아니어서 연장할 수 없습니다.");
             return;
         }
         if (hasRoomOverlap(data, reservation.roomId, oldEnd, newEnd, reservation.reservationId)) {
