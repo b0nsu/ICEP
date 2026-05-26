@@ -267,6 +267,14 @@ final class CliApp {
     private void handleCreateReservation() throws AppDataException {
         requireRole(Role.MEMBER);
         SystemData data = loadAndSync();
+        MemberStanding standing = calculateMemberStanding(data, loggedInUserId);
+        if (standing.underPenalty(data.currentTime)) {
+            System.out.println("오류: 노쇼 패널티로 "
+                    + TimeFormats.formatDateTime(standing.penaltyUntil)
+                    + " 이후 예약 신청이 가능합니다.");
+            return;
+        }
+
         System.out.println("[예약 신청]");
         System.out.println("현재 가상 시각: " + TimeFormats.formatDateTime(data.currentTime));
 
@@ -308,14 +316,6 @@ final class CliApp {
         }
         if (hasUserOverlap(data, loggedInUserId, startAt, endAt, null)) {
             System.out.println("오류: 같은 시간대에 이미 다른 예약이 있습니다.");
-            return;
-        }
-
-        MemberStanding standing = calculateMemberStanding(data, loggedInUserId);
-        if (standing.underPenalty(data.currentTime)) {
-            System.out.println("오류: 노쇼 패널티로 "
-                    + TimeFormats.formatDateTime(standing.penaltyUntil)
-                    + " 이후 예약 신청이 가능합니다.");
             return;
         }
 
