@@ -267,6 +267,9 @@ final class CliApp {
     private void handleCreateReservation() throws AppDataException {
         requireRole(Role.MEMBER);
         SystemData data = loadAndSync();
+        System.out.println("[예약 신청]");
+        System.out.println("현재 가상 시각: " + TimeFormats.formatDateTime(data.currentTime));
+
         MemberStanding standing = calculateMemberStanding(data, loggedInUserId);
         if (standing.underPenalty(data.currentTime)) {
             System.out.println("오류: 노쇼 패널티로 "
@@ -274,9 +277,6 @@ final class CliApp {
                     + " 이후 예약 신청이 가능합니다.");
             return;
         }
-
-        System.out.println("[예약 신청]");
-        System.out.println("현재 가상 시각: " + TimeFormats.formatDateTime(data.currentTime));
 
         LocalDate date = promptDate("날짜 입력(yyyy-MM-dd): ");
         LocalTime start = promptTime("시작 시각 입력(HH:mm): ");
