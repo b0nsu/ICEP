@@ -496,6 +496,12 @@ public class RegressionTest {
                 "0"));
 
         assertContains(output, "회원 상태: 우수회원");
+        assertContains(output, "기존 예약 레코드:");
+        assertContains(output,
+                "RESV|rv0003|user011|R101|2026-03-20|13:00|15:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|0");
+        assertContains(output, "변경 후 예약 레코드:");
+        assertContains(output,
+                "RESV|rv0003|user011|R101|2026-03-20|13:00|16:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|1");
         assertContains(output, "예약 시간이 1시간 연장되었습니다.");
         assertFileContains(root, "reservations.txt",
                 "RESV|rv0003|user011|R101|2026-03-20|13:00|16:00|2|CHECKED_IN|2026-03-20 09:00|2026-03-20 12:55|1");
