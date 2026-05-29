@@ -23,13 +23,35 @@ macOS / Linux:
 Windows:
 
 ```powershell
-.\gradlew.bat run
+java -jar study-room-cli.jar
 ```
 
 macOS / Linux:
 
 ```bash
-./gradlew run
+java -jar study-room-cli.jar
+```
+
+기획서 기준 배포 형태:
+
+```text
+프로젝트 루트/
+  study-room-cli.jar
+  data/
+```
+
+Gradle로 JAR를 다시 만들 때는 아래 명령을 사용합니다.
+
+Windows:
+
+```powershell
+.\gradlew.bat jar
+```
+
+macOS / Linux:
+
+```bash
+./gradlew jar
 ```
 
 ## 기본 admin 계정
