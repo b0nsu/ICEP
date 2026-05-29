@@ -477,12 +477,6 @@ final class CliApp {
             return;
         }
 
-        if (standing.underPenalty(data.currentTime)) {
-            System.out.println("오류: 노쇼 패널티로 "
-                    + TimeFormats.formatDateTime(standing.penaltyUntil)
-                    + " 이후 예약 연장이 가능합니다.");
-            return;
-        }
         if (reservation.status != ReservationStatus.CHECKED_IN) {
             System.out.println("오류: CHECKED_IN 상태의 예약만 연장할 수 있습니다.");
             return;
@@ -532,7 +526,10 @@ final class CliApp {
         reservation.endTime = newEnd.toLocalTime();
         reservation.extensionCount++;
         store.saveAll(data);
-        printRecordChange("RESV", beforeRecord, reservation.toRecord());
+        System.out.println("기존 예약 레코드:");
+        System.out.println(beforeRecord);
+        System.out.println("변경 후 예약 레코드:");
+        System.out.println(reservation.toRecord());
         System.out.println("예약 시간이 1시간 연장되었습니다.");
     }
 
